@@ -1,0 +1,22 @@
+citHeader("To cite MAnorm2 in publications, please use")
+
+citEntry(entry = "Article",
+         title = "MAnorm2 for quantitatively comparing groups of ChIP-seq samples",
+         author = personList(as.person("Shiqi Tu"),
+                             as.person("Mushan Li"),
+                             as.person("Fengxiang Tan"),
+                             as.person("Haojie Chen"),
+                             as.person("Jian Xu"),
+                             as.person("David J. Waxman"),
+                             as.person("Yijing Zhang"),
+                             as.person("Zhen Shao")),
+         journal = "bioRxiv",
+         year = "2020",
+         doi = "10.1101/2020.01.07.896894",
+         publisher = "Cold Spring Harbor Laboratory",
+         pages = "2020.01.07.896894",
+         textVersion = paste("Tu, S., et al.,",
+                             "MAnorm2 for quantitatively comparing groups of ChIP-seq samples.",
+                             "bioRxiv, 2020: p. 2020.01.07.896894."))
+
+citFooter("Thanks for using MAnorm2.")
