@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.Rbuildignore$
+^\.Rhistory$
+^\.RData$
+^utility$
+^dist$
