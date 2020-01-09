@@ -1,0 +1,70 @@
+Produced by profile_bins, version=1.0.0
+
+The file of additional parameters:
+parameters_file
+
+Equivalent parameter settings:
+peaks=/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/call_peaks/GM18505_H3K4me3_1_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/call_peaks/GM18505_H3K4me3_2_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/call_peaks/GM19099_H3K4me3_1_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/call_peaks/GM19099_H3K4me3_2_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/call_peaks/GM19193_H3K4me3_1_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/call_peaks/GM19193_H3K4me3_2_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/call_peaks/GM19238_H3K4me3_1_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/call_peaks/GM19238_H3K4me3_2_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/call_peaks/GM19238_H3K4me3_3_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/call_peaks/GM19239_H3K4me3_1.1_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/call_peaks/GM19239_H3K4me3_2_peaks.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/call_peaks/GM19239_H3K4me3_3_peaks.bed
+reads=/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/mapping_dremove/GM18505_H3K4me3_1_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/mapping_dremove/GM18505_H3K4me3_2_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/mapping_dremove/GM19099_H3K4me3_1_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/mapping_dremove/GM19099_H3K4me3_2_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/mapping_dremove/GM19193_H3K4me3_1_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/mapping_dremove/GM19193_H3K4me3_2_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/mapping_dremove/GM19238_H3K4me3_1_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/mapping_dremove/GM19238_H3K4me3_2_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/mapping_dremove/GM19238_H3K4me3_3_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/mapping_dremove/GM19239_H3K4me3_1.1_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/mapping_dremove/GM19239_H3K4me3_2_ss100_drm.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/mapping_dremove/GM19239_H3K4me3_3_ss100_drm.bed
+labs=GM18505_H3K4me3_1,GM18505_H3K4me3_2,GM19099_H3K4me3_1,GM19099_H3K4me3_2,GM19193_H3K4me3_1,GM19193_H3K4me3_2,GM19238_H3K4me3_1,GM19238_H3K4me3_2,GM19238_H3K4me3_3,GM19239_H3K4me3_1.1,GM19239_H3K4me3_2,GM19239_H3K4me3_3
+n=LCLs_Yoruban.H3K4me3
+keep-peaks=23000
+min-peak-gap=150
+typical-bin-size=2000
+summits=/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/call_peaks/GM18505_H3K4me3_1_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/call_peaks/GM18505_H3K4me3_2_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/call_peaks/GM19099_H3K4me3_1_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/call_peaks/GM19099_H3K4me3_2_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/call_peaks/GM19193_H3K4me3_1_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/call_peaks/GM19193_H3K4me3_2_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/call_peaks/GM19238_H3K4me3_1_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/call_peaks/GM19238_H3K4me3_2_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/call_peaks/GM19238_H3K4me3_3_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/call_peaks/GM19239_H3K4me3_1.1_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/call_peaks/GM19239_H3K4me3_2_summits.bed,/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/call_peaks/GM19239_H3K4me3_3_summits.bed
+shiftsize=100
+paired=False
+keep-dup=all
+method=byBin
+fix-bin-size=False
+
+Summary of peak numbers in peak files:
+peak_file	peaks_after_filtering	peaks_after_merging
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/call_peaks/GM18505_H3K4me3_1_peaks.bed	23000	22781
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/call_peaks/GM18505_H3K4me3_2_peaks.bed	23000	22426
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/call_peaks/GM19099_H3K4me3_1_peaks.bed	23000	22757
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/call_peaks/GM19099_H3K4me3_2_peaks.bed	23000	22507
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/call_peaks/GM19193_H3K4me3_1_peaks.bed	23000	22784
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/call_peaks/GM19193_H3K4me3_2_peaks.bed	23000	22484
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/call_peaks/GM19238_H3K4me3_1_peaks.bed	21637	21443
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/call_peaks/GM19238_H3K4me3_2_peaks.bed	22421	22264
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/call_peaks/GM19238_H3K4me3_3_peaks.bed	23000	22785
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/call_peaks/GM19239_H3K4me3_1.1_peaks.bed	21632	21468
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/call_peaks/GM19239_H3K4me3_2_peaks.bed	23000	22808
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/call_peaks/GM19239_H3K4me3_3_peaks.bed	23000	22841
+
+Divide merged peaks into reference genomic bins:
+48383 bins in total
+
+Summary of read counts in read files:
+read_file	total_reads	redundant_reads	redundancy_ratio
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/mapping_dremove/GM18505_H3K4me3_1_ss100_drm.bed	35550338	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/mapping_dremove/GM18505_H3K4me3_2_ss100_drm.bed	30912323	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/mapping_dremove/GM19099_H3K4me3_1_ss100_drm.bed	31307782	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/mapping_dremove/GM19099_H3K4me3_2_ss100_drm.bed	31146148	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/mapping_dremove/GM19193_H3K4me3_1_ss100_drm.bed	34327447	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/mapping_dremove/GM19193_H3K4me3_2_ss100_drm.bed	24907285	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/mapping_dremove/GM19238_H3K4me3_1_ss100_drm.bed	24095359	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/mapping_dremove/GM19238_H3K4me3_2_ss100_drm.bed	31226243	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/mapping_dremove/GM19238_H3K4me3_3_ss100_drm.bed	23396759	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/mapping_dremove/GM19239_H3K4me3_1.1_ss100_drm.bed	23306679	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/mapping_dremove/GM19239_H3K4me3_2_ss100_drm.bed	23331810	0	0.0%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/mapping_dremove/GM19239_H3K4me3_3_ss100_drm.bed	24476998	0	0.0%
+
+Number of reads falling within reference genomic bins:
+read_file	reads_after_filtering	reads_within_bins	within_ratio
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/mapping_dremove/GM18505_H3K4me3_1_ss100_drm.bed	35550338	27482429	77.3%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM18505/H3K4me3/mapping_dremove/GM18505_H3K4me3_2_ss100_drm.bed	30912323	24569285	79.5%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/mapping_dremove/GM19099_H3K4me3_1_ss100_drm.bed	31307782	23268198	74.3%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19099/H3K4me3/mapping_dremove/GM19099_H3K4me3_2_ss100_drm.bed	31146148	25975385	83.4%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/mapping_dremove/GM19193_H3K4me3_1_ss100_drm.bed	34327447	26291587	76.6%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19193/H3K4me3/mapping_dremove/GM19193_H3K4me3_2_ss100_drm.bed	24907285	20853079	83.7%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/mapping_dremove/GM19238_H3K4me3_1_ss100_drm.bed	24095359	19985405	82.9%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/mapping_dremove/GM19238_H3K4me3_2_ss100_drm.bed	31226243	28680122	91.8%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19238/H3K4me3/mapping_dremove/GM19238_H3K4me3_3_ss100_drm.bed	23396759	20557413	87.9%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/mapping_dremove/GM19239_H3K4me3_1.1_ss100_drm.bed	23306679	20579255	88.3%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/mapping_dremove/GM19239_H3K4me3_2_ss100_drm.bed	23331810	21392782	91.7%
+/home/tushiqi/MAnorm2/LCLs_Yoruban/GM19239/H3K4me3/mapping_dremove/GM19239_H3K4me3_3_ss100_drm.bed	24476998	22169073	90.6%
+
+Finished, check the output file:
+LCLs_Yoruban.H3K4me3_profile_bins.xls

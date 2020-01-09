@@ -1,0 +1,11 @@
+peaks=../GM12890/H3K27ac/call_peaks/GM12890_H3K27Ac_1_peaks.bed,../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_1_peaks.bed,../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_2_peaks.bed,../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_1_peaks.bed,../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_2_peaks.bed
+reads=../GM12890/H3K27ac/mapping_dremove/GM12890_H3K27Ac_1_ss100_drm.bed,../GM12891/H3K27ac/mapping_dremove/GM12891_H3K27Ac_1_ss100_drm.bed,../GM12891/H3K27ac/mapping_dremove/GM12891_H3K27Ac_2_ss100_drm.bed,../GM12892/H3K27ac/mapping_dremove/GM12892_H3K27Ac_1_ss100_drm.bed,../GM12892/H3K27ac/mapping_dremove/GM12892_H3K27Ac_2_ss100_drm.bed
+labs=GM12890_H3K27Ac_1,GM12891_H3K27Ac_1,GM12891_H3K27Ac_2,GM12892_H3K27Ac_1,GM12892_H3K27Ac_2
+n=LCLs_Caucasian.H3K27ac_example
+keep-peaks=30000
+min-peak-gap=150
+typical-bin-size=2000
+summits=../GM12890/H3K27ac/call_peaks/GM12890_H3K27Ac_1_summits.bed,../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_1_summits.bed,../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_2_summits.bed,../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_1_summits.bed,../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_2_summits.bed
+shiftsize=100
+keep-dup=all
+method=byBin

@@ -1,0 +1,22 @@
+Writing parameter settings to the log file ...
+Done.
+
+Reading peak files ...
+Done.
+
+Dividing merged peaks into reference genomic bins ...
+Done.
+
+Deriving enrichment states of the bins in each sample ...
+Done.
+
+Parsing read files and deriving read counts within the bins ...
+5 samples completed
+10 samples completed
+12 samples completed
+Done.
+
+Writing the results ...
+Done.
+
+Finished.

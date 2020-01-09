@@ -1,0 +1,49 @@
+Produced by profile_bins, version=1.0.0
+
+The file of additional parameters:
+parameters_file
+
+Equivalent parameter settings:
+peaks=../GM12890/H3K27ac/call_peaks/GM12890_H3K27Ac_1_peaks.bed,../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_1_peaks.bed,../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_2_peaks.bed,../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_1_peaks.bed,../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_2_peaks.bed
+reads=../GM12890/H3K27ac/mapping_dremove/GM12890_H3K27Ac_1_ss100_drm.bed,../GM12891/H3K27ac/mapping_dremove/GM12891_H3K27Ac_1_ss100_drm.bed,../GM12891/H3K27ac/mapping_dremove/GM12891_H3K27Ac_2_ss100_drm.bed,../GM12892/H3K27ac/mapping_dremove/GM12892_H3K27Ac_1_ss100_drm.bed,../GM12892/H3K27ac/mapping_dremove/GM12892_H3K27Ac_2_ss100_drm.bed
+labs=GM12890_H3K27Ac_1,GM12891_H3K27Ac_1,GM12891_H3K27Ac_2,GM12892_H3K27Ac_1,GM12892_H3K27Ac_2
+n=LCLs_Caucasian.H3K27ac_example
+keep-peaks=30000
+min-peak-gap=150
+typical-bin-size=2000
+summits=../GM12890/H3K27ac/call_peaks/GM12890_H3K27Ac_1_summits.bed,../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_1_summits.bed,../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_2_summits.bed,../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_1_summits.bed,../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_2_summits.bed
+shiftsize=100
+paired=False
+keep-dup=all
+method=byBin
+fix-bin-size=False
+
+Summary of peak numbers in peak files:
+peak_file	peaks_after_filtering	peaks_after_merging
+../GM12890/H3K27ac/call_peaks/GM12890_H3K27Ac_1_peaks.bed	30000	29429
+../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_1_peaks.bed	30000	29547
+../GM12891/H3K27ac/call_peaks/GM12891_H3K27Ac_2_peaks.bed	30000	29523
+../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_1_peaks.bed	30000	29419
+../GM12892/H3K27ac/call_peaks/GM12892_H3K27Ac_2_peaks.bed	30000	29408
+
+Divide merged peaks into reference genomic bins:
+73828 bins in total
+
+Summary of read counts in read files:
+read_file	total_reads	redundant_reads	redundancy_ratio
+../GM12890/H3K27ac/mapping_dremove/GM12890_H3K27Ac_1_ss100_drm.bed	26362713	0	0.0%
+../GM12891/H3K27ac/mapping_dremove/GM12891_H3K27Ac_1_ss100_drm.bed	29366930	0	0.0%
+../GM12891/H3K27ac/mapping_dremove/GM12891_H3K27Ac_2_ss100_drm.bed	29174732	0	0.0%
+../GM12892/H3K27ac/mapping_dremove/GM12892_H3K27Ac_1_ss100_drm.bed	23114929	0	0.0%
+../GM12892/H3K27ac/mapping_dremove/GM12892_H3K27Ac_2_ss100_drm.bed	25129030	0	0.0%
+
+Number of reads falling within reference genomic bins:
+read_file	reads_after_filtering	reads_within_bins	within_ratio
+../GM12890/H3K27ac/mapping_dremove/GM12890_H3K27Ac_1_ss100_drm.bed	26362713	20873506	79.2%
+../GM12891/H3K27ac/mapping_dremove/GM12891_H3K27Ac_1_ss100_drm.bed	29366930	24770296	84.3%
+../GM12891/H3K27ac/mapping_dremove/GM12891_H3K27Ac_2_ss100_drm.bed	29174732	24316510	83.3%
+../GM12892/H3K27ac/mapping_dremove/GM12892_H3K27Ac_1_ss100_drm.bed	23114929	19767678	85.5%
+../GM12892/H3K27ac/mapping_dremove/GM12892_H3K27Ac_2_ss100_drm.bed	25129030	20878489	83.1%
+
+Finished, check the output file:
+LCLs_Caucasian.H3K27ac_example_profile_bins.xls
