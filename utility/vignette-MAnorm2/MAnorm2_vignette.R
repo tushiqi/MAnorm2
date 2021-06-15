@@ -222,50 +222,68 @@ plotMeanVarCurve(genders3, subset = "non-occupied",
                  main = "Re-estimate prior df")
 genders3[[1]]$fit.info$df.prior
 
-## ----varTestBioCond-------------------------------------------------------------------------------
+## ----HyperChIP------------------------------------------------------------------------------------
 # Normalize all ChIP-seq samples once for all.
+# Considering the number of samples in a hypervariable ChIP-seq analysis is
+# typically large, HyperChIP uses a pseudo-reference profile as baseline in the
+# MA normalization process to reduce the variability of normalization results.
 autosome <- !(H3K27Ac$chrom %in% c("chrX", "chrY"))
 norm <- normalize(H3K27Ac, count = 4:8, occupancy = 9:13,
+                  baseline = "pseudo-reference",
                   common.peak.regions = autosome)
 
 # Construct a bioCond to group all the samples.
-cond <- bioCond(norm[4:8], norm[9:13], name = "all")
+cond <- bioCond(norm[4:8], norm[9:13], occupy.num = 1,
+                name = "all")
 
-# Fit an MVC.
-cond <- fitMeanVarCurve(list(cond), method = "local", occupy.only = TRUE)[[1]]
+# Fit an MVC by using local regression.
+# Set "nn = 1" to increase the smoothness of the resulting MVC.
+cond <- fitMeanVarCurve(list(cond), method = "local",
+                        occupy.only = TRUE, args.lp = list(nn = 1))[[1]]
+summary(cond)
+
+# Apply the parameter estimation framework of HyperChIP.
+# Note the dramatic increase in the estimated number of prior degrees of
+# freedom.
+cond <- estParamHyperChIP(cond)
 summary(cond)
 
 # Perform statistical tests.
 res <- varTestBioCond(cond)
 head(res)
 
-## ----plotVarTestBioCond---------------------------------------------------------------------------
+## ----plotVarTestBioCond, fig.show = "hold", fig.height = 4.7, fig.width = 4.7---------------------
 # Visualize the overall test results.
-plot(res, pval = 0.01, col = c("#0000000A", "#FF000040"))
+hist(res$pval, breaks = 100, col = "red")
+plot(res, padj = 0.01)
 
 ## ----hypervariableOnly----------------------------------------------------------------------------
 df <- attr(res, "df")
 df
 one.sided.pval <- pf(res$fold.change, df[1], df[2], lower.tail = FALSE)
 
-## ----partiallyOccupiedIntervals-------------------------------------------------------------------
+## ----partiallyOccupiedIntervals, fig.show = "hold", fig.height = 4.7, fig.width = 4.7-------------
 n <- rowSums(norm[9:13])
 x <- list(All = -log10(one.sided.pval[n == 5]),
           Partially = -log10(one.sided.pval[n > 0 & n < 5]))
 wilcox.test(x$All, x$Partially, alternative = "less")
 boxplot(x, ylab = "-Log10(p-value)")
+boxplot(x, ylab = "-Log10(p-value)", outline = FALSE)
 
 ## ----distBioCond----------------------------------------------------------------------------------
 # Normalize all ChIP-seq samples once for all.
 autosome <- !(H3K27Ac$chrom %in% c("chrX", "chrY"))
 norm <- normalize(H3K27Ac, count = 4:8, occupancy = 9:13,
+                  baseline = "pseudo-reference",
                   common.peak.regions = autosome)
 
 # Construct a bioCond to group all the samples.
-cond <- bioCond(norm[4:8], norm[9:13], name = "all")
+cond <- bioCond(norm[4:8], norm[9:13], occupy.num = 1,
+                name = "all")
 
-# Fit an MVC.
-cond <- fitMeanVarCurve(list(cond), method = "local", occupy.only = TRUE)[[1]]
+# Fit an MVC by using local regression.
+cond <- fitMeanVarCurve(list(cond), method = "local",
+                        occupy.only = TRUE, args.lp = list(nn = 1))[[1]]
 
 # Measure the distance between each pair of samples.
 d <- distBioCond(cond, method = "prior")
@@ -276,11 +294,12 @@ plot(hclust(d, method = "average"), hang = -1)
 
 ## ----distBioCondSubset----------------------------------------------------------------------------
 # Select hypervariable genomic intervals.
+cond <- estParamHyperChIP(cond)
 res <- varTestBioCond(cond)
-f <- res$fold.change > 1 & res$pval < 0.05
+f <- res$fold.change > 1 & res$padj < 0.01
 
 # The hierarchical structure among samples remains unmodified,
-# but note the change of scale of the distances between samples.
+# but note the change of magnitude of the distances between cell lines.
 d2 <- distBioCond(cond, subset = f, method = "prior")
 d2
 plot(hclust(d2, method = "average"), hang = -1)
