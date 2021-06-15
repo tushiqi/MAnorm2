@@ -4,8 +4,15 @@
 \alias{meanVarParaFit}
 \title{Parametrically Fit a Mean-Variance Curve}
 \usage{
-meanVarParaFit(x, y, weight, range.residual = c(1e-04, 15), max.iter = 50,
-  init.coef = NULL, verbose = TRUE)
+meanVarParaFit(
+  x,
+  y,
+  weight,
+  range.residual = c(1e-04, 15),
+  max.iter = 50,
+  init.coef = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{x}{Two numeric vectors of (sample) means and sample variances,
@@ -55,6 +62,9 @@ binomial dispersion, with applications to SAGE data}. Biostatistics, 2008.
 Love, M.I., W. Huber, and S. Anders, \emph{Moderated estimation of fold
 change and dispersion for RNA-seq data with DESeq2}. Genome Biol, 2014.
 \strong{15}(12): p. 550.
+
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{meanVarLocalFit}} for using local regression to fit

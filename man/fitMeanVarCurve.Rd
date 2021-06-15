@@ -4,10 +4,18 @@
 \alias{fitMeanVarCurve}
 \title{Fit a Mean-Variance Curve}
 \usage{
-fitMeanVarCurve(conds, ratio.var = estimateVarRatio(conds),
-  method = c("parametric fit", "local regression"), occupy.only = TRUE,
-  range.residual = c(1e-04, 15), max.iter = 50, init.coef = NULL,
-  args.lp = list(nn = 0.7), args.locfit = list(), verbose = TRUE)
+fitMeanVarCurve(
+  conds,
+  ratio.var = estimateVarRatio(conds),
+  method = c("parametric fit", "local regression"),
+  occupy.only = TRUE,
+  range.residual = c(1e-04, 15),
+  max.iter = 50,
+  init.coef = NULL,
+  args.lp = list(nn = 0.7),
+  args.locfit = list(),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{conds}{A list of \code{\link{bioCond}} objects, of which at least one
@@ -380,16 +388,19 @@ plotMeanVarCurve(genders3, subset = "non-occupied")
 summary(genders3$female)
 }
 \references{
-Law, C.W., et al., \emph{voom: Precision weights unlock linear model
-analysis tools for RNA-seq read counts}. Genome Biol, 2014.
-\strong{15}(2): p. R29.
+Smyth, G.K., \emph{Linear models and empirical bayes methods for assessing
+differential expression in microarray experiments}. Stat Appl Genet Mol
+Biol, 2004. \strong{3}: p. Article3.
 
 Anders, S. and W. Huber, \emph{Differential expression analysis for sequence
 count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
 
-Smyth, G.K., \emph{Linear models and empirical bayes methods for assessing
-differential expression in microarray experiments}. Stat Appl Genet Mol
-Biol, 2004. \strong{3}: p. Article3.
+Law, C.W., et al., \emph{voom: Precision weights unlock linear model
+analysis tools for RNA-seq read counts}. Genome Biol, 2014.
+\strong{15}(2): p. R29.
+
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object from a
@@ -404,7 +415,9 @@ Biol, 2004. \strong{3}: p. Article3.
     ratio factors of a set of \code{bioCond}s; \code{\link{varRatio}} for a
     formal description of variance ratio factor;
     \code{\link{estimatePriorDf}} for estimating the number of prior degrees
-    of freedom as well as adjusting variance ratio factors accordingly.
+    of freedom as well as adjusting variance ratio factors accordingly;
+    \code{\link{estimatePriorDfRobust}} for a \emph{robust} version of
+    \code{estimatePriorDf}.
 
     \code{\link{setMeanVarCurve}} for setting the mean-variance curve of a
     set of \code{bioCond} objects; \code{\link{extendMeanVarCurve}} for

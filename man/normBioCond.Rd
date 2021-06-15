@@ -4,8 +4,7 @@
 \alias{normBioCond}
 \title{Perform MA Normalization on a Set of \code{bioCond} Objects}
 \usage{
-normBioCond(conds, baseline = NULL, subset = NULL,
-  common.peak.regions = NULL)
+normBioCond(conds, baseline = NULL, subset = NULL, common.peak.regions = NULL)
 }
 \arguments{
 \item{conds}{A list of \code{\link{bioCond}} objects to be normalized.}
@@ -18,7 +17,10 @@ size factor of each \code{bioCond} (see \code{\link{normalize}} and
 \code{normBioCond} treats the signal intensities contained in the
 supplied \code{bioCond}s as in the scale of \eqn{log2} read counts,
 which is consistent with the default behavior of
-\code{\link{normalize}}.}
+\code{\link{normalize}}. Note also that \code{baseline} can be set to
+\code{"pseudo-reference"} as in \code{\link{normalize}}. And we
+recommend using this setting when the number of \code{bioCond}s to be
+normalized is large (e.g., >5).}
 
 \item{subset}{An optional vector specifying the subset of intervals to be
 used for estimating size factors and selecting the baseline.
@@ -48,7 +50,8 @@ A list of \code{\link{bioCond}} objects with normalized signal
         objects. Only present when \code{baseline} is not explicitly
         specified by the user.}
         \item{\code{baseline}}{Condition name of the \code{bioCond} object
-        used as the baseline.}
+        used as baseline or \code{"pseudo-reference"} if the \code{baseline}
+        argument is specified so.}
         \item{\code{norm.coef}}{A data frame recording the MA normalization
         coefficients for each \code{bioCond}.}
         \item{\code{MA.cor}}{A real matrix recording the Pearson correlation
@@ -112,6 +115,11 @@ attributes(conds)
 plot(attr(conds, "MA.cor"), symbreaks = TRUE, margins = c(8, 8))
 MAplot(conds[[1]], conds[[2]], main = "GM12890 vs. GM12891")
 abline(h = 0, lwd = 2, lty = 5)
+}
+\references{
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+    groups of ChIP-seq samples}. Genome Res, 2021.
+    \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{normalize}} for performing an MA normalization on

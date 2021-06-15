@@ -4,10 +4,18 @@
 \alias{MAplot.diffBioCond}
 \title{Create an MA Plot on Results of Comparing Two \code{bioCond} Objects}
 \usage{
-\method{MAplot}{diffBioCond}(x, padj = NULL, pval = NULL,
-  col = alpha(c("black", "red"), 0.1), pch = 20, ylim = c(-6, 6),
-  xlab = "A value", ylab = "M value", args.legend = list(x = "topright"),
-  ...)
+\method{MAplot}{diffBioCond}(
+  x,
+  padj = NULL,
+  pval = NULL,
+  col = alpha(c("black", "red"), 0.1),
+  pch = 20,
+  ylim = c(-6, 6),
+  xlab = "A value",
+  ylab = "M value",
+  args.legend = list(x = "topright"),
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \code{"diffBioCond"}, typically obtained by

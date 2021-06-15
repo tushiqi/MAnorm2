@@ -44,8 +44,8 @@ otherwise).}
         \item{\code{posterior.var}}{A weighted average of \code{within.ms}
         and \code{prior.var}, with the weights being proportional to their
         respective numbers of degrees of freedom.}
-        \item{\code{mod.f}}{Moderated F statistic, which is the ratio of
-        \code{between.ms} to \code{posterior.var}.}
+        \item{\code{mod.f}}{Moderated \emph{F} statistic, which is the ratio
+        of \code{between.ms} to \code{posterior.var}.}
         \item{\code{pval}}{\emph{P}-value for the statistical significance
         of this moderated F statistic.}
         \item{\code{padj}}{\emph{P}-value adjusted for multiple testing with
@@ -156,8 +156,11 @@ plot(res, padj = 1e-6)
 }
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-    assessing differential expression in microarray experiments}. Stat Appl
-    Genet Mol Biol, 2004. \strong{3}: p. Article3.
+assessing differential expression in microarray experiments}. Stat Appl
+Genet Mol Biol, 2004. \strong{3}: p. Article3.
+
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

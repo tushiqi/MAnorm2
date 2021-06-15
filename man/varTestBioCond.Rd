@@ -62,8 +62,9 @@ Given a \code{\link{bioCond}} object with which a mean-variance curve is
 associated (see \code{\link{fitMeanVarCurve}}), \code{varTestBioCond} tests
 for each genomic interval if the observed variation of its signal intensity
 across ChIP-seq samples in the \code{bioCond} is significantly greater or
-less than is implied by the curve. This function is typically used to call
-hypervariable and invariant intervals in a biological condition.
+less than is implied by the curve. This function is typically used
+in combination with \code{\link{estParamHyperChIP}} to call hypervariable
+and invariant intervals in a \code{bioCond} (see also "Examples").
 }
 \details{
 \code{varTestBioCond} adopts the modeling strategy implemented in
@@ -80,15 +81,16 @@ distribution, with
 its two numbers of degrees of freedom being those of the two variances,
 respectively.
 (Hence the statistic follows a scaled chi-squared distribution when the
-prior df is \code{Inf}). To be noted, the prior df is
-automatically estimated for each
-mean-variance curve by a specifically designed statistical method
-(see also \code{\link{fitMeanVarCurve}} and
-\code{\link{setMeanVarCurve}}) and, by default, the function uses the
+prior df is \code{Inf}.) To be noted, the prior df can be empirically
+estimated for each
+mean-variance curve by specifically designed statistical methods
+(see also \code{\link{fitMeanVarCurve}}, \code{\link{setMeanVarCurve}},
+\code{\link{estimatePriorDf}}, and \code{\link{estParamHyperChIP}})
+and, by default, the function uses the
 estimation result to perform the tests. It's highly not recommended to
 specify \code{df.prior} explicitly when calling \code{varTestBioCond},
 unless you know what you are really doing. Besides, \code{varTestBioCond}
-won't adjust variance ratio factor of the provided \code{bioCond} based
+won't adjust the variance ratio factor of the provided \code{bioCond} based
 on the specified prior df (see \code{\link{estimatePriorDf}}
 for a description of variance ratio factor).
 
@@ -104,7 +106,7 @@ involving other \code{bioCond} objects). Also, if you have set
 \code{occupy.only} to \code{TRUE} when calling
 \code{\link{fitMeanVarCurve}}, you should accordingly inspect only the test
 results of those genomic intervals that are occupied by the \code{bioCond},
-and re-adjust
+and should re-adjust
 \emph{p}-values within this set of intervals (see "Examples" below).
 
 \code{varTestBioCond} can also be used to call hypervariable and invariant
@@ -185,6 +187,14 @@ f <- H3K27Ac$chrom == "chrY"
 wilcox.test(res$fold.change[f], res$fold.change[!f],
             alternative = "greater")
 wilcox.test(res$pval[f], res$pval[!f], alternative = "less")
+
+# Make a comparison with HyperChIP.
+LCLs2 <- estParamHyperChIP(LCLs, occupy.only = FALSE, prob = 0.1)
+summary(LCLs)
+summary(LCLs2)
+res2 <- varTestBioCond(LCLs2)
+hist(res$pval, breaks = 100, col = "red")
+hist(res2$pval, breaks = 100, col = "red")
 }
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
@@ -198,6 +208,8 @@ Smyth, G.K., \emph{Linear models and empirical bayes methods for
     setting the mean-variance curve of a set of \code{bioCond}s;
     \code{\link{estimatePriorDf}} for estimating number of prior degrees of
     freedom as well as adjusting variance ratio factors accordingly;
+    \code{\link{estParamHyperChIP}} for applying the parameter estimation
+    framework of HyperChIP;
     \code{\link{cmbBioCond}} for combining multiple \code{bioCond}s
     into a single one.
 

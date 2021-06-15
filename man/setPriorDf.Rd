@@ -20,7 +20,7 @@ Otherwise, all intervals are used.}
 
 \item{no.rep.rv}{A positive real specifying the variance ratio factor of
 those \code{bioCond}s without replicate samples, if any. By default,
-it's set to be the geometric mean of variance ratio factors of the other
+it's set to the geometric mean of variance ratio factors of the other
 \code{bioCond}s.}
 
 \item{.call}{Never care about this argument.}
@@ -36,7 +36,9 @@ it's set to be the geometric mean of variance ratio factors of the other
     \code{bioCond}s without replicate samples.
 
     To be noted, if the specified number of prior degrees of freedom is 0,
-    \code{setPriorDf} won't adjust the existing variance ratio factors.
+    \code{setPriorDf} won't adjust existing variance ratio factors.
+    In this case, you may want to use \code{\link{setPriorDfVarRatio}} to
+    explicitly specify variance ratio factors.
 }
 \description{
 Given a set of \code{\link{bioCond}} objects of which each has been
@@ -50,6 +52,10 @@ The specific behavior of this function is pretty much the same as
 the number of prior degrees of freedom is
 directly specified by users rather than estimated based on the observed
 data. Refer to \code{\link{estimatePriorDf}} for more information.
+
+Note also that there is a \emph{robust} version of this function that uses
+Winsorized statistics to derive variance ratio factors (see
+\code{\link{setPriorDfRobust}} for details).
 }
 \examples{
 data(H3K27Ac, package = "MAnorm2")
@@ -88,9 +94,11 @@ summary(GM12892_2)
 \code{\link{bioCond}} for creating a \code{bioCond} object;
     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve and
     using a \code{fit.info} field to characterize it;
-    \code{\link{estimatePriorDf}} for estimating the number of
-    prior degrees of
-    freedom and adjusting the variance ratio factors of a set of
-    \code{bioCond}s; \code{\link[=diffTest.bioCond]{diffTest}} for calling
+    \code{\link{estimatePriorDf}} for estimating the number of prior
+    degrees of freedom and adjusting the variance ratio factors of a set of
+    \code{bioCond}s;
+    \code{\link{setPriorDfRobust}} for a \emph{robust} version of
+    \code{setPriorDf};
+    \code{\link[=diffTest.bioCond]{diffTest}} for calling
     differential intervals between two \code{bioCond} objects.
 }

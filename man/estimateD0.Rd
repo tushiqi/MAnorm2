@@ -55,8 +55,11 @@ to it. Note that \eqn{d0} is considered to be infinite if the estimated
 }
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-    assessing differential expression in microarray experiments}. Stat Appl
-    Genet Mol Biol, 2004. \strong{3}: p. Article3.
+assessing differential expression in microarray experiments}. Stat Appl
+Genet Mol Biol, 2004. \strong{3}: p. Article3.
+
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;
@@ -66,4 +69,8 @@ Smyth, G.K., \emph{Linear models and empirical bayes methods for
     \code{\link{varRatio}} for a description of variance ratio factor;
     \code{\link{scaleMeanVarCurve}} for estimating the variance ratio factor
     for adjusting a mean-variance curve (or a set of curves).
+
+    \code{\link{estimateD0Robust}} and \code{\link{scaleMeanVarCurveRobust}}
+    for estimating number of prior degrees of freedom and variance ratio
+    factor \emph{in a robust manner}, respectively.
 }

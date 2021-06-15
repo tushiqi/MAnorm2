@@ -95,6 +95,11 @@ varRatio(conds$GM12891, conds$GM12892)
 # samples.
 varRatio(conds$GM12891, conds$GM12890)
 }
+\references{
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+    groups of ChIP-seq samples}. Genome Res, 2021.
+    \strong{31}(1): p. 131-145.
+}
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;
     \code{\link{setWeight}} for a detailed description of structure matrix;

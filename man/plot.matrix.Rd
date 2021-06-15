@@ -4,9 +4,18 @@
 \alias{plot.matrix}
 \title{Visualize a Matrix of Numeric Values}
 \usage{
-\method{plot}{matrix}(x, breaks = 101, symbreaks = FALSE, col = NULL,
-  low = "blue", mid = "white", high = "red", na.color = "black",
-  lmat = NULL, ...)
+\method{plot}{matrix}(
+  x,
+  breaks = 101,
+  symbreaks = FALSE,
+  col = NULL,
+  low = "blue",
+  mid = "white",
+  high = "red",
+  na.color = "black",
+  lmat = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{The matrix of numeric values to be plotted.}

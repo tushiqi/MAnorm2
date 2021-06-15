@@ -4,8 +4,16 @@
 \alias{meanVarLocalFit}
 \title{Fit Mean-Variance Trend by Local Regression}
 \usage{
-meanVarLocalFit(x, y, weight, range.residual = c(1e-04, 15), max.iter = 50,
-  args.lp = list(), args.locfit = list(), verbose = TRUE)
+meanVarLocalFit(
+  x,
+  y,
+  weight,
+  range.residual = c(1e-04, 15),
+  max.iter = 50,
+  args.lp = list(),
+  args.locfit = list(),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{x, y}{Two numeric vectors of (sample) means and sample variances,

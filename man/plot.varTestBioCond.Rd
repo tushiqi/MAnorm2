@@ -4,10 +4,18 @@
 \alias{plot.varTestBioCond}
 \title{Plot a \code{varTestBioCond} Object}
 \usage{
-\method{plot}{varTestBioCond}(x, padj = NULL, pval = NULL,
-  col = alpha(c("black", "red"), 0.04), pch = 20, xlab = "Mean",
-  ylab = "log10(Var)", args.legend = list(x = "bottomleft"),
-  args.lines = list(col = "green3", lwd = 2), ...)
+\method{plot}{varTestBioCond}(
+  x,
+  padj = NULL,
+  pval = NULL,
+  col = alpha(c("black", "red"), 0.04),
+  pch = 20,
+  xlab = "Mean",
+  ylab = "log10(Var)",
+  args.legend = list(x = "bottomleft"),
+  args.lines = list(col = "green3", lwd = 2),
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \code{"varTestBioCond"}, typically a returned

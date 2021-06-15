@@ -7,10 +7,20 @@
 \usage{
 MAplot(x, ...)
 
-\method{MAplot}{default}(x, y, occupy.x, occupy.y, col = NULL, pch = NULL,
-  ylim = c(-6, 6), xlab = "A value", ylab = "M value",
-  args.legend = list(x = "topright", legend = c("common", "y specific",
-  "x specific", "others")), ...)
+\method{MAplot}{default}(
+  x,
+  y,
+  occupy.x,
+  occupy.y,
+  col = NULL,
+  pch = NULL,
+  ylim = c(-6, 6),
+  xlab = "A value",
+  ylab = "M value",
+  args.legend = list(x = "topright", legend = c("common", "y specific", "x specific",
+    "others")),
+  ...
+)
 }
 \arguments{
 \item{x, y}{\code{x} is any R object for which a \code{MAplot} method has

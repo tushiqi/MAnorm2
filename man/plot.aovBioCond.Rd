@@ -4,10 +4,18 @@
 \alias{plot.aovBioCond}
 \title{Plot an \code{aovBioCond} Object}
 \usage{
-\method{plot}{aovBioCond}(x, padj = NULL, pval = NULL,
-  col = alpha(c("black", "red"), 0.04), pch = 20, xlab = "Mean",
-  ylab = "log10(Var)", args.legend = list(x = "bottomleft"),
-  args.lines = list(col = "green3", lwd = 2), ...)
+\method{plot}{aovBioCond}(
+  x,
+  padj = NULL,
+  pval = NULL,
+  col = alpha(c("black", "red"), 0.04),
+  pch = 20,
+  xlab = "Mean",
+  ylab = "log10(Var)",
+  args.legend = list(x = "bottomleft"),
+  args.lines = list(col = "green3", lwd = 2),
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \code{"aovBioCond"}, typically a returned

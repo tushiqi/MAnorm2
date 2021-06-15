@@ -4,8 +4,14 @@
 \alias{setMeanVarCurve}
 \title{Set the Mean-Variance Curve of a Set of \code{bioCond} Objects}
 \usage{
-setMeanVarCurve(conds, predict, occupy.only = TRUE, method = "NA",
-  ratio.var = estimateVarRatio(conds), .call = NULL)
+setMeanVarCurve(
+  conds,
+  predict,
+  occupy.only = TRUE,
+  method = "NA",
+  ratio.var = estimateVarRatio(conds),
+  .call = NULL
+)
 }
 \arguments{
 \item{conds}{A list of \code{\link{bioCond}} objects, of which at least one
@@ -166,6 +172,9 @@ Genet Mol Biol, 2004. \strong{3}: p. Article3.
 Law, C.W., et al., \emph{voom: Precision weights unlock linear model
 analysis tools for RNA-seq read counts}. Genome Biol, 2014.
 \strong{15}(2): p. R29.
+
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object from a
@@ -175,5 +184,7 @@ analysis tools for RNA-seq read counts}. Genome Biol, 2014.
     ratio factors of a set of \code{bioCond}s; \code{\link{varRatio}} for a
     formal description of variance ratio factor;
     \code{\link{estimatePriorDf}} for estimating the number of prior degrees
-    of freedom and the corresponding variance ratio factors.
+    of freedom and the corresponding variance ratio factors;
+    \code{\link{estimatePriorDfRobust}} for a \emph{robust} version of
+    \code{estimatePriorDf}.
 }

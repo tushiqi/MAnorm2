@@ -4,18 +4,27 @@
 \alias{normalize}
 \title{Perform MA Normalization on a Set of ChIP-seq Samples}
 \usage{
-normalize(x, count, occupancy, baseline = NULL, subset = NULL,
-  interval.size = FALSE, offset = 0.5, convert = NULL,
-  common.peak.regions = NULL)
+normalize(
+  x,
+  count,
+  occupancy,
+  baseline = NULL,
+  subset = NULL,
+  interval.size = FALSE,
+  offset = 0.5,
+  convert = NULL,
+  common.peak.regions = NULL
+)
 }
 \arguments{
 \item{x}{A data frame containing the read count and occupancy indicator
 variables. Each row should represent a genomic interval.
 Objects of other types are coerced to a data frame.}
 
-\item{count}{A vector of either integers or characters indexing the read
-count variables in \code{x} to be normalized. Each of these variables
-represents a ChIP-seq sample. Elements of \code{count} must be unique.}
+\item{count}{Either an integer vector or a character vector that indexes the
+read count variables in \code{x} to be normalized. Each of these
+variables represents a ChIP-seq sample. Elements of \code{count} must be
+unique.}
 
 \item{occupancy}{Either an integer or character vector indexing occupancy
 indicator variables in \code{x}. Must correspond to \code{count} one by
@@ -23,10 +32,16 @@ one with the same order. These variables are interpreted as logical,
 where \code{TRUE} indicates being occupied by peaks (i.e.,
 showing an enrichment for reads) of the corresponding ChIP-seq sample.}
 
-\item{baseline}{Either an integer or character scalar referring to the
-baseline sample. Must be an element of \code{count} if specified. By
-default, the baseline is automatically selected by the function (see
-"Details").}
+\item{baseline}{Either an integer scalar or a character scalar referring to
+    the baseline sample. Must be an element of \code{count} if specified. By
+    default, the baseline is automatically selected by the function (see
+    "Details").
+
+    A special option for this argument is \code{"pseudo-reference"}, in
+    which case the function constructs a pseudo ChIP-seq sample as baseline
+    by "averaging" the samples to be normalized (see "Details"). This option
+    is especially recommended when the number of samples to be normalized is
+    large (e.g., >5).}
 
 \item{subset}{An optional vector specifying the subset of intervals to be
 used for estimating size factors and selecting the baseline (see
@@ -65,7 +80,8 @@ See "Details" for an application of this argument.}
         variables. Only present when \code{baseline} is not explicitly
         specified by the user.}
         \item{\code{baseline}}{Name of the read count variable used as the
-        baseline.}
+        baseline sample or \code{"pseudo-reference"} if the \code{baseline}
+        argument is specified so.}
         \item{\code{norm.coef}}{A data frame recording the linear
         transformation coefficients of each sample as well as the number of
         common peak regions between each sample and the baseline.}
@@ -95,7 +111,18 @@ as baseline whose \eqn{log2} size factor is closest to 0 (with the exception
 that, if there are only two samples to be normalized, the function will
 always use the sample with the smaller size factor as baseline, for avoiding
 potential uncertainty in selection results due to limited numerical
-precision).
+precision). A special case is setting the \code{baseline} argument to
+\code{"pseudo-reference"}, in which case the function constructs a pseudo
+ChIP-seq sample as baseline. Technically, for an individual genomic interval
+in the pseudo sample, the function derives its signal intensity (rather than
+read count; see below) by taking the average across those samples that
+occupy it, and it is considered to be a peak region as long as it is
+occupied by any of the samples to be normalized. We don't need to care about
+the signal intensities of those intervals that are not occupied by any
+sample, since they are never used in the normalization process (see below).
+Using such a pseudo sample as baseline is especially recommended when the
+number of samples to be normalized is large, for avoiding computation
+artifacts resulting from an arbitrary selection of baseline sample.
 
 Then, the function converts each read count into a signal intensity through
 the equation \eqn{log2(count + offset)}, or
@@ -175,6 +202,11 @@ attributes(conds)
 plot(attr(conds, "MA.cor"), symbreaks = TRUE, margins = c(8, 8))
 MAplot(conds[[1]], conds[[2]], main = "GM12890 vs. GM12891")
 abline(h = 0, lwd = 2, lty = 5)
+}
+\references{
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+    groups of ChIP-seq samples}. Genome Res, 2021.
+    \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{normalizeBySizeFactors}} for normalizing ChIP-seq

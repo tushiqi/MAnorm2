@@ -4,8 +4,14 @@
 \alias{normalizeBySizeFactors}
 \title{Normalize ChIP-seq Samples by Their Size Factors}
 \usage{
-normalizeBySizeFactors(x, count, subset = NULL, interval.size = FALSE,
-  offset = 0.5, convert = NULL)
+normalizeBySizeFactors(
+  x,
+  count,
+  subset = NULL,
+  interval.size = FALSE,
+  offset = 0.5,
+  convert = NULL
+)
 }
 \arguments{
 \item{x}{A data frame containing the read count variables. Each row should

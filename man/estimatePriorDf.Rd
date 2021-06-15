@@ -4,8 +4,13 @@
 \alias{estimatePriorDf}
 \title{Assess the Goodness of Fit of Mean-Variance Curves}
 \usage{
-estimatePriorDf(conds, occupy.only = TRUE, return.d0 = FALSE,
-  no.rep.rv = NULL, .call = TRUE)
+estimatePriorDf(
+  conds,
+  occupy.only = TRUE,
+  return.d0 = FALSE,
+  no.rep.rv = NULL,
+  .call = TRUE
+)
 }
 \arguments{
 \item{conds}{A list of \code{\link{bioCond}} objects, of which each has a
@@ -22,7 +27,7 @@ simply returns the estimated number of prior degrees of freedom.}
 
 \item{no.rep.rv}{A positive real specifying the variance ratio factor of
 those \code{bioCond}s without replicate samples, if any. By default,
-it's set to be the geometric mean of variance ratio factors of the other
+it's set to the geometric mean of variance ratio factors of the other
 \code{bioCond}s.}
 
 \item{.call}{Never care about this argument.}
@@ -35,7 +40,11 @@ By default, \code{estimatePriorDf} returns the argument list of
     Besides, their \code{"ratio.var"} components have been adjusted
     accordingly, and an attribute named \code{"no.rep.rv"} is added to the
     list if it's ever been used as the variance ratio factor of the
-    \code{bioCond}s without replicate samples.
+    \code{bioCond}s without replicate samples. A special case is that the
+    estimated number of prior degrees of freedom is 0. In this case,
+    \code{estimatePriorDf} won't adjust existing variance ratio factors,
+    and you may want to use \code{\link{setPriorDfVarRatio}} to
+    explicitly specify variance ratio factors.
 
     If \code{return.d0} is set to \code{TRUE}, \code{estimatePriorDf} simply
     returns the estimated number of prior degrees of freedom.
@@ -81,7 +90,10 @@ is automatically
 handled when fitting or setting a mean-variance curve, and you don't need to
 call this function explicitly (see also \code{\link{fitMeanVarCurve}} and
 \code{\link{setMeanVarCurve}}). See "Examples"
-below for a practical application of this function.
+below for a practical application of this function. Note also that there is
+a \emph{robust} version of this function that uses Winsorized statistics to
+protect the estimation procedure against potential outliers (see
+\code{\link{estimatePriorDfRobust}} for details).
 }
 \examples{
 data(H3K27Ac, package = "MAnorm2")
@@ -141,15 +153,20 @@ summary(genders3$female)
 }
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-    assessing differential expression in microarray experiments}. Stat Appl
-    Genet Mol Biol, 2004. \strong{3}: p. Article3.
+assessing differential expression in microarray experiments}. Stat Appl
+Genet Mol Biol, 2004. \strong{3}: p. Article3.
+
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;
     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve and
     using a \code{fit.info} field to characterize it;
+    \code{\link{estimatePriorDfRobust}} for a \emph{robust} version of
+    \code{estimatePriorDf};
     \code{\link{setPriorDf}} for setting the number of
-    prior degrees of freedom and
+    prior degrees of freedom and accordingly
     adjusting the variance ratio factors of a set of \code{bioCond}s;
     \code{\link[=diffTest.bioCond]{diffTest}} for calling differential
     intervals between two \code{bioCond} objects.

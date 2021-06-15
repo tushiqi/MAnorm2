@@ -4,8 +4,14 @@
 \alias{cmbBioCond}
 \title{Combine a Set of \code{bioCond} Objects into a Single \code{bioCond}}
 \usage{
-cmbBioCond(conds, occupy.num = 1, name = "NA", weight = NULL,
-  strMatrix = NULL, meta.info = NULL)
+cmbBioCond(
+  conds,
+  occupy.num = 1,
+  name = "NA",
+  weight = NULL,
+  strMatrix = NULL,
+  meta.info = NULL
+)
 }
 \arguments{
 \item{conds}{A list of \code{\link{bioCond}} objects to be combined.}

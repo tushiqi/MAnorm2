@@ -4,8 +4,13 @@
 \alias{estimateVarRatio}
 \title{Estimate Relative Variance Ratio Factors of \code{bioCond} Objects}
 \usage{
-estimateVarRatio(conds, base.cond = NULL, subset = NULL, invariant = NULL,
-  no.rep.rv = NULL)
+estimateVarRatio(
+  conds,
+  base.cond = NULL,
+  subset = NULL,
+  invariant = NULL,
+  no.rep.rv = NULL
+)
 }
 \arguments{
 \item{conds}{A list of \code{\link{bioCond}} objects.}
@@ -97,6 +102,11 @@ estimateVarRatio(conds)
 
 # Explicitly specify the base bioCond.
 estimateVarRatio(conds, base.cond = "GM12891")
+}
+\references{
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+    groups of ChIP-seq samples}. Genome Res, 2021.
+    \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

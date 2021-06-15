@@ -2,10 +2,17 @@
 % Please edit documentation in R/VST.R
 \name{distBioCond}
 \alias{distBioCond}
-\title{Quantify the Distance between Each Pair of Samples of a \code{bioCond}}
+\title{Quantify the Distance between Each Pair of Samples in a \code{bioCond}}
 \usage{
-distBioCond(x, subset = NULL, method = c("prior", "posterior", "none"),
-  min.var = 0, p = 2, diag = FALSE, upper = FALSE)
+distBioCond(
+  x,
+  subset = NULL,
+  method = c("prior", "posterior", "none"),
+  min.var = 0,
+  p = 2,
+  diag = FALSE,
+  upper = FALSE
+)
 }
 \arguments{
 \item{x}{A \code{\link{bioCond}} object.}

@@ -4,10 +4,18 @@
 \alias{plotMeanVarCurve}
 \title{Plot a Mean-Variance Curve}
 \usage{
-plotMeanVarCurve(conds, subset = c("all", "occupied", "non-occupied"),
-  col = alpha("blue", 0.02), pch = 20, xlab = "Mean",
-  ylab = "log10(Var)", args.legend = list(x = "bottomleft"),
-  args.lines = list(col = "red", lwd = 2), only.add.line = FALSE, ...)
+plotMeanVarCurve(
+  conds,
+  subset = c("all", "occupied", "non-occupied"),
+  col = alpha("blue", 0.02),
+  pch = 20,
+  xlab = "Mean",
+  ylab = "log10(Var)",
+  args.legend = list(x = "bottomleft"),
+  args.lines = list(col = "red", lwd = 2),
+  only.add.line = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conds}{A list of \code{\link{bioCond}} objects with which a
@@ -58,7 +66,10 @@ Notably, to make the observed variance of each genomic interval in each
 values used for the scatter plot have been adjusted for the variance ratio
 factor specific to each \code{bioCond}. See \code{\link{fitMeanVarCurve}}
 and \code{\link{estimatePriorDf}} for a description of variance ratio
-factor.
+factor. Note also that there is a function named \code{\link{plotMVC}}
+that is specifically designed for plotting a mean-variance curve on a
+single \code{bioCond}. This function scales mean-variance curve by the
+associated variance ratio factor and leaves observed variances unadjusted.
 
 By default, each genomic interval in each \code{bioCond} object that
 contains replicate samples provides one point for the scatter plot. Setting
@@ -95,13 +106,20 @@ plotMeanVarCurve(conds, subset = "occupied")
 plotMeanVarCurve(conds, subset = "occupied",
                  col = scales::alpha(c("blue", "green3"), 0.02))
 }
+\references{
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+    groups of ChIP-seq samples}. Genome Res, 2021.
+    \strong{31}(1): p. 131-145.
+}
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;
     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve given a
     list of \code{bioCond} objects; \code{\link{extendMeanVarCurve}} for
     extending the application scope of a fitted mean-variance curve to
     additional \code{bioCond} objects; \code{\link{varRatio}} for a formal
-    description of variance ratio factor; \code{\link{normalize}} for using
+    description of variance ratio factor; \code{\link{plotMVC}} for plotting
+    a mean-variance curve on a single \code{bioCond} object;
+    \code{\link{normalize}} for using
     occupancy states of genomic intervals to normalize ChIP-seq samples;
     \code{\link[scales]{alpha}} for adjusting color transparency.
 }

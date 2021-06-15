@@ -47,28 +47,34 @@ an estimate of log variance ratio factor.
 
 The final estimate of log variance ratio factor is a weighted mean of
 estimates across \code{bioCond} objects, with the weights being their
-respective numbers of genomic intervals that are used to deduce the
+respective numbers of genomic intervals that are used to calculate
 FZ statistics.
 This should be appropriate, as Fisher's Z distribution is roughly normal
 (see also "References"). The weighted mean is actually a plain (unweighted)
 mean across all the involved genomic intervals.
 
-Finally, we get the estimate of variance ratio factor by taking an
+Finally, we get an estimate of variance ratio factor by taking an
 exponential.
 }
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-    assessing differential expression in microarray experiments}. Stat Appl
-    Genet Mol Biol, 2004. \strong{3}: p. Article3.
+assessing differential expression in microarray experiments}. Stat Appl
+Genet Mol Biol, 2004. \strong{3}: p. Article3.
+
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;
     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve;
     \code{\link{varRatio}} for a formal description of variance ratio
-    factor; \code{\link{estimateD0}} for technical details about estimating
-    the number of prior degrees of freedom;
-    \code{\link{estimatePriorDf}} for an
-    interface to estimating the number of
-    prior degrees of freedom on \code{bioCond}
+    factor; \code{\link{estimateD0}} for estimating the number of prior
+    degrees of freedom associated with a mean-variance curve (or a set
+    of curves); \code{\link{estimatePriorDf}} for an interface to
+    estimating the number of prior degrees of freedom on \code{bioCond}
     objects as well as adjusting their mean-variance curve(s) accordingly.
+
+    \code{\link{estimateD0Robust}} and \code{\link{scaleMeanVarCurveRobust}}
+    for estimating number of prior degrees of freedom and variance ratio
+    factor \emph{in a robust manner}, respectively.
 }

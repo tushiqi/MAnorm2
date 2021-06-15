@@ -4,8 +4,15 @@
 \alias{bioCond}
 \title{Create a \code{bioCond} Object to Group ChIP-seq Samples}
 \usage{
-bioCond(norm.signal, occupancy = NULL, occupy.num = 1, name = "NA",
-  weight = NULL, strMatrix = NULL, meta.info = NULL)
+bioCond(
+  norm.signal,
+  occupancy = NULL,
+  occupy.num = 1,
+  name = "NA",
+  weight = NULL,
+  strMatrix = NULL,
+  meta.info = NULL
+)
 }
 \arguments{
 \item{norm.signal}{A matrix or data frame of normalized signal intensities,
@@ -151,6 +158,11 @@ GM12891_2 <- bioCond(norm[5:6], norm[10:11], name = "GM12891",
 # parameter.
 GM12891_3 <- bioCond(norm[5:6], norm[10:11], name = "GM12891",
                      strMatrix = list(diag(c(1, 2))))
+}
+\references{
+Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+    groups of ChIP-seq samples}. Genome Res, 2021.
+    \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{normalize}} for performing an MA normalization on

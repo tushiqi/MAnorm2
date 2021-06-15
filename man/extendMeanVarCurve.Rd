@@ -4,8 +4,13 @@
 \alias{extendMeanVarCurve}
 \title{Extend the Application Scope of a Mean-Variance Curve}
 \usage{
-extendMeanVarCurve(conds, base.cond, occupy.only = TRUE, no.rep.rv = NULL,
-  invariant = NULL)
+extendMeanVarCurve(
+  conds,
+  base.cond,
+  occupy.only = TRUE,
+  no.rep.rv = NULL,
+  invariant = NULL
+)
 }
 \arguments{
 \item{conds}{A list of \code{\link{bioCond}} objects.}
@@ -182,6 +187,8 @@ abline(h = 0, lwd = 2, lty = 5, col = "green3")
 
     \code{\link{estimatePriorDf}} for estimating number of prior degrees of
     freedom and the corresponding variance ratio factors;
+    \code{\link{estimatePriorDfRobust}} for a \emph{robust} version of
+    \code{estimatePriorDf};
     \code{\link{varRatio}} for comparing the variance ratio factors of
     two \code{bioCond}s.
 

@@ -4,8 +4,17 @@
 \alias{MAplot.bioCond}
 \title{Create an MA Plot on Two \code{bioCond} Objects}
 \usage{
-\method{MAplot}{bioCond}(x, y, col = NULL, pch = NULL, ylim = c(-6, 6),
-  xlab = "A value", ylab = "M value", plot.legend = TRUE, ...)
+\method{MAplot}{bioCond}(
+  x,
+  y,
+  col = NULL,
+  pch = NULL,
+  ylim = c(-6, 6),
+  xlab = "A value",
+  ylab = "M value",
+  plot.legend = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x, y}{Two \code{\link{bioCond}} objects.}

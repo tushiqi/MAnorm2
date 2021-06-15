@@ -4,7 +4,8 @@
 \name{H3K27Ac}
 \alias{H3K27Ac}
 \title{ChIP-seq Samples for H3K27Ac in Human Lymphoblastoid Cell Lines}
-\format{\code{H3K27Ac} is a data frame that records the features of 73,828
+\format{
+\code{H3K27Ac} is a data frame that records the features of 73,828
     non-overlapping genomic intervals regarding the H3K27Ac ChIP-seq signals
     in multiple human lymphoblastoid cell lines. It contains the following
     variables:
@@ -30,7 +31,8 @@
     }
     Each cell line derives from a separate individual of the Caucasian
     population. Use \code{attr(H3K27Ac, "metaInfo")} to get a data frame
-    that records meta information about the involved individuals.}
+    that records meta information about the involved individuals.
+}
 \source{
 Raw sequencing data were obtained from Kasowski et al., 2013 (see
     "References" below). Adapters and low-sequencing-quality bases were
