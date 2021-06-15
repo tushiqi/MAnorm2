@@ -2,7 +2,7 @@
 #
 # Maximum column width: 77
 #
-# Last update: 2018-12-31
+# Last update: 2021-04-01
 
 
 ## Load the dataset.
@@ -229,6 +229,29 @@ plotMeanVarCurve(genders3, subset = "non-occupied")
 summary(genders3$female)
 
 
+## Estimate parameters regarding the associated mean-variance curve in a
+## robust manner. Here we treat each cell line (i.e., individual) as a
+## biological condition.
+# Perform MA normalization and construct bioConds to represent cell lines.
+norm <- normalize(H3K27Ac, 4, 9)
+norm <- normalize(norm, 5:6, 10:11)
+norm <- normalize(norm, 7:8, 12:13)
+conds <- list(GM12890 = bioCond(norm[4], norm[9], name = "GM12890"),
+              GM12891 = bioCond(norm[5:6], norm[10:11], name = "GM12891"),
+              GM12892 = bioCond(norm[7:8], norm[12:13], name = "GM12892"))
+autosome <- !(H3K27Ac$chrom %in% c("chrX", "chrY"))
+conds <- normBioCond(conds, common.peak.regions = autosome)
+# Fit a mean-variance curve by using the parametric method.
+conds <- fitMeanVarCurve(conds, method = "parametric", occupy.only = TRUE)
+# Estimate the associated number of prior degrees of freedom and variance
+# ratio factors in a robust manner.
+conds2 <- estimatePriorDfRobust(conds, occupy.only = TRUE)
+# In this case, there is little difference in estimation results between the
+# ordinary routine and the robust one.
+sapply(conds, function(x) c(x$fit.info$df.prior, x$fit.info$ratio.var))
+sapply(conds2, function(x) c(x$fit.info$df.prior, x$fit.info$ratio.var))
+
+
 ## Fit a mean-variance curve for the GM12892 cell line (i.e., individual)
 ## and set the number of prior degrees of freedom of the curve to Inf.
 # Perform the MA normalization and construct a bioCond to represent GM12892.
@@ -253,6 +276,12 @@ GM12892_2 <- setPriorDf(list(GM12892), Inf, occupy.only = TRUE)[[1]]
 # all the time.
 summary(GM12892)
 summary(GM12892_2)
+# Use the robust version of setPriorDf.
+GM12892_3 <- setPriorDfRobust(list(GM12892), Inf, occupy.only = TRUE)[[1]]
+# In this case, there is little difference in estimated variance ratio
+# factor between the ordinary routine and the robust one.
+summary(GM12892_2)
+summary(GM12892_3)
 
 
 ## Fit a mean-variance curve based on the GM12891 cell line and associate
@@ -469,6 +498,37 @@ f <- H3K27Ac$chrom == "chrY"
 wilcox.test(res$fold.change[f], res$fold.change[!f],
             alternative = "greater")
 wilcox.test(res$pval[f], res$pval[!f], alternative = "less")
+# Make a comparison with HyperChIP.
+LCLs2 <- estParamHyperChIP(LCLs, occupy.only = FALSE, prob = 0.1)
+summary(LCLs)
+summary(LCLs2)
+res2 <- varTestBioCond(LCLs2)
+hist(res$pval, breaks = 100, col = "red")
+hist(res2$pval, breaks = 100, col = "red")
+
+
+## Treat all the samples as independent and perform a HyperChIP analysis.
+# Use a pseudo-reference profile as baseline in the MA normalization
+# process.
+autosome <- !(H3K27Ac$chrom %in% c("chrX", "chrY"))
+norm <- normalize(H3K27Ac, 4:8, 9:13, baseline = "pseudo-reference",
+                  common.peak.regions = autosome)
+plot(attr(norm, "MA.cor"), symbreaks = TRUE, margins = c(8, 8))
+# Construct a bioCond.
+cond <- bioCond(norm[4:8], norm[9:13], occupy.num = 1,
+                name = "all")
+# Fit a mean-variance curve by using local regression.
+cond <- fitMeanVarCurve(list(cond), method = "local",
+                        occupy.only = TRUE, args.lp = list(nn = 1))[[1]]
+summary(cond)
+# Apply the parameter estimation framework of HyperChIP.
+cond <- estParamHyperChIP(cond)
+summary(cond)
+# Perform statistical tests and visualize the results.
+res <- varTestBioCond(cond)
+head(res)
+hist(res$pval, breaks = 100, col = "red")
+plot(res)
 
 
 ## Cluster a set of ChIP-seq samples from different cell lines (i.e.,
