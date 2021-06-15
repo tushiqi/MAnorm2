@@ -1,7 +1,7 @@
 # Functions in this file are for assessing the goodness of fit of
 # mean-variance curves and adjusting them accordingly.
 #
-# Last update: 2018-12-28
+# Last update: 2021-03-30
 
 
 #' Inversion of Trigamma Function
@@ -14,10 +14,10 @@
 #' @param x A positive numeric scalar.
 #' @param eps The required precision of the solution.
 #' @return The solution, which is also a positive numeric scalar.
-#' @seealso \code{\link[base]{trigamma}} for the trigamma function.
 #' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
 #'     assessing differential expression in microarray experiments}. Stat Appl
 #'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
+#' @seealso \code{\link[base]{trigamma}} for the trigamma function.
 #' @export
 #' @examples
 #' x <- trigamma(1:6)
@@ -79,6 +79,14 @@ inv.trigamma <- function(x, eps = 1e-8) {
 #' @return The estimated number of prior degrees of freedom. Note that the
 #'     function returns \code{NA} if there are not sufficient genomic intervals
 #'     for estimating it.
+#' @references
+#' Smyth, G.K., \emph{Linear models and empirical bayes methods for
+#' assessing differential expression in microarray experiments}. Stat Appl
+#' Genet Mol Biol, 2004. \strong{3}: p. Article3.
+#'
+#' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve;
 #'     \code{\link{estimatePriorDf}} for an interface to estimating the
@@ -86,13 +94,14 @@ inv.trigamma <- function(x, eps = 1e-8) {
 #'     \code{\link{varRatio}} for a description of variance ratio factor;
 #'     \code{\link{scaleMeanVarCurve}} for estimating the variance ratio factor
 #'     for adjusting a mean-variance curve (or a set of curves).
-#' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#'     assessing differential expression in microarray experiments}. Stat Appl
-#'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
+#'
+#'     \code{\link{estimateD0Robust}} and \code{\link{scaleMeanVarCurveRobust}}
+#'     for estimating number of prior degrees of freedom and variance ratio
+#'     factor \emph{in a robust manner}, respectively.
 #' @importFrom stats var
 estimateD0 <- function(z, m) {
-    weights <- rep(0, length(z))
-    vals <- rep(0, length(z))
+    weights <- numeric(length(z))
+    vals <- numeric(length(z))
     flag <- TRUE
     for (i in 1:length(z)) {
         x <- z[[i]]
@@ -140,13 +149,13 @@ estimateD0 <- function(z, m) {
 #'
 #' The final estimate of log variance ratio factor is a weighted mean of
 #' estimates across \code{bioCond} objects, with the weights being their
-#' respective numbers of genomic intervals that are used to deduce the
+#' respective numbers of genomic intervals that are used to calculate
 #' FZ statistics.
 #' This should be appropriate, as Fisher's Z distribution is roughly normal
 #' (see also "References"). The weighted mean is actually a plain (unweighted)
 #' mean across all the involved genomic intervals.
 #'
-#' Finally, we get the estimate of variance ratio factor by taking an
+#' Finally, we get an estimate of variance ratio factor by taking an
 #' exponential.
 #'
 #' @param z A list of which each element is a vector of FZ statistics
@@ -161,25 +170,36 @@ estimateD0 <- function(z, m) {
 #' @return The estimated variance ratio factor for adjusting the mean-variance
 #'     curve(s). Note that the function returns \code{NA} if there are not
 #'     sufficient genomic intervals for estimating it.
+#' @references
+#' Smyth, G.K., \emph{Linear models and empirical bayes methods for
+#' assessing differential expression in microarray experiments}. Stat Appl
+#' Genet Mol Biol, 2004. \strong{3}: p. Article3.
+#'
+#' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve;
 #'     \code{\link{varRatio}} for a formal description of variance ratio
-#'     factor; \code{\link{estimateD0}} for technical details about estimating
-#'     the number of prior degrees of freedom;
-#'     \code{\link{estimatePriorDf}} for an
-#'     interface to estimating the number of
-#'     prior degrees of freedom on \code{bioCond}
+#'     factor; \code{\link{estimateD0}} for estimating the number of prior
+#'     degrees of freedom associated with a mean-variance curve (or a set
+#'     of curves); \code{\link{estimatePriorDf}} for an interface to
+#'     estimating the number of prior degrees of freedom on \code{bioCond}
 #'     objects as well as adjusting their mean-variance curve(s) accordingly.
-#' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#'     assessing differential expression in microarray experiments}. Stat Appl
-#'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
+#'
+#'     \code{\link{estimateD0Robust}} and \code{\link{scaleMeanVarCurveRobust}}
+#'     for estimating number of prior degrees of freedom and variance ratio
+#'     factor \emph{in a robust manner}, respectively.
 scaleMeanVarCurve <- function(z, m, d0) {
-    # 1e20 is enough to achieve a sufficient numeric precision
-    if (is.infinite(d0)) d0 <- 1e20
-    offset <- digamma(d0 / 2) - log(d0)
+    # Note the asymptotic behavior of digamma function.
+    if (is.infinite(d0)) {
+        offset <- -log(2)
+    } else {
+        offset <- digamma(d0 / 2) - log(d0)
+    }
 
-    weights <- rep(0, length(z))
-    vals <- rep(0, length(z))
+    weights <- numeric(length(z))
+    vals <- numeric(length(z))
     flag <- TRUE
     for (i in 1:length(z)) {
         x <- z[[i]]
@@ -238,7 +258,10 @@ scaleMeanVarCurve <- function(z, m, d0) {
 #' handled when fitting or setting a mean-variance curve, and you don't need to
 #' call this function explicitly (see also \code{\link{fitMeanVarCurve}} and
 #' \code{\link{setMeanVarCurve}}). See "Examples"
-#' below for a practical application of this function.
+#' below for a practical application of this function. Note also that there is
+#' a \emph{robust} version of this function that uses Winsorized statistics to
+#' protect the estimation procedure against potential outliers (see
+#' \code{\link{estimatePriorDfRobust}} for details).
 #'
 #' @param conds A list of \code{\link{bioCond}} objects, of which each has a
 #'     \code{fit.info} field describing its mean-variance curve (see also
@@ -251,7 +274,7 @@ scaleMeanVarCurve <- function(z, m, d0) {
 #'     simply returns the estimated number of prior degrees of freedom.
 #' @param no.rep.rv A positive real specifying the variance ratio factor of
 #'     those \code{bioCond}s without replicate samples, if any. By default,
-#'     it's set to be the geometric mean of variance ratio factors of the other
+#'     it's set to the geometric mean of variance ratio factors of the other
 #'     \code{bioCond}s.
 #' @param .call Never care about this argument.
 #' @return By default, \code{estimatePriorDf} returns the argument list of
@@ -261,21 +284,32 @@ scaleMeanVarCurve <- function(z, m, d0) {
 #'     Besides, their \code{"ratio.var"} components have been adjusted
 #'     accordingly, and an attribute named \code{"no.rep.rv"} is added to the
 #'     list if it's ever been used as the variance ratio factor of the
-#'     \code{bioCond}s without replicate samples.
+#'     \code{bioCond}s without replicate samples. A special case is that the
+#'     estimated number of prior degrees of freedom is 0. In this case,
+#'     \code{estimatePriorDf} won't adjust existing variance ratio factors,
+#'     and you may want to use \code{\link{setPriorDfVarRatio}} to
+#'     explicitly specify variance ratio factors.
 #'
 #'     If \code{return.d0} is set to \code{TRUE}, \code{estimatePriorDf} simply
 #'     returns the estimated number of prior degrees of freedom.
+#' @references
+#' Smyth, G.K., \emph{Linear models and empirical bayes methods for
+#' assessing differential expression in microarray experiments}. Stat Appl
+#' Genet Mol Biol, 2004. \strong{3}: p. Article3.
+#'
+#' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve and
 #'     using a \code{fit.info} field to characterize it;
+#'     \code{\link{estimatePriorDfRobust}} for a \emph{robust} version of
+#'     \code{estimatePriorDf};
 #'     \code{\link{setPriorDf}} for setting the number of
-#'     prior degrees of freedom and
+#'     prior degrees of freedom and accordingly
 #'     adjusting the variance ratio factors of a set of \code{bioCond}s;
 #'     \code{\link[=diffTest.bioCond]{diffTest}} for calling differential
 #'     intervals between two \code{bioCond} objects.
-#' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#'     assessing differential expression in microarray experiments}. Stat Appl
-#'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #' @export
 #' @examples
 #' data(H3K27Ac, package = "MAnorm2")
@@ -382,7 +416,8 @@ Cannot estimate the number of prior degrees of freedom")
     # Adjust the variance ratio factors
     if (d0 == 0) {
         warning("Estimated number of prior degrees of freedom is 0.
-Won't adjust the existing variance ratio factors")
+Won't adjust the existing variance ratio factors.
+Refer to setPriorDfVarRatio() if you want to explicitly specify variance ratio factors")
         return(conds)
     }
     ratio.vars <- numeric(n)
@@ -433,6 +468,10 @@ You may specify it explicitly")
 #' directly specified by users rather than estimated based on the observed
 #' data. Refer to \code{\link{estimatePriorDf}} for more information.
 #'
+#' Note also that there is a \emph{robust} version of this function that uses
+#' Winsorized statistics to derive variance ratio factors (see
+#' \code{\link{setPriorDfRobust}} for details).
+#'
 #' @inheritParams estimatePriorDf
 #' @param d0 A non-negative real specifying the number of prior degrees of
 #'     freedom. \code{Inf} is allowed.
@@ -449,14 +488,18 @@ You may specify it explicitly")
 #'     \code{bioCond}s without replicate samples.
 #'
 #'     To be noted, if the specified number of prior degrees of freedom is 0,
-#'     \code{setPriorDf} won't adjust the existing variance ratio factors.
+#'     \code{setPriorDf} won't adjust existing variance ratio factors.
+#'     In this case, you may want to use \code{\link{setPriorDfVarRatio}} to
+#'     explicitly specify variance ratio factors.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve and
 #'     using a \code{fit.info} field to characterize it;
-#'     \code{\link{estimatePriorDf}} for estimating the number of
-#'     prior degrees of
-#'     freedom and adjusting the variance ratio factors of a set of
-#'     \code{bioCond}s; \code{\link[=diffTest.bioCond]{diffTest}} for calling
+#'     \code{\link{estimatePriorDf}} for estimating the number of prior
+#'     degrees of freedom and adjusting the variance ratio factors of a set of
+#'     \code{bioCond}s;
+#'     \code{\link{setPriorDfRobust}} for a \emph{robust} version of
+#'     \code{setPriorDf};
+#'     \code{\link[=diffTest.bioCond]{diffTest}} for calling
 #'     differential intervals between two \code{bioCond} objects.
 #' @export
 #' @examples
@@ -515,7 +558,8 @@ setPriorDf <- function(conds, d0, occupy.only = TRUE,
     # Adjust the variance ratio factors
     if (d0 == 0) {
         warning("Specified number of prior degrees of freedom is 0.
-Won't adjust the existing variance ratio factors")
+Won't adjust the existing variance ratio factors.
+Refer to setPriorDfVarRatio() if you want to explicitly specify variance ratio factors")
         return(conds)
     }
     m <- vapply(conds, function(cond){ ncol(cond$norm.signal) }, numeric(1))

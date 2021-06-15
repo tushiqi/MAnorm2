@@ -1,33 +1,43 @@
 # For the documentation of MAnorm2 as a whole package, as well as the datasets
 # exported by MAnorm2 for demonstrating its use.
 #
-# Last update: 2019-01-02
+# Last update: 2021-04-06
 
 
-#' MAnorm2: a Package for Normalizing and Comparing ChIP-seq Data
+#' MAnorm2: a Package for Normalizing and Comparing ChIP-seq Samples
 #'
 #' \code{MAnorm2} provides a robust method for normalizing ChIP-seq signals
 #' across individual samples or groups of samples. It also designs a
 #' self-contained system of statistical models for calling differential
-#' ChIP-seq signals between two or more biological conditions.
+#' ChIP-seq signals between two or more biological conditions as well as
+#' for calling hypervariable ChIP-seq signals across samples.
 #'
 #' For a typical differential analysis between two biological conditions
 #' starting with raw read counts, the standard workflow is to
 #' sequentially call \code{\link{normalize}}, \code{\link{bioCond}},
 #' \code{\link{normBioCond}},
-#' \code{\link{fitMeanVarCurve}} and \code{\link[=diffTest.bioCond]{diffTest}}
+#' \code{\link{fitMeanVarCurve}}, and \code{\link[=diffTest.bioCond]{diffTest}}
 #' (see the following sections for a rough description of each of these
 #' functions).
 #' Examples given for \code{\link[=diffTest.bioCond]{diffTest}} provide
 #' specific demonstrations.
-#'
-#' \code{MAnorm2} is also capable of comparing ChIP-seq signals across multiple
+#' \code{MAnorm2} is also capable of calling differential ChIP-seq signals
+#' across multiple
 #' biological conditions. See the section below titled "Comparing ChIP-seq
 #' Signals across Multiple Conditions".
 #'
+#' For a hypervariable ChIP-seq analysis
+#' starting with raw read counts, the standard workflow is to
+#' sequentially call \code{\link{normalize}}, \code{\link{bioCond}},
+#' \code{\link{fitMeanVarCurve}}, \code{\link{estParamHyperChIP}}, and
+#' \code{\link{varTestBioCond}}.
+#' Examples given for \code{\link{estParamHyperChIP}} provide a
+#' specific demonstration.
+#'
 #' The following sections classify the majority of \code{MAnorm2} functions
 #' into different utilities. Basically, these sections also represent the order
-#' in which the functions are supposed to be called for a differential
+#' in which the functions are supposed to be called for a
+#' differential/hypervariable
 #' analysis. For a complete list of \code{MAnorm2} functions, use
 #' \code{library(help = "MAnorm2")}.
 #'
@@ -69,12 +79,14 @@
 #'         \item{\code{\link{extendMeanVarCurve}}}{Extend the Application
 #'         Scope of a Mean-Variance Curve}
 #'         \item{\code{\link{plotMeanVarCurve}}}{Plot a Mean-Variance Curve}
+#'         \item{\code{\link{plotMVC}}}{Plot a Mean-Variance Curve on a
+#'         Single \code{bioCond} Object}
 #'         \item{\code{\link{estimateVarRatio}}}{Estimate Relative Variance
 #'         Ratio Factors of \code{bioCond} Objects}
 #'         \item{\code{\link{varRatio}}}{Compare Variance Ratio Factors of
 #'         Two \code{bioCond} Objects}
 #'         \item{\code{\link{distBioCond}}}{Quantify the Distance between
-#'         Each Pair of Samples of a \code{bioCond}}
+#'         Each Pair of Samples in a \code{bioCond}}
 #'         \item{\code{\link{vstBioCond}}}{Apply a Variance-Stabilizing
 #'         Transformation to a \code{bioCond}}
 #'     }
@@ -83,8 +95,16 @@
 #'     \describe{
 #'         \item{\code{\link{estimatePriorDf}}}{Assess the Goodness of Fit of
 #'         Mean-Variance Curves}
+#'         \item{\code{\link{estimatePriorDfRobust}}}{Assess the Goodness of
+#'         Fit of Mean-Variance Curves in a Robust Manner}
 #'         \item{\code{\link{setPriorDf}}}{Set the Number of Prior Degrees of
 #'         Freedom of Mean-Variance Curves}
+#'         \item{\code{\link{setPriorDfRobust}}}{The Robust Counterpart of
+#'         \code{setPriorDf}}
+#'         \item{\code{\link{setPriorDfVarRatio}}}{Set the Number of Prior
+#'         Degrees of Freedom and Variance Ratio Factors}
+#'         \item{\code{\link{estParamHyperChIP}}}{The Parameter Estimation
+#'         Framework of HyperChIP}
 #'     }
 #'
 #' @section Calling Differential ChIP-seq Signals between Two Conditions:
@@ -107,9 +127,14 @@
 #'         \code{varTestBioCond} Object}
 #'     }
 #'
+#' @section Author and Maintainer: Shiqi Tu <\email{tushiqi@@picb.ac.cn}>
+#'
+#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     \strong{31}(1): p. 131-145.
+#'
 #' @docType package
 #' @name MAnorm2
-#' @section Author and Maintainer: Shiqi Tu <\email{tushiqi@@picb.ac.cn}>
 #'
 #' @importFrom stats median
 #' @importFrom graphics plot

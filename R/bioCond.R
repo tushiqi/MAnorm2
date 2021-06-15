@@ -12,7 +12,7 @@
 # bioCond function plus the fit.info field added, for example, by the
 # fitMeanVarCurve function.
 #
-# Last update: 2019-07-09
+# Last update: 2021-03-28
 
 
 #' Deduce the Sample Mean Signal Intensity
@@ -115,11 +115,14 @@ intervalVars <- function(x, inv.strMatrix) {
 #'     the original \code{bioCond} object, if any, will be removed in the
 #'     returned \code{bioCond}. You can re-fit it by, for example, calling
 #'     \code{\link{fitMeanVarCurve}}.
+#' @section Warning: Do not directly modify the \code{strMatrix} field in a
+#'     \code{\link{bioCond}} object. Instead, use this function.
+#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object based on
 #'     normalized signal intensities; \code{\link{fitMeanVarCurve}} for fitting
 #'     the mean-variance trend across genomic intervals.
-#' @section Warning: Do not directly modify the \code{strMatrix} field in a
-#'     \code{\link{bioCond}} object. Instead, use this function.
 #' @export
 #' @examples
 #' data(H3K27Ac, package = "MAnorm2")
@@ -298,6 +301,9 @@ setWeight <- function(x, weight = NULL, strMatrix = NULL) {
 #'     only \code{name} and \code{meta.info} are subject to free modifications;
 #'     The \code{strMatrix} field must be modified through
 #'     \code{\link{setWeight}}.
+#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{normalize}} for performing an MA normalization on
 #'     ChIP-seq samples; \code{\link{normalizeBySizeFactors}} for normalizing
 #'     ChIP-seq samples based on their size factors; \code{\link{setWeight}}
@@ -419,7 +425,10 @@ bioCond <- function(norm.signal, occupancy = NULL, occupy.num = 1, name = "NA",
 #'     \code{normBioCond} treats the signal intensities contained in the
 #'     supplied \code{bioCond}s as in the scale of \eqn{log2} read counts,
 #'     which is consistent with the default behavior of
-#'     \code{\link{normalize}}.
+#'     \code{\link{normalize}}. Note also that \code{baseline} can be set to
+#'     \code{"pseudo-reference"} as in \code{\link{normalize}}. And we
+#'     recommend using this setting when the number of \code{bioCond}s to be
+#'     normalized is large (e.g., >5).
 #' @param subset An optional vector specifying the subset of intervals to be
 #'     used for estimating size factors and selecting the baseline.
 #'     Defaults to the intervals occupied by all the \code{bioCond} objects.
@@ -445,7 +454,8 @@ bioCond <- function(norm.signal, occupancy = NULL, occupy.num = 1, name = "NA",
 #'         objects. Only present when \code{baseline} is not explicitly
 #'         specified by the user.}
 #'         \item{\code{baseline}}{Condition name of the \code{bioCond} object
-#'         used as the baseline.}
+#'         used as baseline or \code{"pseudo-reference"} if the \code{baseline}
+#'         argument is specified so.}
 #'         \item{\code{norm.coef}}{A data frame recording the MA normalization
 #'         coefficients for each \code{bioCond}.}
 #'         \item{\code{MA.cor}}{A real matrix recording the Pearson correlation
@@ -455,6 +465,9 @@ bioCond <- function(norm.signal, occupancy = NULL, occupy.num = 1, name = "NA",
 #'         intensities, respectively. Note that M values are always calculated
 #'         as the column \code{bioCond} minus the row one.}
 #'     }
+#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{normalize}} for performing an MA normalization on
 #'     ChIP-seq samples; \code{\link{bioCond}} for creating a \code{bioCond}
 #'     object; \code{\link{normBioCondBySizeFactors}} for normalizing
@@ -510,27 +523,7 @@ normBioCond <- function(conds, baseline = NULL, subset = NULL, common.peak.regio
     names(occupancy) <- paste0("o", 1:length(occupancy))
 
     # Baseline selection
-    if (!is.null(baseline)) {
-        if (is.numeric(baseline)) {
-            baseline <- as.integer(baseline)[1]
-            if (baseline <= 0) {
-                stop("baseline is an invalid list index:
-Must be positive for an integer index")
-            }
-            if (baseline > length(conds)) {
-                stop("baseline is an invalid list index:
-Integer index out of range")
-            }
-        } else {
-            baseline <- as.character(baseline)[1]
-            baseline <- names(conds) == baseline
-            if (!any(baseline)) {
-                stop("baseline is an invalid list index")
-            }
-            baseline <- which.max(baseline)
-        }
-        base.flag <- FALSE
-    } else {
+    if (is.null(baseline)) {
         if (is.null(subset)) {
             subset <- apply(occupancy, 1, all)
         }
@@ -550,6 +543,28 @@ You may specify the baseline bioCond explicitly")
             baseline <- which.min(abs(log2.size))
         }
         base.flag <- TRUE
+    } else {
+        if (is.numeric(baseline)) {
+            baseline <- as.integer(baseline)[1]
+            if (baseline <= 0) {
+                stop("baseline is an invalid list index:
+Must be positive for an integer index")
+            }
+            if (baseline > length(conds)) {
+                stop("baseline is an invalid list index:
+Integer index out of range")
+            }
+        } else {
+            baseline <- as.character(baseline)[1]
+            if (baseline != "pseudo-reference") {
+                baseline <- names(conds) == baseline
+                if (!any(baseline)) {
+                    stop("baseline is an invalid list index")
+                }
+                baseline <- which.max(baseline)
+            }
+        }
+        base.flag <- FALSE
     }
 
     # Perform MA normalization via calling normalize()
@@ -580,7 +595,11 @@ Please report it to the package maintainer")
         names(size.factor) <- ns
         attr(conds, "size.factor") <- size.factor
     }
-    attr(conds, "baseline") <- ns[baseline]
+    if (baseline == "pseudo-reference") {
+        attr(conds, "baseline") <- "pseudo-reference"
+    } else {
+        attr(conds, "baseline") <- ns[baseline]
+    }
     rownames(norm.coef) <- ns
     attr(conds, "norm.coef") <- norm.coef
     MA.cor <- attr(norm, "MA.cor")

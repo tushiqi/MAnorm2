@@ -1,7 +1,7 @@
 # Functions in this file are for demonstrating bioCond objects and plotting
 # figures on them.
 #
-# Last update: 2018-12-28
+# Last update: 2021-03-30
 
 
 #' Generic MA Plotting
@@ -225,7 +225,10 @@ MAplot.bioCond <- function(x, y, col = NULL, pch = NULL, ylim = c(-6, 6),
 #' values used for the scatter plot have been adjusted for the variance ratio
 #' factor specific to each \code{bioCond}. See \code{\link{fitMeanVarCurve}}
 #' and \code{\link{estimatePriorDf}} for a description of variance ratio
-#' factor.
+#' factor. Note also that there is a function named \code{\link{plotMVC}}
+#' that is specifically designed for plotting a mean-variance curve on a
+#' single \code{bioCond}. This function scales mean-variance curve by the
+#' associated variance ratio factor and leaves observed variances unadjusted.
 #'
 #' By default, each genomic interval in each \code{bioCond} object that
 #' contains replicate samples provides one point for the scatter plot. Setting
@@ -253,12 +256,17 @@ MAplot.bioCond <- function(x, y, col = NULL, pch = NULL, ylim = c(-6, 6),
 #'     mean-variance curve is added to the current plot.
 #' @param ... Further arguments to be passed to \code{\link[graphics]{plot}}.
 #' @return The function returns \code{NULL}.
+#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve given a
 #'     list of \code{bioCond} objects; \code{\link{extendMeanVarCurve}} for
 #'     extending the application scope of a fitted mean-variance curve to
 #'     additional \code{bioCond} objects; \code{\link{varRatio}} for a formal
-#'     description of variance ratio factor; \code{\link{normalize}} for using
+#'     description of variance ratio factor; \code{\link{plotMVC}} for plotting
+#'     a mean-variance curve on a single \code{bioCond} object;
+#'     \code{\link{normalize}} for using
 #'     occupancy states of genomic intervals to normalize ChIP-seq samples;
 #'     \code{\link[scales]{alpha}} for adjusting color transparency.
 #' @export
@@ -325,6 +333,10 @@ plotMeanVarCurve <- function(conds, subset = c("all", "occupied", "non-occupied"
     log10.vars <- numeric(0)
     subset <- match.arg(subset)
     noRep <- vapply(conds, function(cond){ ncol(cond$norm.signal) }, numeric(1)) <= 1
+    if (all(noRep)) {
+        stop("None of the bioCond objects in conds contains replicate samples.
+Cannot draw the scatter plot")
+    }
     for (i in 1:n) {
         if (noRep[i]) next
         cond <- conds[[i]]
@@ -355,6 +367,131 @@ plotMeanVarCurve <- function(conds, subset = c("all", "occupied", "non-occupied"
     temp <- graphics::par("usr")
     x <- seq(temp[1], to = temp[2], length.out = 1000)
     temp <- list(x = x, y = log(conds[[1]]$fit.info$predict(x), base = 10))
+    do.call(graphics::lines, c(temp, args.lines))
+
+    invisible()
+}
+
+
+#' Plot a Mean-Variance Curve on a Single \code{bioCond} Object
+#'
+#' Given an individual \code{\link{bioCond}} object associated with a
+#' mean-variance curve, \code{plotMVC} draws a scatter plot of
+#' observed \code{(mean, log10(variance))} pairs from the genomic intervals
+#' contained in the \code{bioCond}. It also adds the mean-variance curve to
+#' the plot. Notably, unlike \code{\link{plotMeanVarCurve}}, here the observed
+#' variances used for plotting are not adjusted but the mean-variance curve is
+#' scaled based on the associated variance ratio factor (see
+#' \code{\link{fitMeanVarCurve}} and \code{\link{estimatePriorDf}} for a
+#' description of variance ratio factor).
+#'
+#' @param cond An individual \code{\link{bioCond}} object with which a
+#'     mean-variance curve has been associated.
+#' @param subset A character string indicating the subset of genomic intervals
+#'     used for the scatter plot. Must be one of \code{"all"}
+#'     (default), \code{"occupied"}, or \code{"non-occupied"}.
+#'     Can be abbreviated.
+#' @param col,pch Optional vectors specifying the colors and point characters
+#'     of the genomic intervals in \code{cond}, respectively. Elements are
+#'     recycled to match the total number of intervals and are then subject to
+#'     the subsetting operation specified by \code{subset}.
+#' @param add Whether to add points to existing graphics (by calling
+#'     \code{\link[graphics]{points}}) or to create new graphics (by calling
+#'     \code{\link[graphics]{plot}})?
+#' @param xlab,ylab Labels for the X and Y axes.
+#' @param args.lines Further arguments to be passed to
+#'     \code{\link[graphics]{lines}}.
+#' @param only.add.line A logical value. If set to \code{TRUE}, only the
+#'     mean-variance curve is added to existing graphics.
+#' @param ... Further arguments to be passed to \code{\link[graphics]{plot}}
+#'     or \code{\link[graphics]{points}}, depending on the setting of
+#'     \code{add}.
+#' @return The function returns \code{NULL}.
+#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     \strong{31}(1): p. 131-145.
+#' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
+#'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve on a
+#'     list of \code{bioCond} objects; \code{\link{varRatio}} for a formal
+#'     description of variance ratio factor; \code{\link{plotMeanVarCurve}}
+#'     for plotting a mean-variance curve on a list of \code{bioCond} objects;
+#'     \code{\link[scales]{alpha}} for adjusting color transparency.
+#' @export
+#' @examples
+#' data(H3K27Ac, package = "MAnorm2")
+#' attr(H3K27Ac, "metaInfo")
+#'
+#' ## Fit and plot a mean-variance curve for the GM12892 cell line (i.e.,
+#' ## individual).
+#'
+#' # Perform the MA normalization and construct a bioCond to represent GM12892.
+#' norm <- normalize(H3K27Ac, 7:8, 12:13)
+#' GM12892 <- bioCond(norm[7:8], norm[12:13], name = "GM12892")
+#'
+#' # Fit a mean-variance curve by using the parametric method.
+#' GM12892 <- fitMeanVarCurve(list(GM12892), method = "parametric",
+#'                            occupy.only = TRUE, init.coef = c(0.1, 10))[[1]]
+#'
+#' # Draw a mean-variance scatter plot with adjusting observed variances.
+#' plotMeanVarCurve(list(GM12892), subset = "occupied")
+#'
+#' # Draw a mean-variance scatter plot with scaling the mean-variance curve.
+#' plotMVC(GM12892, subset = "occupied")
+plotMVC <- function(cond, subset = c("all", "occupied", "non-occupied"),
+                    col = alpha("blue", 0.02), pch = 20, add = FALSE,
+                    xlab = "Mean", ylab = "log10(Var)",
+                    args.lines = list(col = "red", lwd = 2),
+                    only.add.line = FALSE, ...) {
+    if (!is(cond, "bioCond")) {
+        stop("cond must be of class \"bioCond\"")
+    }
+    if (is.null(cond$fit.info)) {
+        stop("Missing the \"fit.info\" field for cond")
+    }
+
+    if (only.add.line) {
+        temp <- graphics::par("usr")
+        x <- seq(temp[1], to = temp[2], length.out = 1000)
+        y <- log(cond$fit.info$predict(x), base = 10) +
+             log(cond$fit.info$ratio.var, base = 10)
+        temp <- list(x = x, y = y)
+        do.call(graphics::lines, c(temp, args.lines))
+        return(invisible())
+    }
+    if (ncol(cond$norm.signal) <= 1) {
+        stop("cond does not contain replicate samples.
+Cannot draw the scatter plot")
+    }
+
+    subset <- match.arg(subset)
+    if (subset == "all") {
+        f <- TRUE
+    } else if (subset == "occupied") {
+        f <- cond$occupancy
+    } else if (subset == "non-occupied") {
+        f <- !(cond$occupancy)
+    }
+    n <- nrow(cond$norm.signal)
+    col <- rep_len(col, length.out = n)[f]
+    pch <- rep_len(pch, length.out = n)[f]
+    means <- cond$sample.mean[f]
+    log10.vars <- log(cond$sample.var[f], base = 10)
+
+    index <- sample.int(length(means))
+    if (add) {
+        graphics::points(means[index], log10.vars[index],
+                         col = col[index], pch = pch[index], ...)
+    } else {
+        plot(means[index], log10.vars[index],
+             col = col[index], pch = pch[index],
+             xlab = xlab, ylab = ylab, ...)
+    }
+
+    temp <- graphics::par("usr")
+    x <- seq(temp[1], to = temp[2], length.out = 1000)
+    y <- log(cond$fit.info$predict(x), base = 10) +
+         log(cond$fit.info$ratio.var, base = 10)
+    temp <- list(x = x, y = y)
     do.call(graphics::lines, c(temp, args.lines))
 
     invisible()

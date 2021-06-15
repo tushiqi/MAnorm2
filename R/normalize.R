@@ -5,7 +5,7 @@
 # This file also provides tools for normalizing count data based purely on size
 # factors, which is most suited to RNA-seq samples.
 #
-# Last update: 2019-08-23
+# Last update: 2021-03-28
 
 
 #' Estimate Size Factors of ChIP-seq Samples
@@ -53,6 +53,7 @@ estimateSizeFactors <- function(counts, subset = NULL) {
 #' @param baseline A numeric vector representing the baseline signal intensity.
 #' @param to.norm A numeric vector representing the sample to be normalized.
 #' @return \code{c(slope, intercept)}
+#' @importFrom stats sd
 normCoef <- function(baseline, to.norm) {
     if (length(baseline) < 2) {
         stop("Too few common peak regions to perform the MA normalization", call. = FALSE)
@@ -77,6 +78,8 @@ Unable to perform the MA normalization", call. = FALSE)
 #' @param x,y Two numeric vectors representing the signal intensities of two
 #'     samples.
 #' @return Safely deduced PCC between \code{(x + y)} and \code{(y - x)}.
+#' @importFrom stats sd
+#' @importFrom stats cor
 #' @examples
 #' MA.pcc(1:4, 1:4 + c(1, 2, 4, 9))
 #'
@@ -110,7 +113,18 @@ MA.pcc <- function(x, y) {
 #' that, if there are only two samples to be normalized, the function will
 #' always use the sample with the smaller size factor as baseline, for avoiding
 #' potential uncertainty in selection results due to limited numerical
-#' precision).
+#' precision). A special case is setting the \code{baseline} argument to
+#' \code{"pseudo-reference"}, in which case the function constructs a pseudo
+#' ChIP-seq sample as baseline. Technically, for an individual genomic interval
+#' in the pseudo sample, the function derives its signal intensity (rather than
+#' read count; see below) by taking the average across those samples that
+#' occupy it, and it is considered to be a peak region as long as it is
+#' occupied by any of the samples to be normalized. We don't need to care about
+#' the signal intensities of those intervals that are not occupied by any
+#' sample, since they are never used in the normalization process (see below).
+#' Using such a pseudo sample as baseline is especially recommended when the
+#' number of samples to be normalized is large, for avoiding computation
+#' artifacts resulting from an arbitrary selection of baseline sample.
 #'
 #' Then, the function converts each read count into a signal intensity through
 #' the equation \eqn{log2(count + offset)}, or
@@ -149,18 +163,25 @@ MA.pcc <- function(x, y) {
 #' @param x A data frame containing the read count and occupancy indicator
 #'     variables. Each row should represent a genomic interval.
 #'     Objects of other types are coerced to a data frame.
-#' @param count A vector of either integers or characters indexing the read
-#'     count variables in \code{x} to be normalized. Each of these variables
-#'     represents a ChIP-seq sample. Elements of \code{count} must be unique.
+#' @param count Either an integer vector or a character vector that indexes the
+#'     read count variables in \code{x} to be normalized. Each of these
+#'     variables represents a ChIP-seq sample. Elements of \code{count} must be
+#'     unique.
 #' @param occupancy Either an integer or character vector indexing occupancy
 #'     indicator variables in \code{x}. Must correspond to \code{count} one by
 #'     one with the same order. These variables are interpreted as logical,
 #'     where \code{TRUE} indicates being occupied by peaks (i.e.,
 #'     showing an enrichment for reads) of the corresponding ChIP-seq sample.
-#' @param baseline Either an integer or character scalar referring to the
-#'     baseline sample. Must be an element of \code{count} if specified. By
+#' @param baseline Either an integer scalar or a character scalar referring to
+#'     the baseline sample. Must be an element of \code{count} if specified. By
 #'     default, the baseline is automatically selected by the function (see
 #'     "Details").
+#'
+#'     A special option for this argument is \code{"pseudo-reference"}, in
+#'     which case the function constructs a pseudo ChIP-seq sample as baseline
+#'     by "averaging" the samples to be normalized (see "Details"). This option
+#'     is especially recommended when the number of samples to be normalized is
+#'     large (e.g., >5).
 #' @param subset An optional vector specifying the subset of intervals to be
 #'     used for estimating size factors and selecting the baseline (see
 #'     "Details" and \code{\link{estimateSizeFactors}}). Defaults to the
@@ -192,7 +213,8 @@ MA.pcc <- function(x, y) {
 #'         variables. Only present when \code{baseline} is not explicitly
 #'         specified by the user.}
 #'         \item{\code{baseline}}{Name of the read count variable used as the
-#'         baseline.}
+#'         baseline sample or \code{"pseudo-reference"} if the \code{baseline}
+#'         argument is specified so.}
 #'         \item{\code{norm.coef}}{A data frame recording the linear
 #'         transformation coefficients of each sample as well as the number of
 #'         common peak regions between each sample and the baseline.}
@@ -203,6 +225,9 @@ MA.pcc <- function(x, y) {
 #'         intensities, respectively. Note that M values are always calculated
 #'         as the column sample minus the row sample.}
 #'     }
+#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{normalizeBySizeFactors}} for normalizing ChIP-seq
 #'     samples based on their size factors; \code{\link{estimateSizeFactors}}
 #'     for estimating size factors of ChIP-seq samples;
@@ -278,17 +303,7 @@ normalize <- function(x, count, occupancy, baseline = NULL, subset = NULL,
     occupancy[is.na(occupancy)] <- FALSE
 
     # Baseline selection
-    if (!is.null(baseline)) {
-        if (is.numeric(baseline)) {
-            baseline <- as.integer(baseline)[1]
-        } else {
-            baseline <- as.character(baseline)[1]
-        }
-        baseline <- count == baseline
-        if (!any(baseline)) stop("baseline must be one of the elements in count")
-        baseline <- which.max(baseline)
-        base.flag <- FALSE
-    } else {
+    if (is.null(baseline)) {
         if (is.null(subset)) subset <- apply(occupancy, 1, all)
         size.factor <- estimateSizeFactors(cnt, subset)
         if (all(is.na(size.factor))) {
@@ -303,6 +318,20 @@ You may specify the baseline sample explicitly")
             baseline <- which.min(abs(log(size.factor)))
         }
         base.flag <- TRUE
+    } else {
+        if (is.numeric(baseline)) {
+            baseline <- as.integer(baseline)[1]
+        } else {
+            baseline <- as.character(baseline)[1]
+        }
+        if (baseline == "pseudo-reference") {
+            baseline <- 0
+        } else {
+            baseline <- count == baseline
+            if (!any(baseline)) stop("baseline must be one of the elements in count")
+            baseline <- which.max(baseline)
+        }
+        base.flag <- FALSE
     }
 
     # Converting read counts into signal intensities
@@ -322,16 +351,24 @@ You may specify the baseline sample explicitly")
         convert <- function(y){ log(y / interval.size + offset, base = 2) }
     }
     for (i in 1:length(cnt)) cnt[[i]] <- convert(cnt[[i]])
-    temp <- as.matrix(cnt)
-    if (any(is.na(temp))) {
+    cnt.mat <- as.matrix(cnt)
+    if (any(is.na(cnt.mat))) {
         stop("NA's produced when converting read counts into signal intensities")
     }
-    if (any(is.infinite(temp))) {
+    if (any(is.infinite(cnt.mat))) {
         stop("Inf's produced when converting read counts into signal intensities")
     }
 
     # MA normalization
-    base.ocupy <- occupancy[[baseline]]
+    if (baseline == 0) {
+        occu.mat <- as.matrix(occupancy)
+        base.cnt <- vapply(1:nrow(cnt), function(i) mean(cnt.mat[i, occu.mat[i, ]]),
+                           numeric(1))
+        base.ocupy <- apply(occu.mat, 1, any)
+    } else {
+        base.cnt <- cnt[[baseline]]
+        base.ocupy <- occupancy[[baseline]]
+    }
     if (!is.null(common.peak.regions)) {
         common.peak.regions <- as.logical(common.peak.regions)
         common.peak.regions[is.na(common.peak.regions)] <- FALSE
@@ -353,7 +390,6 @@ You may specify the baseline sample explicitly")
     norm.coef <- data.frame(slope = rep(1, j), intercept = rep(0, j),
                             common.peak.regions = rep(0, j))
     rownames(norm.coef) <- names(cnt)
-    base.cnt <- cnt[[baseline]]
     for (i in 1:j) {
         flag <- base.ocupy & occupancy[[i]]
         norm.coef$common.peak.regions[i] <- sum(flag)
@@ -375,7 +411,11 @@ You may specify the baseline sample explicitly")
     # Assemble the return value
     x[count] <- cnt
     if (base.flag) attr(x, "size.factor") <- size.factor
-    attr(x, "baseline") <- names(cnt)[baseline]
+    if (baseline == 0) {
+        attr(x, "baseline") <- "pseudo-reference"
+    } else {
+        attr(x, "baseline") <- names(cnt)[baseline]
+    }
     attr(x, "norm.coef") <- norm.coef
     attr(x, "MA.cor") <- MA.cor
     x

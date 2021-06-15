@@ -1,6 +1,6 @@
 # Utility tools for MAnorm2.
 #
-# Last update: 2018-12-28
+# Last update: 2021-03-20
 
 
 #' Check the Regularity of a Count Table

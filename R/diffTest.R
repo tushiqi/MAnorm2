@@ -2,7 +2,7 @@
 # or more biological conditions and (2) calling hypervariable and invariant
 # intervals across ChIP-seq samples or biological conditions.
 #
-# Last update: 2018-12-28
+# Last update: 2021-04-01
 
 
 #' Generic Differential Test
@@ -105,6 +105,14 @@ diffTest <- function(x, y, ...) {
 #'     \code{x$norm.signal}. Besides, an attribute named \code{"Mval.se.df"} is
 #'     added to the returned object, which is a positive numeric giving the
 #'     total number of degrees of freedom associated with the standard errors.
+#' @references
+#' Smyth, G.K., \emph{Linear models and empirical bayes methods for
+#' assessing differential expression in microarray experiments}. Stat Appl
+#' Genet Mol Biol, 2004. \strong{3}: p. Article3.
+#'
+#' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve for
 #'     a set of \code{bioCond} objects; \code{\link{setMeanVarCurve}} for
@@ -117,9 +125,6 @@ diffTest <- function(x, y, ...) {
 #'     comparing multiple \code{bioCond} objects; \code{\link{varTestBioCond}}
 #'     for calling hypervariable and invariant intervals across ChIP-seq
 #'     samples contained in a \code{bioCond}.
-#' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#'     assessing differential expression in microarray experiments}. Stat Appl
-#'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #' @importFrom stats pt
 #' @importFrom stats p.adjust
 #' @export
@@ -267,7 +272,7 @@ diffTest.bioCond <- function(x, y, min.var = 0, df.prior = NULL) {
             flag <- abs(y$fit.info$df.prior - df.prior) > 1e-6
         }
         if (flag) stop("x and y have different \"df.prior\" components.
-Try using estimatePriorDf to unify their numbers of prior degrees of freedom")
+Try using estimatePriorDf() to unify their numbers of prior degrees of freedom")
     } else {
         df.prior <- as.numeric(df.prior)[1]
         if (df.prior < 0) {
@@ -317,7 +322,7 @@ Cannot estimate variances for individual intervals")
     attr(res, "Mval.se.df") <- se.df
     class(res) <- c("diffBioCond", "data.frame")
     res
-    }
+}
 
 
 #' Create an MA Plot on Results of Comparing Two \code{bioCond} Objects
@@ -516,8 +521,8 @@ MAplot.diffBioCond <- function(x, padj = NULL, pval = NULL,
 #'         \item{\code{posterior.var}}{A weighted average of \code{within.ms}
 #'         and \code{prior.var}, with the weights being proportional to their
 #'         respective numbers of degrees of freedom.}
-#'         \item{\code{mod.f}}{Moderated F statistic, which is the ratio of
-#'         \code{between.ms} to \code{posterior.var}.}
+#'         \item{\code{mod.f}}{Moderated \emph{F} statistic, which is the ratio
+#'         of \code{between.ms} to \code{posterior.var}.}
 #'         \item{\code{pval}}{\emph{P}-value for the statistical significance
 #'         of this moderated F statistic.}
 #'         \item{\code{padj}}{\emph{P}-value adjusted for multiple testing with
@@ -538,6 +543,14 @@ MAplot.diffBioCond <- function(x, padj = NULL, pval = NULL,
 #'         freedom of \code{between.ms}, \code{within.ms}, \code{prior.var} and
 #'         \code{posterior.var}.}
 #'     }
+#' @references
+#' Smyth, G.K., \emph{Linear models and empirical bayes methods for
+#' assessing differential expression in microarray experiments}. Stat Appl
+#' Genet Mol Biol, 2004. \strong{3}: p. Article3.
+#'
+#' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve for
 #'     a set of \code{bioCond} objects; \code{\link{setMeanVarCurve}} for
@@ -550,9 +563,6 @@ MAplot.diffBioCond <- function(x, padj = NULL, pval = NULL,
 #'     calling differential intervals between two \code{bioCond} objects;
 #'     \code{\link{varTestBioCond}} for calling hypervariable and invariant
 #'     intervals across ChIP-seq samples contained in a \code{bioCond}.
-#' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#'     assessing differential expression in microarray experiments}. Stat Appl
-#'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #' @importFrom stats pf
 #' @importFrom stats p.adjust
 #' @export
@@ -612,7 +622,7 @@ aovBioCond <- function(conds, min.var = 0, df.prior = NULL) {
         }
         if (flag) stop(
 "Not all bioCond objects in conds have the same \"df.prior\" component.
-Try using estimatePriorDf to unify their numbers of prior degrees of freedom")
+Try using estimatePriorDf() to unify their numbers of prior degrees of freedom")
     } else {
         df.prior <- as.numeric(df.prior)[1]
         if (df.prior < 0) {
@@ -804,8 +814,9 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #' associated (see \code{\link{fitMeanVarCurve}}), \code{varTestBioCond} tests
 #' for each genomic interval if the observed variation of its signal intensity
 #' across ChIP-seq samples in the \code{bioCond} is significantly greater or
-#' less than is implied by the curve. This function is typically used to call
-#' hypervariable and invariant intervals in a biological condition.
+#' less than is implied by the curve. This function is typically used
+#' in combination with \code{\link{estParamHyperChIP}} to call hypervariable
+#' and invariant intervals in a \code{bioCond} (see also "Examples").
 #'
 #' \code{varTestBioCond} adopts the modeling strategy implemented in
 #' \code{limma} (see "References"),
@@ -821,15 +832,16 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #' its two numbers of degrees of freedom being those of the two variances,
 #' respectively.
 #' (Hence the statistic follows a scaled chi-squared distribution when the
-#' prior df is \code{Inf}). To be noted, the prior df is
-#' automatically estimated for each
-#' mean-variance curve by a specifically designed statistical method
-#' (see also \code{\link{fitMeanVarCurve}} and
-#' \code{\link{setMeanVarCurve}}) and, by default, the function uses the
+#' prior df is \code{Inf}.) To be noted, the prior df can be empirically
+#' estimated for each
+#' mean-variance curve by specifically designed statistical methods
+#' (see also \code{\link{fitMeanVarCurve}}, \code{\link{setMeanVarCurve}},
+#' \code{\link{estimatePriorDf}}, and \code{\link{estParamHyperChIP}})
+#' and, by default, the function uses the
 #' estimation result to perform the tests. It's highly not recommended to
 #' specify \code{df.prior} explicitly when calling \code{varTestBioCond},
 #' unless you know what you are really doing. Besides, \code{varTestBioCond}
-#' won't adjust variance ratio factor of the provided \code{bioCond} based
+#' won't adjust the variance ratio factor of the provided \code{bioCond} based
 #' on the specified prior df (see \code{\link{estimatePriorDf}}
 #' for a description of variance ratio factor).
 #'
@@ -845,7 +857,7 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #' \code{occupy.only} to \code{TRUE} when calling
 #' \code{\link{fitMeanVarCurve}}, you should accordingly inspect only the test
 #' results of those genomic intervals that are occupied by the \code{bioCond},
-#' and re-adjust
+#' and should re-adjust
 #' \emph{p}-values within this set of intervals (see "Examples" below).
 #'
 #' \code{varTestBioCond} can also be used to call hypervariable and invariant
@@ -899,12 +911,17 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #'         \item{\code{df}}{A length-2 vector giving the numbers of degrees of
 #'         freedom of the observed and prior variances.}
 #'     }
+#' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
+#'     assessing differential expression in microarray experiments}. Stat Appl
+#'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve for
 #'     a set of \code{bioCond} objects; \code{\link{setMeanVarCurve}} for
 #'     setting the mean-variance curve of a set of \code{bioCond}s;
 #'     \code{\link{estimatePriorDf}} for estimating number of prior degrees of
 #'     freedom as well as adjusting variance ratio factors accordingly;
+#'     \code{\link{estParamHyperChIP}} for applying the parameter estimation
+#'     framework of HyperChIP;
 #'     \code{\link{cmbBioCond}} for combining multiple \code{bioCond}s
 #'     into a single one.
 #'
@@ -913,9 +930,6 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #'     for calling differential intervals between two \code{bioCond} objects;
 #'     \code{\link{aovBioCond}} for calling differential intervals across
 #'     multiple \code{bioCond}s.
-#' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#'     assessing differential expression in microarray experiments}. Stat Appl
-#'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #' @importFrom stats pf
 #' @importFrom stats p.adjust
 #' @export
@@ -991,6 +1005,14 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #' wilcox.test(res$fold.change[f], res$fold.change[!f],
 #'             alternative = "greater")
 #' wilcox.test(res$pval[f], res$pval[!f], alternative = "less")
+#'
+#' # Make a comparison with HyperChIP.
+#' LCLs2 <- estParamHyperChIP(LCLs, occupy.only = FALSE, prob = 0.1)
+#' summary(LCLs)
+#' summary(LCLs2)
+#' res2 <- varTestBioCond(LCLs2)
+#' hist(res$pval, breaks = 100, col = "red")
+#' hist(res2$pval, breaks = 100, col = "red")
 varTestBioCond <- function(cond, min.var = 0, df.prior = NULL) {
     if (!is(cond, "bioCond")) {
         stop("cond must be a bioCond object")

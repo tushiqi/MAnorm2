@@ -1,7 +1,7 @@
 # Functions in this file are for fitting, setting and extending a
 # mean-variance curve.
 #
-# Last update: 2019-08-23
+# Last update: 2021-03-30
 
 
 #' Fit Mean-Variance Trend by Local Regression
@@ -99,11 +99,6 @@ meanVarLocalFit <- function(x, y, weight, range.residual = c(1e-4, 15),
 #' @return A prediction function which accepts a vector of means and returns
 #'     the predicted variances, with an attribute named \code{"coefficients"}
 #'     attached.
-#' @seealso \code{\link{meanVarLocalFit}} for using local regression to fit
-#'     a mean-variance curve; \code{\link{fitMeanVarCurve}} for an interface
-#'     to modeling the mean-variance dependence on \code{\link{bioCond}}
-#'     objects; \code{\link{plotMeanVarCurve}} for plotting a mean-variance
-#'     curve.
 #' @references
 #' Robinson, M.D. and G.K. Smyth, \emph{Small-sample estimation of negative
 #' binomial dispersion, with applications to SAGE data}. Biostatistics, 2008.
@@ -113,6 +108,14 @@ meanVarLocalFit <- function(x, y, weight, range.residual = c(1e-4, 15),
 #' change and dispersion for RNA-seq data with DESeq2}. Genome Biol, 2014.
 #' \strong{15}(12): p. 550.
 #'
+#' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#'
+#' @seealso \code{\link{meanVarLocalFit}} for using local regression to fit
+#'     a mean-variance curve; \code{\link{fitMeanVarCurve}} for an interface
+#'     to modeling the mean-variance dependence on \code{\link{bioCond}}
+#'     objects; \code{\link{plotMeanVarCurve}} for plotting a mean-variance
+#'     curve.
 #' @importFrom stats glm
 #' @importFrom stats Gamma
 #' @importFrom stats coefficients
@@ -219,6 +222,9 @@ meanVarParaFit <- function(x, y, weight, range.residual = c(1e-4, 15),
 #' @return The estimated ratio of the variance ratio factor of \code{cond2} to
 #'     that of \code{cond1}. Note that the function returns \code{NA} if there
 #'     are not sufficient invariant intervals for estimating it.
+#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{setWeight}} for a detailed description of structure matrix;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve given a
@@ -324,6 +330,9 @@ varRatio <- function(cond1, cond2, invariant = NULL) {
 #'         \item{\code{no.rep.rv}}{Variance ratio factor of the \code{bioCond}s
 #'         with no replicate samples. Present only when it's ever been used.}
 #'     }
+#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve for
 #'     a set of \code{bioCond} objects; \code{\link{varRatio}} for a formal
@@ -718,6 +727,21 @@ Use the one for no-replicate conditions", cond$name))
 #'     conditions being compared are close. Otherwise, the method may lead to
 #'     an over-conserved \emph{p}-value calculation.
 #'
+#' @references
+#' Smyth, G.K., \emph{Linear models and empirical bayes methods for assessing
+#' differential expression in microarray experiments}. Stat Appl Genet Mol
+#' Biol, 2004. \strong{3}: p. Article3.
+#'
+#' Anders, S. and W. Huber, \emph{Differential expression analysis for sequence
+#' count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
+#'
+#' Law, C.W., et al., \emph{voom: Precision weights unlock linear model
+#' analysis tools for RNA-seq read counts}. Genome Biol, 2014.
+#' \strong{15}(2): p. R29.
+#'
+#' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object from a
 #'     set of ChIP-seq samples; \code{\link{normalize}} for performing an MA
 #'     normalization on ChIP-seq samples; \code{\link{normalizeBySizeFactors}}
@@ -730,7 +754,9 @@ Use the one for no-replicate conditions", cond$name))
 #'     ratio factors of a set of \code{bioCond}s; \code{\link{varRatio}} for a
 #'     formal description of variance ratio factor;
 #'     \code{\link{estimatePriorDf}} for estimating the number of prior degrees
-#'     of freedom as well as adjusting variance ratio factors accordingly.
+#'     of freedom as well as adjusting variance ratio factors accordingly;
+#'     \code{\link{estimatePriorDfRobust}} for a \emph{robust} version of
+#'     \code{estimatePriorDf}.
 #'
 #'     \code{\link{setMeanVarCurve}} for setting the mean-variance curve of a
 #'     set of \code{bioCond} objects; \code{\link{extendMeanVarCurve}} for
@@ -748,18 +774,6 @@ Use the one for no-replicate conditions", cond$name))
 #'     for calling differential intervals across multiple \code{bioCond}s;
 #'     \code{\link{varTestBioCond}} for calling hypervariable and invariant
 #'     intervals across ChIP-seq samples contained in a \code{bioCond}.
-#' @references
-#' Law, C.W., et al., \emph{voom: Precision weights unlock linear model
-#' analysis tools for RNA-seq read counts}. Genome Biol, 2014.
-#' \strong{15}(2): p. R29.
-#'
-#' Anders, S. and W. Huber, \emph{Differential expression analysis for sequence
-#' count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
-#'
-#' Smyth, G.K., \emph{Linear models and empirical bayes methods for assessing
-#' differential expression in microarray experiments}. Stat Appl Genet Mol
-#' Biol, 2004. \strong{3}: p. Article3.
-#'
 #' @export
 #' @examples
 #' data(H3K27Ac, package = "MAnorm2")
@@ -977,14 +991,6 @@ Cannot fit the mean-variance curve")
 #'     ChIP-seq sample, an attribute named \code{"no.rep.rv"} will be added to
 #'     the returned list, recording the variance ratio factor of no-replicate
 #'     conditions.
-#' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object from a
-#'     set of ChIP-seq samples; \code{\link{fitMeanVarCurve}} for fitting a
-#'     mean-variance curve for a set of \code{bioCond} objects;
-#'     \code{\link{estimateVarRatio}} for estimating the relative variance
-#'     ratio factors of a set of \code{bioCond}s; \code{\link{varRatio}} for a
-#'     formal description of variance ratio factor;
-#'     \code{\link{estimatePriorDf}} for estimating the number of prior degrees
-#'     of freedom and the corresponding variance ratio factors.
 #' @references
 #' Smyth, G.K., \emph{Linear models and empirical bayes methods for
 #' assessing differential expression in microarray experiments}. Stat Appl
@@ -994,6 +1000,19 @@ Cannot fit the mean-variance curve")
 #' analysis tools for RNA-seq read counts}. Genome Biol, 2014.
 #' \strong{15}(2): p. R29.
 #'
+#' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
+#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#'
+#' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object from a
+#'     set of ChIP-seq samples; \code{\link{fitMeanVarCurve}} for fitting a
+#'     mean-variance curve for a set of \code{bioCond} objects;
+#'     \code{\link{estimateVarRatio}} for estimating the relative variance
+#'     ratio factors of a set of \code{bioCond}s; \code{\link{varRatio}} for a
+#'     formal description of variance ratio factor;
+#'     \code{\link{estimatePriorDf}} for estimating the number of prior degrees
+#'     of freedom and the corresponding variance ratio factors;
+#'     \code{\link{estimatePriorDfRobust}} for a \emph{robust} version of
+#'     \code{estimatePriorDf}.
 #' @export
 #' @examples
 #' data(H3K27Ac, package = "MAnorm2")
@@ -1188,6 +1207,8 @@ setMeanVarCurve <- function(conds, predict, occupy.only = TRUE, method = "NA",
 #'
 #'     \code{\link{estimatePriorDf}} for estimating number of prior degrees of
 #'     freedom and the corresponding variance ratio factors;
+#'     \code{\link{estimatePriorDfRobust}} for a \emph{robust} version of
+#'     \code{estimatePriorDf};
 #'     \code{\link{varRatio}} for comparing the variance ratio factors of
 #'     two \code{bioCond}s.
 #'

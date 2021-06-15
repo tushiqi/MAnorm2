@@ -6,10 +6,10 @@
 # Tools related to variance-stabilizing transformed signals may be extended
 # in the future.
 #
-# Last update: 2019-01-01
+# Last update: 2021-03-23
 
 
-#' Quantify the Distance between Each Pair of Samples of a \code{bioCond}
+#' Quantify the Distance between Each Pair of Samples in a \code{bioCond}
 #'
 #' Given a \code{\link{bioCond}} object, \code{distBioCond} deduces, for each
 #' pair of samples contained in it, the average absolute difference in signal
