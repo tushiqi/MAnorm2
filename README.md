@@ -1,24 +1,31 @@
 ---
-title: MAnorm2 1.0.0
+title: MAnorm2 1.1.0
 author: Shiqi Tu
-date: 2019-12-01
+date: 2021-04-18
 contact: tushiqi@picb.ac.cn
 ---
 
 
 # Introduction
 
-MAnorm2 is designed for quantitatively comparing
-[ChIP-seq](https://en.wikipedia.org/wiki/ChIP-sequencing) signals between
+MAnorm2 is designed for normalizing and comparing
+[ChIP-seq](https://en.wikipedia.org/wiki/ChIP-sequencing) signals across
 individual samples or groups of samples. For a quick installation of MAnorm2,
 select a version from under the `dist` folder in the
 [home page of MAnorm2](https://github.com/tushiqi/MAnorm2)
-(we recommend using always the latest version), download the corresponding
-package and type the following code in an R session:
+(we recommend selecting always the latest version), download the corresponding
+package, and type the following code in an R session:
 
 ```r
 install.packages("/path/to/the/package", repos = NULL)
 ```
+
+**Note:** you may need to pre-install some dependencies of MAnorm2. The current
+dependencies of the latest version of MAnorm2 include locfit (>= 1.5.9),
+scales (>= 0.3.0), and statmod (>= 1.4.34). All these packages are available in
+the [CRAN](https://cran.r-project.org) repository and can be easily installed
+via `install.packages("pkgname")`. For the dependencies of other versions of
+MAnorm2, refer to the `Imports` tag in the corresponding `DESCRIPTION` file.
 
 Sections below give a brief description
 of the application scope of MAnorm2 as well as its capability. For a full
@@ -81,7 +88,7 @@ The only problem associated with such extensions is how to naturally define
 
 Most of the peak callers originally devised for ChIP-seq data
 (e.g., [MACS 1.4](https://github.com/taoliu/MACS/downloads)) also
-works for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input
+work for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input
 table should stand for a gene, and we recommend setting a cutoff (e.g., 20) of
 *raw read count* to define "peak" genes.
 
@@ -136,10 +143,10 @@ transformation to the raw signal intensities of one of the two samples such
 that
 
  1. the resulting M values (differences in signal intensities between the two
-    samples) of the common peak regions have an arithmetic mean of 0;
+    samples) at the common peak regions have an arithmetic mean of 0;
  2. [sample Pearson correlation coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient#For_a_sample)
-    between M value and A value (average signal intensity across the two
-    samples) across the common peak regions is 0.
+    between the resulting M and A values at the common peak regions is 0 (A
+    values refer to average signal intensities across the two samples).
 
 This procedure is for normalizing a pair of ChIP-seq samples. It can be
 extended to normalization of any number of samples so that the normalized
@@ -154,24 +161,25 @@ library(MAnorm2)
 ```
 
 
-# Differential Analysis
+# Differential and Hypervariable Analyses
 
 MAnorm2 designs a self-contained system of utility functions for calling
-differential ChIP-seq signals between two biological conditions, each with or
-without replicate samples. It also devises an ANOVA-like method for
-simultaneously comparing multiple biological conditions. To be
-noted, this system in MAnorm2 for differential analysis requires the input
-signal intensities to be normalized but is independent of the specific
-normalization procedure. This means that any normalization and/or bias
-correction tools could be adapted to the differential analysis system of
+differential ChIP-seq signals between two or more biological conditions, 
+each with or without replicate samples. It also implements a method named
+HyperChIP for calling hypervariable ChIP-seq signals across samples. To be
+noted, the framework implemented in MAnorm2 for differential and hypervariable
+analyses requires the input signal intensities to have been normalized but 
+is independent of the specific normalization method. 
+This means that any normalization and/or bias
+correction tools could be adapted to 
 MAnorm2, as long as the resulting signal measurements are suited to be
-modeled by the normal distribution. For example, for highly regular samples,
+modeled by normal distribution. For example, for highly regular samples,
 you might want to perform the normalization based on their *size factors*
 (refer to the `normalizeBySizeFactors` function in MAnorm2 for details).
 
 Technically, MAnorm2 has implemented an S3 class named "bioCond" for
 grouping ChIP-seq samples belonging to the same biological condition,
-and it has devised a number of functions for handling objects of the
+and it has devised a number of functions for handling objects of this
 class. Taking advantage of these functions, you can
 
  1. call genomic intervals with differential ChIP-seq signals between
@@ -182,10 +190,10 @@ class. Taking advantage of these functions, you can
     measuring the distance (i.e., dissimilarity) between each pair of them.
 
 Note that, for the samples grouped into a bioCond, MAnorm2 models the
-relationship between observed mean signal intensities of individual intervals
+relationship between observed mean signal intensities at individual intervals
 and the associated (observed) variances. In practice, this modeling strategy
 could compensate for the lack of sufficient replicates for deriving accurate
-variance estimates for individual genomic intervals. And each of the above
+variance estimates for individual intervals. And each of the above
 analyses takes advantage of the modeling of mean-variance trend to improve
 variance estimation.
 
@@ -194,8 +202,9 @@ following code in an R session after installing it:
 
 ```r
 library(MAnorm2)
-package?MAnorm2
+?MAnorm2
 ```
+
 
 # Citation
 
@@ -203,7 +212,6 @@ To cite MAnorm2 in publications, please use
 
 > Tu, S., et al.,
 > *MAnorm2 for quantitatively comparing groups of ChIP-seq samples*.
-> bioRxiv, 2020: p. 2020.01.07.896894.
-> <https://doi.org/10.1101/2020.01.07.896894>.
+> Genome Res, 2021. **31**(1): p. 131-145.
 
 
