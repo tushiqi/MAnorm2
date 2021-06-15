@@ -1,27 +1,32 @@
 ---
-title: "MAnorm2 for quantitatively comparing groups of ChIP-seq samples"
+title: "MAnorm2 for Normalizing and Comparing ChIP-seq Samples"
 author: "Shiqi Tu"
-date: "2019-12-01"
+date: "2021-04-18"
 abstract: >
   Eukaryotic gene transcription is regulated by a large cohort of chromatin
   associated proteins, and inferring their differential binding sites between
   cellular contexts requires a rigorous comparison of the corresponding
-  ChIP-seq data. The package MAnorm2 is developed for quantitatively comparing
+  ChIP-seq samples. The package MAnorm2 is primarily developed for
+  quantitatively comparing
   groups of ChIP-seq samples (e.g., groups of biological replicates
   corresponding to different cellular contexts). Technically, MAnorm2 uses a
-  hierarchical strategy for normalization of ChIP-seq data, and it assesses
+  hierarchical strategy for normalization of ChIP-seq samples, and it assesses
   within-group variability of ChIP-seq signals under an empirical Bayes
   framework, in which MAnorm2 considers the abundance of differential ChIP-seq
   signals between groups of samples and the possibility of different
-  within-group variability between groups. This vignette explains the working
-  principle of MAnorm2 1.0.0 and demonstrates the use of it.
+  within-group variability between groups. 
+  Another capability of MAnorm2 is to identify hypervariable ChIP-seq signals 
+  across samples, which, for example, is essential to dissecting the epigenetic 
+  heterogeneity across cancer patients as well as revealing potential 
+  sub-structures associated with them. This vignette explains the working
+  principle of MAnorm2 1.1.0 and demonstrates the use of it.
 output:
   rmarkdown::html_document:
     highlight: pygments
     toc: true
 bibliography: library.bib
 vignette: >
-  %\VignetteIndexEntry{MAnorm2 for quantitatively comparing groups of ChIP-seq samples}
+  %\VignetteIndexEntry{MAnorm2 for Normalizing and Comparing ChIP-seq Samples}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\usepackage[utf8]{inputenc}
@@ -44,13 +49,15 @@ options(width = 100)
 
 ## The System of MAnorm2 Machinery
 
-The capability of MAnorm2 results primarily from two basic utilities
-implemented in it. One is for the normalization of ChIP-seq data, and the other
+The capabilities of MAnorm2 result primarily from two basic utilities
+implemented in it. 
+One is for the normalization of ChIP-seq samples, and the other
 is for modeling the mean-variance trend associated with normalized ChIP-seq
 signal intensities. Several downstream analyses could be performed based on
 these two utilities, including
 
- * differential ChIP-seq analysis between groups of samples;
+ * differential ChIP-seq analysis between individual samples or
+   groups of samples;
  * identification of genomic regions with hypervariable ChIP-seq signals
    across individual samples or groups of samples;
  * clustering of individual ChIP-seq samples or groups of samples.
@@ -208,6 +215,10 @@ res <- diffTest(conds[[1]], conds[[2]])
 head(res)
 ```
 
+**Note:** rows of the above table of differential analysis results correspond
+to the genomic intervals in `H3K27Ac` one by one with the same order. See also
+a detailed explanation [below](#GenomicCoordinates).
+
 ### Step-by-step Explanation and Visualization
 
 #### Normalization
@@ -215,7 +226,7 @@ head(res)
 MAnorm2 normalizes two individual ChIP-seq samples by removing the overall M-A
 trend (M and A values refer to log2 fold change and average log2 read count,
 respectively) associated with their common peak regions, which are the genomic
-intervals occupied by both of the two samples. For normalization of a set of
+intervals occupied by both of them. For normalization of a set of
 any number of ChIP-seq samples, MAnorm2 selects one of the samples as baseline
 and normalizes each other sample against it. Taking the comparison of H3K27Ac
 ChIP-seq signals between GM12891 and GM12892 LCLs as example, you may choose to
@@ -235,10 +246,15 @@ genders.
 
 By default, MAnorm2 uses the median-ratio strategy [@DESeq] to estimate the
 size factor of each ChIP-seq sample and selects the sample whose log2 size
-factor is closest to 0 as baseline. In practice, you may want to avoid using
+factor is closest to 0 as baseline. In practice, you can avoid using
 a sample with bad quality as baseline by explicitly specifying the `baseline`
-argument of `normalize()`. Check some information regarding the performed
-normalization by
+argument of `normalize()`. Besides, when the number of samples to be normalized
+is large (e.g., >5), you can reduce the variability of normalization results by
+setting `baseline` to `"pseudo-reference"`, in
+which case MAnorm2 constructs a pseudo ChIP-seq profile as baseline
+by "averaging" all the samples (type `?normalize` for details).
+
+Check some information regarding the performed normalization by
 
 ```{r normInfo}
 names(attributes(norm))
@@ -294,6 +310,19 @@ supplying their normalized signal intensities and occupancy states:
 conds <- list(GM12891 = bioCond(norm[5:6], norm[10:11], name = "GM12891"),
               GM12892 = bioCond(norm[7:8], norm[12:13], name = "GM12892"))
 ```
+
+<a name="GenomicCoordinates"/>
+
+**Note:** `bioCond` objects do *not* design a data field to specifically record
+the associated genomic intervals. The list and order of genomic intervals in a
+`bioCond` are the same as with the signal intensities for constructing it and
+will never be changed. In principle, all the MAnorm2 functions accepting
+multiple `bioCond` objects expect them to be associated with the same list and
+order of genomic intervals (e.g., `normBioCond()`), and it is your job to make
+sure of that. Note also that all the MAnorm2 functions applying a statistical
+test to each individual genomic interval generate a table that is associated
+with the same list and order of intervals as with the supplied `bioCond`(s)
+(e.g., `diffTest()`).
 
 We can summarize a `bioCond` by
 
@@ -618,24 +647,50 @@ plotMeanVarCurve(genders3, subset = "non-occupied",
 genders3[[1]]$fit.info$df.prior
 ```
 
+**Note:** in fact, when calling `fitMeanVarCurve()` to fit an MVC,
+`estimatePriorDf()` is automatically invoked for the associated parameter
+estimation. There is also a *robust* version of `estimatePriorDf()`, named
+`estimatePriorDfRobust()`. It renders the estimation procedure robust to
+potential outliers by applying the Winsorization technique [@robustLimma].
+Type `?estimatePriorDfRobust` for details.
+
 <a name="Hypervariable"/>
 
 ## Identifying Hypervariable ChIP-seq Signals
 
-Here we give the standard workflow for calling hypervariable ChIP-seq signals
-across a set of samples. We use all the H3K27Ac ChIP-seq samples as example:
+One of the new changes made in MAnorm2 1.1.0 is the implementation of
+HyperChIP, which is a method developed for identifying genomic intervals
+with hypervariable ChIP-seq signals across a set of samples. Compared with
+the original workflow shown in the vignette for the older MAnorm2 1.0.0,
+HyperChIP has made specific efforts to increase the statistical power for
+identifying hypervariable intervals (refer to `?estParamHyperChIP` for
+details). Here we use all the H3K27Ac ChIP-seq
+samples as an example to demonstrate the standard workflow of HyperChIP:
 
-```{r varTestBioCond}
+```{r HyperChIP}
 # Normalize all ChIP-seq samples once for all.
+# Considering the number of samples in a hypervariable ChIP-seq analysis is
+# typically large, HyperChIP uses a pseudo-reference profile as baseline in the
+# MA normalization process to reduce the variability of normalization results.
 autosome <- !(H3K27Ac$chrom %in% c("chrX", "chrY"))
 norm <- normalize(H3K27Ac, count = 4:8, occupancy = 9:13,
+                  baseline = "pseudo-reference",
                   common.peak.regions = autosome)
 
 # Construct a bioCond to group all the samples.
-cond <- bioCond(norm[4:8], norm[9:13], name = "all")
+cond <- bioCond(norm[4:8], norm[9:13], occupy.num = 1,
+                name = "all")
 
-# Fit an MVC.
-cond <- fitMeanVarCurve(list(cond), method = "local", occupy.only = TRUE)[[1]]
+# Fit an MVC by using local regression.
+# Set "nn = 1" to increase the smoothness of the resulting MVC.
+cond <- fitMeanVarCurve(list(cond), method = "local",
+                        occupy.only = TRUE, args.lp = list(nn = 1))[[1]]
+summary(cond)
+
+# Apply the parameter estimation framework of HyperChIP.
+# Note the dramatic increase in the estimated number of prior degrees of
+# freedom.
+cond <- estParamHyperChIP(cond)
 summary(cond)
 
 # Perform statistical tests.
@@ -647,19 +702,14 @@ The `fold.change` variable gives the ratio of the observed variance of each
 genomic interval to its prior variance. Note that the `pval` variable gives
 *two-sided* *p*-values. Therefore, for the genomic intervals with small
 *p*-values, those associated with a `fold.change` larger than 1 suggest
-hypervariable ChIP-seq signals across samples, and the others suggest very
-stable (i.e., invariant) ChIP-seq signals:
+hypervariable ChIP-seq signals across samples, and the others suggest lowly
+variable or so-called invariant ChIP-seq signals:
 
-```{r plotVarTestBioCond}
+```{r plotVarTestBioCond, fig.show = "hold", fig.height = 4.7, fig.width = 4.7}
 # Visualize the overall test results.
-plot(res, pval = 0.01, col = c("#0000000A", "#FF000040"))
+hist(res$pval, breaks = 100, col = "red")
+plot(res, padj = 0.01)
 ```
-
-Note also that the *p*-values derived by `varTestBioCond()` are relatively
-conserved, as we currently use all the genomic intervals that are used to fit
-MVC to estimate the number of prior degrees of freedom, which means we haven't
-considered the influence of hypervariable and invariant intervals (see
-[@robustLimma] for a detailed discussion of this topic).
 
 You can get one-sided *p*-values for identifying hypervariable ChIP-seq
 signals by
@@ -670,17 +720,17 @@ df
 one.sided.pval <- pf(res$fold.change, df[1], df[2], lower.tail = FALSE)
 ```
 
-Compared with the genomic intervals occupied by all ChIP-seq samples, those
-intervals occupied only by some of the samples should be associated with higher
-variability across the samples and, thus, tend to have more significant
-*p*-values:
+Compared with the genomic intervals occupied by all the ChIP-seq samples, those
+intervals occupied only by part of the samples should be associated with higher
+signal variability and, thus, tend to have more significant *p*-values:
 
-```{r partiallyOccupiedIntervals}
+```{r partiallyOccupiedIntervals, fig.show = "hold", fig.height = 4.7, fig.width = 4.7}
 n <- rowSums(norm[9:13])
 x <- list(All = -log10(one.sided.pval[n == 5]),
           Partially = -log10(one.sided.pval[n > 0 & n < 5]))
 wilcox.test(x$All, x$Partially, alternative = "less")
 boxplot(x, ylab = "-Log10(p-value)")
+boxplot(x, ylab = "-Log10(p-value)", outline = FALSE)
 ```
 
 In practice, you can also call hypervariable signals across groups of ChIP-seq
@@ -691,19 +741,23 @@ into a reference profile (see also the section of
 ## Clustering ChIP-seq Samples
 
 Here we give the standard workflow for performing hierarchical clustering on
-a set of ChIP-seq samples. We use all the H3K27Ac ChIP-seq samples as example:
+a set of ChIP-seq samples. We use all the H3K27Ac ChIP-seq samples as an
+example:
 
 ```{r distBioCond}
 # Normalize all ChIP-seq samples once for all.
 autosome <- !(H3K27Ac$chrom %in% c("chrX", "chrY"))
 norm <- normalize(H3K27Ac, count = 4:8, occupancy = 9:13,
+                  baseline = "pseudo-reference",
                   common.peak.regions = autosome)
 
 # Construct a bioCond to group all the samples.
-cond <- bioCond(norm[4:8], norm[9:13], name = "all")
+cond <- bioCond(norm[4:8], norm[9:13], occupy.num = 1,
+                name = "all")
 
-# Fit an MVC.
-cond <- fitMeanVarCurve(list(cond), method = "local", occupy.only = TRUE)[[1]]
+# Fit an MVC by using local regression.
+cond <- fitMeanVarCurve(list(cond), method = "local",
+                        occupy.only = TRUE, args.lp = list(nn = 1))[[1]]
 
 # Measure the distance between each pair of samples.
 d <- distBioCond(cond, method = "prior")
@@ -715,11 +769,12 @@ plot(hclust(d, method = "average"), hang = -1)
 
 **Note:** `distBioCond()` quantifies the distance between each pair of samples
 contained in the supplied `bioCond`. Each distance derived by `distBioCond()`
-could be interpreted as average (absolute) difference in signal intensity
-across genomic intervals. In the above example, the average fold change of
+could be interpreted as *absolute* difference in signal intensity
+between two samples averaged across genomic intervals.
+In the above example, the average fold change of
 H3K27Ac ChIP-seq signal between the 1st and 2nd replicates of GM12891 is about
-$2^{0.3024156} \approx 1.2$, while the average fold change between the 1st
-replicates of GM12891 and GM12892 is about $2^{0.9229330} \approx 1.9$.
+$2^{0.2790962} \approx 1.2$, while the average fold change between the 1st
+replicates of GM12891 and GM12892 is about $2^{0.8673543} \approx 1.8$.
 Technically, `distBioCond()` calculates a *p*-norm distance for each pair of
 samples while using the reciprocal of variance to weight each genomic interval.
 Suppose $x_{i}$ and $y_{i}$ represent the signal intensities of interval $i$ in
@@ -737,11 +792,12 @@ such intervals should be most helpful for distinguishing between samples:
 
 ```{r distBioCondSubset}
 # Select hypervariable genomic intervals.
+cond <- estParamHyperChIP(cond)
 res <- varTestBioCond(cond)
-f <- res$fold.change > 1 & res$pval < 0.05
+f <- res$fold.change > 1 & res$padj < 0.01
 
 # The hierarchical structure among samples remains unmodified,
-# but note the change of scale of the distances between samples.
+# but note the change of magnitude of the distances between cell lines.
 d2 <- distBioCond(cond, subset = f, method = "prior")
 d2
 plot(hclust(d2, method = "average"), hang = -1)
@@ -800,8 +856,7 @@ To cite MAnorm2 in publications, please use
 
 > Tu, S., et al.,
 > *MAnorm2 for quantitatively comparing groups of ChIP-seq samples*.
-> bioRxiv, 2020: p. 2020.01.07.896894.
-> <https://doi.org/10.1101/2020.01.07.896894>.
+> Genome Res, 2021. **31**(1): p. 131-145.
 
 # Acknowledgments
 
@@ -814,7 +869,7 @@ We would also like to sincerely thank the following individuals, for their
 help and feedback on the MAnorm2 package:
 
 Zhen Shao, Yijing Zhang,
-Mushan Li, Fengxiang Tan, Haojie Chen.
+Mushan Li, Haojie Chen, Fengxiang Tan.
 
 # Session Info
 
