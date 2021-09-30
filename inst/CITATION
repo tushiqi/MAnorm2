@@ -1,6 +1,5 @@
-citHeader("To cite MAnorm2 in publications, please use")
-
-citEntry(entry = "Article",
+citEntry(header = "To cite the MAnorm2 package in publications, please use",
+         entry = "Article",
          title = "MAnorm2 for quantitatively comparing groups of ChIP-seq samples",
          author = personList(as.person("Shiqi Tu"),
                              as.person("Mushan Li"),
@@ -21,4 +20,28 @@ citEntry(entry = "Article",
                              "MAnorm2 for quantitatively comparing groups of ChIP-seq samples.",
                              "Genome Res, 2021. 31(1): p. 131-145."))
 
+
+citEntry(header = paste("If you have performed MA normalization with a pseudo-reference profile as baseline,",
+                        "or have employed a Winsorization-based robust parameter estimation framework,",
+                        "or have performed a hypervariable analysis,",
+                        "please cite additionally"),
+         entry = "Article",
+         title = "HyperChIP for identifying hypervariable signals across ChIP/ATAC-seq samples",
+         author = personList(as.person("Haojie Chen"),
+                             as.person("Shiqi Tu"),
+                             as.person("Chongze Yuan"),
+                             as.person("Feng Tian"),
+                             as.person("Yijing Zhang"),
+                             as.person("Yihua Sun"),
+                             as.person("Zhen Shao")),
+         journal = "bioRxiv",
+         year = "2021",
+         publisher = "Cold Spring Harbor Laboratory",
+         doi = "10.1101/2021.07.27.453915",
+         textVersion = paste("Chen, H., et al.,",
+                             "HyperChIP for identifying hypervariable signals across ChIP/ATAC-seq samples.",
+                             "bioRxiv, 2021: p. 2021.07.27.453915."))
+
+
 citFooter("Thanks for using MAnorm2.")
+
