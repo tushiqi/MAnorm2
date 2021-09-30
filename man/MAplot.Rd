@@ -93,6 +93,7 @@ MAplot(norm[[4]], norm[[5]], norm[[9]], norm[[10]],
        args.legend = list(x = "topright", legend = legend),
        main = "GM12890_rep1 vs. GM12891_rep1")
 abline(h = 0, lwd = 2, lty = 5)
+
 }
 \seealso{
 \code{\link{normalize}} for performing an MA normalization on

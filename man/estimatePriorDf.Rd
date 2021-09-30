@@ -101,7 +101,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## Fit a mean-variance curve treating each gender as a biological condition,
 ## and each individual (i.e., cell line) a replicate.
-
+\donttest{
 # First perform the MA normalization and construct bioConds to represent
 # individuals.
 norm <- normalize(H3K27Ac, 4, 9)
@@ -151,13 +151,14 @@ plotMeanVarCurve(genders3, subset = "all")
 plotMeanVarCurve(genders3, subset = "non-occupied")
 summary(genders3$female)
 }
+}
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-assessing differential expression in microarray experiments}. Stat Appl
+assessing differential expression in microarray experiments.} Stat Appl
 Genet Mol Biol, 2004. \strong{3}: p. Article3.
 
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

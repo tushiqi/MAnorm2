@@ -17,9 +17,14 @@ Safely deduced PCC between \code{(x + y)} and \code{(y - x)}.
 Deduce Pearson Correlation Coefficient between M & A Values
 }
 \examples{
+\dontrun{
+## Private functions involved.
+
 MA.pcc(1:4, 1:4 + c(1, 2, 4, 9))
 
 # The robustness.
 MA.pcc(1, 0)
 MA.pcc(1:4, 2:5)
+}
+
 }

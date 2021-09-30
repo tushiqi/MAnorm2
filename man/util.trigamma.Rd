@@ -32,6 +32,7 @@ util.trigamma(1e8)
 
 trigamma(Inf)
 util.trigamma(Inf)
+
 }
 \seealso{
 \code{\link{inv.trigamma}} for an implementation of the inversion

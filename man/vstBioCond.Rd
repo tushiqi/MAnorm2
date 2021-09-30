@@ -111,7 +111,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## Cluster a set of ChIP-seq samples from different cell lines (i.e.,
 ## individuals).
-
+\donttest{
 # Perform MA normalization and construct a bioCond.
 norm <- normalize(H3K27Ac, 4:8, 9:13)
 cond <- bioCond(norm[4:8], norm[9:13], name = "all")
@@ -141,9 +141,9 @@ res <- varTestBioCond(vst_cond)
 f <- res$fold.change > 1 & res$pval < 0.05
 d2 <- distBioCond(vst_cond, subset = f, method = "none")
 plot(hclust(d2, method = "average"), hang = -1)
-
+}
 ## Cluster a set of individuals.
-
+\donttest{
 # Perform MA normalization and construct bioConds to represent individuals.
 norm <- normalize(H3K27Ac, 4, 9)
 norm <- normalize(norm, 5:6, 10:11)
@@ -180,10 +180,10 @@ res <- varTestBioCond(vst_cond)
 f <- res$fold.change > 1 & res$pval < 0.05
 d2 <- distBioCond(vst_cond, subset = f, method = "none")
 plot(hclust(d2, method = "average"), hang = -1)
-
+}
 ## Perform differential analysis on bioConds that have gone through a
 ## variance-stabilizing transformation.
-
+\donttest{
 # Perform MA normalization and construct bioConds to represent cell lines
 # (i.e., individuals).
 norm <- normalize(H3K27Ac, 4, 9)
@@ -246,6 +246,7 @@ plot(z1, z2, xlab = "Ordinary", ylab = "VSTed")
 abline(a = 0, b = 1, lwd = 2, lty = 5, col = "red")
 cor(z1, z2)
 cor(z1, z2, method = "sp")
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

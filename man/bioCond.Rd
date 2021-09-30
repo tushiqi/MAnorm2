@@ -138,7 +138,7 @@ data(H3K27Ac, package = "MAnorm2")
 attr(H3K27Ac, "metaInfo")
 
 ## Construct a bioCond object for the GM12891 cell line.
-
+\donttest{
 # Apply MA normalization to the ChIP-seq samples of GM12891.
 norm <- normalize(H3K27Ac, 5:6, 10:11)
 
@@ -159,9 +159,10 @@ GM12891_2 <- bioCond(norm[5:6], norm[10:11], name = "GM12891",
 GM12891_3 <- bioCond(norm[5:6], norm[10:11], name = "GM12891",
                      strMatrix = list(diag(c(1, 2))))
 }
+}
 \references{
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-    groups of ChIP-seq samples}. Genome Res, 2021.
+    groups of ChIP-seq samples.} Genome Res, 2021.
     \strong{31}(1): p. 131-145.
 }
 \seealso{

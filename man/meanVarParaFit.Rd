@@ -56,15 +56,15 @@ See "References" for the theoretical foundation of the parametric form.
 }
 \references{
 Robinson, M.D. and G.K. Smyth, \emph{Small-sample estimation of negative
-binomial dispersion, with applications to SAGE data}. Biostatistics, 2008.
+binomial dispersion, with applications to SAGE data.} Biostatistics, 2008.
 \strong{9}(2): p. 321-32.
 
 Love, M.I., W. Huber, and S. Anders, \emph{Moderated estimation of fold
-change and dispersion for RNA-seq data with DESeq2}. Genome Biol, 2014.
+change and dispersion for RNA-seq data with DESeq2.} Genome Biol, 2014.
 \strong{15}(12): p. 550.
 
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{meanVarLocalFit}} for using local regression to fit

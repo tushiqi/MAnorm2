@@ -84,7 +84,7 @@ data(H3K27Ac, package = "MAnorm2")
 attr(H3K27Ac, "metaInfo")
 
 ## Fit and plot a mean-variance curve for GM12891 and GM12892 cell lines.
-
+\donttest{
 # Perform the MA normalization and construct bioConds to represent
 # individuals.
 norm <- normalize(H3K27Ac, 5:6, 10:11)
@@ -106,9 +106,10 @@ plotMeanVarCurve(conds, subset = "occupied")
 plotMeanVarCurve(conds, subset = "occupied",
                  col = scales::alpha(c("blue", "green3"), 0.02))
 }
+}
 \references{
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-    groups of ChIP-seq samples}. Genome Res, 2021.
+    groups of ChIP-seq samples.} Genome Res, 2021.
     \strong{31}(1): p. 131-145.
 }
 \seealso{

@@ -23,10 +23,11 @@ deduction of the method.
 \examples{
 x <- trigamma(1:6)
 vapply(x, inv.trigamma, numeric(1))
+
 }
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-    assessing differential expression in microarray experiments}. Stat Appl
+    assessing differential expression in microarray experiments.} Stat Appl
     Genet Mol Biol, 2004. \strong{3}: p. Article3.
 }
 \seealso{

@@ -68,7 +68,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## Call hypervariable and invariant genomic intervals across biological
 ## replicates of the GM12891 cell line.
-
+\donttest{
 # Perform MA normalization and construct a bioCond to represent GM12891.
 norm <- normalize(H3K27Ac, 5:6, 10:11)
 GM12891 <- bioCond(norm[5:6], norm[10:11], name = "GM12891")
@@ -87,6 +87,7 @@ head(res)
 res <- res[GM12891$occupancy, ]
 res$padj <- p.adjust(res$pval, method = "BH")
 plot(res, col = scales::alpha(c("black", "red"), c(0.04, 0.5)))
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object from a

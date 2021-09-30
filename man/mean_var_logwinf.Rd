@@ -58,6 +58,7 @@ random_logwinf <- function(n, df1, df2, p_low, p_up) {
     c(mean(x), var(x))
 }
 
+# Set parameters.
 n <- 10000
 df1 <- 2
 df2 <- 2 ^ (0:10)
@@ -70,12 +71,14 @@ res1 <- vapply(df2, function(x) random_logwinf(n, df1, x, p_low, p_up),
                numeric(2))
 res2 <- mean_var_logwinf(df1, df2, p_low, p_up)
 
+# Compare mean.
 plot(0:10, res1[1, ], type = "l", lwd = 2, col = "red", xlab = "Log2(df2)",
      ylab = "Mean")
 lines(0:10, res2$mu, lty = 5, lwd = 2, col = "red")
 legend("topright", c("Simulation", "Numerical integration"), lty = c(1, 5),
        lwd = 2, col = "red")
 
+# Compare variance.
 plot(0:10, res1[2, ], type = "l", lwd = 2, col = "red", xlab = "Log2(df2)",
      ylab = "Var")
 lines(0:10, res2$v, lty = 5, lwd = 2, col = "red")
@@ -85,11 +88,12 @@ legend("topright", c("Simulation", "Numerical integration"), lty = c(1, 5),
 # When df2 is Inf.
 random_logwinf(n, df1, Inf, p_low, p_up)
 mean_var_logwinf(df1, Inf, p_low, p_up)
+
 }
 \references{
 Phipson, B., et al., \emph{Robust Hyperparameter Estimation
     Protects against Hypervariable Genes and Improves Power to Detect
-    Differential Expression}. Annals of Applied Statistics, 2016.
+    Differential Expression.} Annals of Applied Statistics, 2016.
     \strong{10}(2): p. 946-963.
 }
 \seealso{

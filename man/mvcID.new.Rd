@@ -18,8 +18,13 @@ the function returns the current time via \code{\link[base]{Sys.time}},
 appended by a randomly generated serial number.
 }
 \examples{
+\dontrun{
+## Private functions involved.
+
 mvcID.new()
 mvcID.new()
 Sys.sleep(1.1)
 mvcID.new()
+}
+
 }

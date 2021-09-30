@@ -89,6 +89,7 @@ GM12892_2 <- setPriorDf(list(GM12892), Inf, occupy.only = TRUE)[[1]]
 # all the time.
 summary(GM12892)
 summary(GM12892_2)
+
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

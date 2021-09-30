@@ -61,7 +61,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## Call differential genomic intervals among GM12890, GM12891 and GM12892
 ## cell lines and visualize the overall analysis results.
-
+\donttest{
 # Perform MA normalization and construct bioConds to represent the cell
 # lines.
 norm <- normalize(H3K27Ac, 4, 9)
@@ -87,6 +87,7 @@ head(res)
 
 # Visualize the overall analysis results.
 plot(res, padj = 1e-6)
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

@@ -84,6 +84,9 @@ weights are the numbers of genomic intervals (in the \code{bioCond}s) minus
 1 that are used to calculate FZ statistics.
 }
 \examples{
+\dontrun{
+## Private functions involved.
+
 # For generating random FZ statistics with outliers. Note that the argument
 # scaling controls how extreme outliers are.
 rFZ <- function(n, var.ratio, m, d0, p_low, p_up, scaling) {
@@ -149,10 +152,12 @@ res2
 scaleMeanVarCurveRobust(z[1], m[1], res2, p_low, p_up)
 scaleMeanVarCurveRobust(z[2], m[2], res2, p_low, p_up)
 }
+
+}
 \references{
 Phipson, B., et al., \emph{Robust Hyperparameter Estimation
     Protects against Hypervariable Genes and Improves Power to Detect
-    Differential Expression}. Annals of Applied Statistics, 2016.
+    Differential Expression.} Annals of Applied Statistics, 2016.
     \strong{10}(2): p. 946-963.
 }
 \seealso{

@@ -89,7 +89,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## Construct two bioConds comprised of the male and female individuals,
 ## respectively.
-
+\donttest{
 # First, normalize ChIP-seq samples separately for each individual (i.e.,
 # cell line).
 norm <- normalize(H3K27Ac, 4, 9)
@@ -111,6 +111,7 @@ female <- cmbBioCond(conds[c(1, 3)], name = "female")
 male <- cmbBioCond(conds[2], name = "male")
 summary(female)
 summary(male)
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object from a

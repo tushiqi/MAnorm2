@@ -62,7 +62,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## First perform a normalization within each cell line, and then normalize
 ## across cell lines.
-
+\donttest{
 # Normalize samples separately for each cell line.
 norm <- normalizeBySizeFactors(H3K27Ac, 4)
 norm <- normalizeBySizeFactors(norm, 5:6,
@@ -82,9 +82,10 @@ attr(conds, "size.factor")
 MAplot(conds[[1]], conds[[2]], main = "GM12890 vs. GM12891")
 abline(h = 0, lwd = 2, lty = 5)
 }
+}
 \references{
 Anders, S. and W. Huber, \emph{Differential expression analysis
-    for sequence count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
+    for sequence count data.} Genome Biol, 2010. \strong{11}(10): p. R106.
 }
 \seealso{
 \code{\link{normalizeBySizeFactors}} for normalizing

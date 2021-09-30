@@ -7,7 +7,7 @@
 \usage{
 diffTest(x, y, ...)
 
-\method{diffTest}{bioCond}(x, y, min.var = 0, df.prior = NULL)
+\method{diffTest}{bioCond}(x, y, min.var = 0, df.prior = NULL, ...)
 }
 \arguments{
 \item{x, y}{\code{x} is any R object for which a \code{diffTest} method has
@@ -16,7 +16,7 @@ and \code{y} are two \code{bioCond} objects to be compared. They must be
 associated with the same mean-variance curve (i.e., they must have the
 same \code{"mvcID"}; see also \code{\link{fitMeanVarCurve}}).}
 
-\item{...}{Arguments to be passed to specific methods.}
+\item{...}{Arguments passed to specific methods or from other methods.}
 
 \item{min.var}{Lower bound of variances read from the mean-variance
 curve. Any variance read from the curve less than \code{min.var} will be
@@ -112,7 +112,7 @@ re-adjusting
 \examples{
 data(H3K27Ac, package = "MAnorm2")
 attr(H3K27Ac, "metaInfo")
-
+\donttest{
 ## Make a comparison between GM12891 and GM12892 cell lines.
 
 # Perform MA normalization and construct bioConds to represent the two cell
@@ -195,10 +195,10 @@ z2[res2$Mval > 0] <- -z2[res2$Mval > 0]
 # analyses.
 cor(z1, z2)
 cor(z1, z2, method = "sp")
-
+}
 ## Make a comparison between the male and female genders by treating each
 ## individual (i.e., cell line) as a replicate.
-
+\donttest{
 # First perform the MA normalization and construct bioConds to represent
 # individuals.
 norm <- normalize(H3K27Ac, 4, 9)
@@ -235,13 +235,14 @@ abline(h = 0, lwd = 2, lty = 5, col = "green3")
 hist(res$pval[H3K27Ac$chrom == "chrY"], col = "red",
      main = "P-values in Y chromosome")
 }
+}
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-assessing differential expression in microarray experiments}. Stat Appl
+assessing differential expression in microarray experiments.} Stat Appl
 Genet Mol Biol, 2004. \strong{3}: p. Article3.
 
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

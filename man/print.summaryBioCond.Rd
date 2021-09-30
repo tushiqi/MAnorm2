@@ -4,15 +4,17 @@
 \alias{print.summaryBioCond}
 \title{Print a \code{summaryBioCond} Object}
 \usage{
-\method{print}{summaryBioCond}(x)
+\method{print}{summaryBioCond}(x, ...)
 }
 \arguments{
 \item{x}{An object of class \code{"summaryBioCond"}, typically obtained by
 passing a \code{\link{bioCond}} object to the
 \code{\link[=summary.bioCond]{summary}} function.}
+
+\item{...}{Arguments passed from other methods.}
 }
 \value{
-The function returns its argument invisibly.
+The function returns \code{x} invisibly.
 }
 \description{
 This function prints the \code{\link[=summary.bioCond]{summary}} result of a
@@ -27,7 +29,7 @@ data(H3K27Ac, package = "MAnorm2")
 attr(H3K27Ac, "metaInfo")
 
 ## Print summary results of bioConds that correspond to individuals.
-
+\donttest{
 # Perform the MA normalization and construct bioConds to represent
 # individuals.
 norm <- normalize(H3K27Ac, 4, 9)
@@ -50,6 +52,7 @@ conds <- fitMeanVarCurve(conds, method = "parametric", occupy.only = TRUE)
 print(summary(conds[[1]]))
 print(summary(conds[[2]]))
 print(summary(conds[[3]]))
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

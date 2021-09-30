@@ -58,11 +58,11 @@ exponential.
 }
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-assessing differential expression in microarray experiments}. Stat Appl
+assessing differential expression in microarray experiments.} Stat Appl
 Genet Mol Biol, 2004. \strong{3}: p. Article3.
 
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

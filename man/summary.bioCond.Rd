@@ -4,10 +4,12 @@
 \alias{summary.bioCond}
 \title{Summarize a \code{bioCond} Object}
 \usage{
-\method{summary}{bioCond}(x)
+\method{summary}{bioCond}(object, ...)
 }
 \arguments{
-\item{x}{A \code{\link{bioCond}} object.}
+\item{object}{A \code{\link{bioCond}} object.}
+
+\item{...}{Arguments passed from other methods.}
 }
 \value{
 The method returns an object of class \code{"summaryBioCond"}, for
@@ -27,7 +29,7 @@ data(H3K27Ac, package = "MAnorm2")
 attr(H3K27Ac, "metaInfo")
 
 ## Summarize bioConds that correspond to individuals.
-
+\donttest{
 # Perform the MA normalization and construct bioConds to represent
 # individuals.
 norm <- normalize(H3K27Ac, 4, 9)
@@ -51,6 +53,7 @@ summary(conds[[1]])
 summary(conds[[2]])
 summary(conds[[3]])
 str(summary(conds[[3]]))
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object.

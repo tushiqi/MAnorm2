@@ -122,18 +122,13 @@ attr(H3K27Ac, "metaInfo")
 
 ## Call hypervariable and invariant genomic intervals across biological
 ## replicates of the GM12891 cell line.
+\donttest{
+# Perform MA normalization and construct a bioCond to represent GM12891.
+norm <- normalize(H3K27Ac, 5:6, 10:11)
+GM12891 <- bioCond(norm[5:6], norm[10:11], name = "GM12891")
 
-# Perform MA normalization and construct bioConds to represent cell lines.
-norm <- normalize(H3K27Ac, 4, 9)
-norm <- normalize(norm, 5:6, 10:11)
-norm <- normalize(norm, 7:8, 12:13)
-conds <- list(GM12890 = bioCond(norm[4], norm[9], name = "GM12890"),
-              GM12891 = bioCond(norm[5:6], norm[10:11], name = "GM12891"),
-              GM12892 = bioCond(norm[7:8], norm[12:13], name = "GM12892"))
-
-# Fit a mean-variance curve for the GM12891 cell line using the parametric
-# method.
-GM12891 <- fitMeanVarCurve(conds[2], method = "parametric",
+# Fit a mean-variance curve for GM12891 using the parametric method.
+GM12891 <- fitMeanVarCurve(list(GM12891), method = "parametric",
                            occupy.only = TRUE)[[1]]
 summary(GM12891)
 plotMeanVarCurve(list(GM12891), subset = "occupied")
@@ -146,8 +141,16 @@ head(res)
 res <- res[GM12891$occupancy, ]
 res$padj <- p.adjust(res$pval, method = "BH")
 plot(res, padj = 0.2, col = alpha(c("black", "red"), c(0.04, 0.5)))
-
+}
 ## Call hypervariable and invariant genomic intervals across cell lines.
+\donttest{
+# Perform MA normalization and construct bioConds to represent cell lines.
+norm <- normalize(H3K27Ac, 4, 9)
+norm <- normalize(norm, 5:6, 10:11)
+norm <- normalize(norm, 7:8, 12:13)
+conds <- list(GM12890 = bioCond(norm[4], norm[9], name = "GM12890"),
+              GM12891 = bioCond(norm[5:6], norm[10:11], name = "GM12891"),
+              GM12892 = bioCond(norm[7:8], norm[12:13], name = "GM12892"))
 
 # Normalize the cell lines.
 autosome <- !(H3K27Ac$chrom \%in\% c("chrX", "chrY"))
@@ -196,9 +199,10 @@ res2 <- varTestBioCond(LCLs2)
 hist(res$pval, breaks = 100, col = "red")
 hist(res2$pval, breaks = 100, col = "red")
 }
+}
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-    assessing differential expression in microarray experiments}. Stat Appl
+    assessing differential expression in microarray experiments.} Stat Appl
     Genet Mol Biol, 2004. \strong{3}: p. Article3.
 }
 \seealso{

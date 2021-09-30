@@ -61,7 +61,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## Make a comparison between GM12891 and GM12892 cell lines and create an MA
 ## plot on the comparison results.
-
+\donttest{
 # Perform MA normalization and construct bioConds to represent the two cell
 # lines.
 norm <- normalize(H3K27Ac, 5:6, 10:11)
@@ -86,6 +86,7 @@ head(res)
 # Visualize the overall test results.
 MAplot(res, padj = 0.001)
 abline(h = 0, lwd = 2, lty = 5, col = "green3")
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

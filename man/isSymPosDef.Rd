@@ -27,6 +27,7 @@ isSymPosDef(x)
 # Not positive definite.
 x <- matrix(c(1, 0.5, 0.5, 0.2), nrow = 2)
 isSymPosDef(x)
+
 }
 \seealso{
 \code{\link[base]{isSymmetric}} for testing if a matrix is

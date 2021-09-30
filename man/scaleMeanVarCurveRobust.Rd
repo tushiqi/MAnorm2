@@ -74,11 +74,12 @@ exponential.
 \examples{
 # Refer to "Examples" given in the help page for the function
 # estimateD0Robust.
+
 }
 \references{
 Phipson, B., et al., \emph{Robust Hyperparameter Estimation
     Protects against Hypervariable Genes and Improves Power to Detect
-    Differential Expression}. Annals of Applied Statistics, 2016.
+    Differential Expression.} Annals of Applied Statistics, 2016.
     \strong{10}(2): p. 946-963.
 }
 \seealso{

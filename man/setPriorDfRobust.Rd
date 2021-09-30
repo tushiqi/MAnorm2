@@ -100,14 +100,15 @@ GM12892_3 <- setPriorDfRobust(list(GM12892), Inf, occupy.only = TRUE)[[1]]
 # factor between the ordinary routine and the robust one.
 summary(GM12892_2)
 summary(GM12892_3)
+
 }
 \references{
-Tukey, J.W., \emph{The future of data analysis}. The annals of
+Tukey, J.W., \emph{The future of data analysis.} The annals of
 mathematical statistics, 1962. \strong{33}(1): p. 1-67.
 
 Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 Protects against Hypervariable Genes and Improves Power to Detect
-Differential Expression}. Annals of Applied Statistics, 2016.
+Differential Expression.} Annals of Applied Statistics, 2016.
 \strong{10}(2): p. 946-963.
 }
 \seealso{

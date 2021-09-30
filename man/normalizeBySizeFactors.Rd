@@ -126,7 +126,7 @@ abline(h = 0, lwd = 2, lty = 5)
 ## Alternatively, perform the normalization first within each cell line, and
 ## then normalize across cell lines. In practice, this strategy is more
 ## recommended than the aforementioned one.
-
+\donttest{
 # Normalize samples separately for each cell line.
 norm <- normalizeBySizeFactors(H3K27Ac, 4)
 norm <- normalizeBySizeFactors(norm, 5:6,
@@ -146,9 +146,10 @@ attr(conds, "size.factor")
 MAplot(conds[[1]], conds[[2]], main = "GM12890 vs. GM12891")
 abline(h = 0, lwd = 2, lty = 5)
 }
+}
 \references{
 Anders, S. and W. Huber, \emph{Differential expression analysis
-    for sequence count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
+    for sequence count data.} Genome Biol, 2010. \strong{11}(10): p. R106.
 }
 \seealso{
 \code{\link{normalize}} for performing an MA normalization on

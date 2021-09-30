@@ -128,7 +128,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## Cluster a set of ChIP-seq samples from different cell lines (i.e.,
 ## individuals).
-
+\donttest{
 # Perform MA normalization and construct a bioCond.
 norm <- normalize(H3K27Ac, 4:8, 9:13)
 cond <- bioCond(norm[4:8], norm[9:13], name = "all")
@@ -166,9 +166,9 @@ res <- varTestBioCond(vst_cond)
 f <- res$fold.change > 1 & res$pval < 0.05
 d4 <- distBioCond(vst_cond, subset = f, method = "none")
 plot(hclust(d4, method = "average"), hang = -1)
-
+}
 ## Cluster a set of individuals.
-
+\donttest{
 # Perform MA normalization and construct bioConds to represent individuals.
 norm <- normalize(H3K27Ac, 4, 9)
 norm <- normalize(norm, 5:6, 10:11)
@@ -198,9 +198,10 @@ f <- res$fold.change > 1 & res$pval < 0.05
 d2 <- distBioCond(cond, subset = f, method = "prior")
 plot(hclust(d2, method = "average"), hang = -1)
 }
+}
 \references{
 Law, C.W., et al., \emph{voom: Precision weights unlock linear
-    model analysis tools for RNA-seq read counts}. Genome Biol, 2014.
+    model analysis tools for RNA-seq read counts.} Genome Biol, 2014.
     \strong{15}(2): p. R29.
 }
 \seealso{

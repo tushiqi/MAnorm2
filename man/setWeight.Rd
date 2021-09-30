@@ -78,10 +78,11 @@ GM12891_2 <- setWeight(GM12891, weight = c(1, 0.5))
 # Equivalently, you can achieve the same effect by setting the strMatrix
 # parameter.
 GM12891_3 <- setWeight(GM12891, strMatrix = list(diag(c(1, 2))))
+
 }
 \references{
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-    groups of ChIP-seq samples}. Genome Res, 2021.
+    groups of ChIP-seq samples.} Genome Res, 2021.
     \strong{31}(1): p. 131-145.
 }
 \seealso{

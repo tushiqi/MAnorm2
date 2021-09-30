@@ -145,6 +145,9 @@ analysis. For a complete list of \code{MAnorm2} functions, use
 
 \references{
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-    groups of ChIP-seq samples}. Genome Res, 2021.
-    \strong{31}(1): p. 131-145.
+groups of ChIP-seq samples.} Genome Res, 2021.
+\strong{31}(1): p. 131-145.
+
+Chen, H., et al., \emph{HyperChIP for identifying hypervariable signals
+across ChIP/ATAC-seq samples.} bioRxiv, 2021: p. 2021.07.27.453915.
 }

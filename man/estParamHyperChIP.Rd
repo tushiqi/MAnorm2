@@ -75,7 +75,7 @@ data(H3K27Ac, package = "MAnorm2")
 attr(H3K27Ac, "metaInfo")
 
 ## Treat all the samples as independent and perform a HyperChIP analysis.
-
+\donttest{
 # Use a pseudo-reference profile as baseline in the MA normalization
 # process.
 autosome <- !(H3K27Ac$chrom \%in\% c("chrX", "chrY"))
@@ -102,13 +102,14 @@ head(res)
 hist(res$pval, breaks = 100, col = "red")
 plot(res)
 }
+}
 \references{
-Tukey, J.W., \emph{The future of data analysis}. The annals of
+Tukey, J.W., \emph{The future of data analysis.} The annals of
 mathematical statistics, 1962. \strong{33}(1): p. 1-67.
 
 Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 Protects against Hypervariable Genes and Improves Power to Detect
-Differential Expression}. Annals of Applied Statistics, 2016.
+Differential Expression.} Annals of Applied Statistics, 2016.
 \strong{10}(2): p. 946-963.
 }
 \seealso{

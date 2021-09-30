@@ -66,6 +66,7 @@ plot(x)
 
 # Use break points symmetric about 0.
 plot(x, symbreaks = TRUE)
+
 }
 \seealso{
 \code{\link[gplots]{colorpanel}} for generating a sequence of

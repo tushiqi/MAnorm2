@@ -85,7 +85,7 @@ data(H3K27Ac, package = "MAnorm2")
 attr(H3K27Ac, "metaInfo")
 
 ## Estimate the relative variance ratio factors of cell lines.
-
+\donttest{
 # Perform the MA normalization and construct bioConds to represent cell
 # lines.
 norm <- normalize(H3K27Ac, 4, 9)
@@ -103,9 +103,10 @@ estimateVarRatio(conds)
 # Explicitly specify the base bioCond.
 estimateVarRatio(conds, base.cond = "GM12891")
 }
+}
 \references{
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-    groups of ChIP-seq samples}. Genome Res, 2021.
+    groups of ChIP-seq samples.} Genome Res, 2021.
     \strong{31}(1): p. 131-145.
 }
 \seealso{

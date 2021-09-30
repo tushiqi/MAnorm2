@@ -4,13 +4,15 @@
 \alias{print.bioCond}
 \title{Print a \code{bioCond} Object}
 \usage{
-\method{print}{bioCond}(x)
+\method{print}{bioCond}(x, ...)
 }
 \arguments{
 \item{x}{A \code{\link{bioCond}} object.}
+
+\item{...}{Arguments passed from other methods.}
 }
 \value{
-The function returns its argument invisibly.
+The function returns \code{x} invisibly.
 }
 \description{
 This function prints its argument, which is a \code{\link{bioCond}} object,
@@ -25,7 +27,7 @@ data(H3K27Ac, package = "MAnorm2")
 attr(H3K27Ac, "metaInfo")
 
 ## Print bioConds that correspond to individuals.
-
+\donttest{
 # Perform the MA normalization and construct bioConds to represent
 # individuals.
 norm <- normalize(H3K27Ac, 4, 9)
@@ -41,6 +43,7 @@ conds <- normBioCond(conds, common.peak.regions = autosome)
 print(conds[[1]])
 print(conds[[2]])
 print(conds[[3]])
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object.

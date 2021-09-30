@@ -68,7 +68,7 @@ data(H3K27Ac, package = "MAnorm2")
 attr(H3K27Ac, "metaInfo")
 
 ## Create MA scatter plots for the comparisons between individuals.
-
+\donttest{
 # Perform the MA normalization and construct bioConds to represent
 # individuals.
 norm <- normalize(H3K27Ac, 4, 9)
@@ -87,6 +87,7 @@ MAplot(conds[[1]], conds[[3]], main = "GM12890 vs. GM12892")
 abline(h = 0, lwd = 2, lty = 5)
 MAplot(conds[[2]], conds[[3]], main = "GM12891 vs. GM12892")
 abline(h = 0, lwd = 2, lty = 5)
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

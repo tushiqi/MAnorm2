@@ -181,7 +181,7 @@ abline(h = 0, lwd = 2, lty = 5)
 ## Alternatively, apply MA normalization first within each cell line, and
 ## then normalize across cell lines. In practice, this strategy is more
 ## recommended than the aforementioned one.
-
+\donttest{
 # Normalize samples separately for each cell line.
 norm <- normalize(H3K27Ac, 4, 9)
 norm <- normalize(norm, 5:6, 10:11)
@@ -203,9 +203,10 @@ plot(attr(conds, "MA.cor"), symbreaks = TRUE, margins = c(8, 8))
 MAplot(conds[[1]], conds[[2]], main = "GM12890 vs. GM12891")
 abline(h = 0, lwd = 2, lty = 5)
 }
+}
 \references{
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-    groups of ChIP-seq samples}. Genome Res, 2021.
+    groups of ChIP-seq samples.} Genome Res, 2021.
     \strong{31}(1): p. 131-145.
 }
 \seealso{

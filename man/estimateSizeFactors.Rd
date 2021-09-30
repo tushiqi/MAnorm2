@@ -39,10 +39,11 @@ estimateSizeFactors(H3K27Ac[4:8])
 
 # Use only the genomic intervals occupied by all the ChIP-seq samples.
 estimateSizeFactors(H3K27Ac[4:8], subset = apply(H3K27Ac[9:13], 1, all))
+
 }
 \references{
 Anders, S. and W. Huber, \emph{Differential expression analysis
-    for sequence count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
+    for sequence count data.} Genome Biol, 2010. \strong{11}(10): p. R106.
 }
 \seealso{
 \code{\link{normalize}} for the MA normalization process.

@@ -63,10 +63,10 @@ for each of these intervals, this dataset records its raw read count and
 enrichment status in each of the samples.
 }
 \references{
-Zhang, Y., et al., \emph{Model-based analysis of ChIP-Seq (MACS)}. Genome
+Zhang, Y., et al., \emph{Model-based analysis of ChIP-Seq (MACS).} Genome
 Biol, 2008. \strong{9}(9): p. R137.
 
 Kasowski, M., et al., \emph{Extensive variation in chromatin states across
-humans}. Science, 2013. \strong{342}(6159): p. 750-2.
+humans.} Science, 2013. \strong{342}(6159): p. 750-2.
 }
 \keyword{datasets}

@@ -109,7 +109,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## Fit a mean-variance curve based on the GM12891 cell line and associate
 ## the resulting curve with the other two cell lines.
-
+\donttest{
 # Perform the MA normalization and construct bioConds to represent cell
 # lines.
 norm <- normalize(H3K27Ac, 4, 9)
@@ -140,10 +140,10 @@ plotMeanVarCurve(conds[3], subset = "occupied")
 # GM12890).
 conds2 <- estimatePriorDf(conds, occupy.only = TRUE)
 summary(conds2[[1]])
-
+}
 ## Make a comparison between GM12891 and GM12892 cell lines using only their
 ## first replicates.
-
+\donttest{
 # Perform MA normalization and construct bioConds to represent the two cell
 # lines.
 autosome <- !(H3K27Ac$chrom \%in\% c("chrX", "chrY"))
@@ -176,6 +176,7 @@ res <- diffTest(conds[[1]], conds[[2]])
 head(res)
 MAplot(res, pval = 0.01)
 abline(h = 0, lwd = 2, lty = 5, col = "green3")
+}
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object from a

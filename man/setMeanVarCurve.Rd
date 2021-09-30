@@ -100,7 +100,7 @@ attr(H3K27Ac, "metaInfo")
 
 ## Perform differential analysis on bioConds that have gone through a
 ## variance-stabilizing transformation.
-
+\donttest{
 # Perform MA normalization and construct bioConds to represent cell lines
 # (i.e., individuals).
 norm <- normalize(H3K27Ac, 4, 9)
@@ -164,17 +164,18 @@ abline(a = 0, b = 1, lwd = 2, lty = 5, col = "red")
 cor(z1, z2)
 cor(z1, z2, method = "sp")
 }
+}
 \references{
 Smyth, G.K., \emph{Linear models and empirical bayes methods for
-assessing differential expression in microarray experiments}. Stat Appl
+assessing differential expression in microarray experiments.} Stat Appl
 Genet Mol Biol, 2004. \strong{3}: p. Article3.
 
 Law, C.W., et al., \emph{voom: Precision weights unlock linear model
-analysis tools for RNA-seq read counts}. Genome Biol, 2014.
+analysis tools for RNA-seq read counts.} Genome Biol, 2014.
 \strong{15}(2): p. R29.
 
 Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object from a

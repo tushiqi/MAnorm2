@@ -105,7 +105,7 @@ attr(H3K27Ac, "metaInfo")
 ## Estimate parameters regarding the associated mean-variance curve in a
 ## robust manner. Here we treat each cell line (i.e., individual) as a
 ## biological condition.
-
+\donttest{
 # Perform MA normalization and construct bioConds to represent cell lines.
 norm <- normalize(H3K27Ac, 4, 9)
 norm <- normalize(norm, 5:6, 10:11)
@@ -128,13 +128,14 @@ conds2 <- estimatePriorDfRobust(conds, occupy.only = TRUE)
 sapply(conds, function(x) c(x$fit.info$df.prior, x$fit.info$ratio.var))
 sapply(conds2, function(x) c(x$fit.info$df.prior, x$fit.info$ratio.var))
 }
+}
 \references{
-Tukey, J.W., \emph{The future of data analysis}. The annals of
+Tukey, J.W., \emph{The future of data analysis.} The annals of
 mathematical statistics, 1962. \strong{33}(1): p. 1-67.
 
 Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 Protects against Hypervariable Genes and Improves Power to Detect
-Differential Expression}. Annals of Applied Statistics, 2016.
+Differential Expression.} Annals of Applied Statistics, 2016.
 \strong{10}(2): p. 946-963.
 }
 \seealso{
