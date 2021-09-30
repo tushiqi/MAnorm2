@@ -1,7 +1,7 @@
 # Functions in this file are for fitting, setting and extending a
 # mean-variance curve.
 #
-# Last update: 2021-03-30
+# Last update: 2021-09-10
 
 
 #' Fit Mean-Variance Trend by Local Regression
@@ -101,15 +101,15 @@ meanVarLocalFit <- function(x, y, weight, range.residual = c(1e-4, 15),
 #'     attached.
 #' @references
 #' Robinson, M.D. and G.K. Smyth, \emph{Small-sample estimation of negative
-#' binomial dispersion, with applications to SAGE data}. Biostatistics, 2008.
+#' binomial dispersion, with applications to SAGE data.} Biostatistics, 2008.
 #' \strong{9}(2): p. 321-32.
 #'
 #' Love, M.I., W. Huber, and S. Anders, \emph{Moderated estimation of fold
-#' change and dispersion for RNA-seq data with DESeq2}. Genome Biol, 2014.
+#' change and dispersion for RNA-seq data with DESeq2.} Genome Biol, 2014.
 #' \strong{15}(12): p. 550.
 #'
 #' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#' ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 #'
 #' @seealso \code{\link{meanVarLocalFit}} for using local regression to fit
 #'     a mean-variance curve; \code{\link{fitMeanVarCurve}} for an interface
@@ -223,7 +223,7 @@ meanVarParaFit <- function(x, y, weight, range.residual = c(1e-4, 15),
 #'     that of \code{cond1}. Note that the function returns \code{NA} if there
 #'     are not sufficient invariant intervals for estimating it.
 #' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     groups of ChIP-seq samples.} Genome Res, 2021.
 #'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{setWeight}} for a detailed description of structure matrix;
@@ -236,7 +236,7 @@ meanVarParaFit <- function(x, y, weight, range.residual = c(1e-4, 15),
 #' attr(H3K27Ac, "metaInfo")
 #'
 #' ## Compare variance ratio factor between cell lines.
-#'
+#' \donttest{
 #' # Perform the MA normalization and construct bioConds to represent cell
 #' # lines.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -254,6 +254,7 @@ meanVarParaFit <- function(x, y, weight, range.residual = c(1e-4, 15),
 #' # Such a comparison is only possible when both bioConds have replicate
 #' # samples.
 #' varRatio(conds$GM12891, conds$GM12890)
+#' }
 varRatio <- function(cond1, cond2, invariant = NULL) {
     if (is.null(invariant)) {
         f <- cond1$occupancy & cond2$occupancy
@@ -331,7 +332,7 @@ varRatio <- function(cond1, cond2, invariant = NULL) {
 #'         with no replicate samples. Present only when it's ever been used.}
 #'     }
 #' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     groups of ChIP-seq samples.} Genome Res, 2021.
 #'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve for
@@ -343,7 +344,7 @@ varRatio <- function(cond1, cond2, invariant = NULL) {
 #' attr(H3K27Ac, "metaInfo")
 #'
 #' ## Estimate the relative variance ratio factors of cell lines.
-#'
+#' \donttest{
 #' # Perform the MA normalization and construct bioConds to represent cell
 #' # lines.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -360,6 +361,7 @@ varRatio <- function(cond1, cond2, invariant = NULL) {
 #'
 #' # Explicitly specify the base bioCond.
 #' estimateVarRatio(conds, base.cond = "GM12891")
+#' }
 estimateVarRatio <- function(conds, base.cond = NULL, subset = NULL,
                              invariant = NULL, no.rep.rv = NULL) {
     # Check conds
@@ -729,18 +731,18 @@ Use the one for no-replicate conditions", cond$name))
 #'
 #' @references
 #' Smyth, G.K., \emph{Linear models and empirical bayes methods for assessing
-#' differential expression in microarray experiments}. Stat Appl Genet Mol
+#' differential expression in microarray experiments.} Stat Appl Genet Mol
 #' Biol, 2004. \strong{3}: p. Article3.
 #'
 #' Anders, S. and W. Huber, \emph{Differential expression analysis for sequence
-#' count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
+#' count data.} Genome Biol, 2010. \strong{11}(10): p. R106.
 #'
 #' Law, C.W., et al., \emph{voom: Precision weights unlock linear model
-#' analysis tools for RNA-seq read counts}. Genome Biol, 2014.
+#' analysis tools for RNA-seq read counts.} Genome Biol, 2014.
 #' \strong{15}(2): p. R29.
 #'
 #' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#' ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object from a
 #'     set of ChIP-seq samples; \code{\link{normalize}} for performing an MA
@@ -778,7 +780,7 @@ Use the one for no-replicate conditions", cond$name))
 #' @examples
 #' data(H3K27Ac, package = "MAnorm2")
 #' attr(H3K27Ac, "metaInfo")
-#'
+#' \donttest{
 #' ## Fit a mean-variance curve treating each cell line (i.e., individual) as a
 #' ## biological condition.
 #'
@@ -851,6 +853,7 @@ Use the one for no-replicate conditions", cond$name))
 #' plotMeanVarCurve(genders3, subset = "all")
 #' plotMeanVarCurve(genders3, subset = "non-occupied")
 #' summary(genders3$female)
+#' }
 fitMeanVarCurve <- function(conds, ratio.var = estimateVarRatio(conds),
                             method = c("parametric fit", "local regression"),
                             occupy.only = TRUE, range.residual = c(1e-4, 15),
@@ -993,15 +996,15 @@ Cannot fit the mean-variance curve")
 #'     conditions.
 #' @references
 #' Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#' assessing differential expression in microarray experiments}. Stat Appl
+#' assessing differential expression in microarray experiments.} Stat Appl
 #' Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #'
 #' Law, C.W., et al., \emph{voom: Precision weights unlock linear model
-#' analysis tools for RNA-seq read counts}. Genome Biol, 2014.
+#' analysis tools for RNA-seq read counts.} Genome Biol, 2014.
 #' \strong{15}(2): p. R29.
 #'
 #' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#' ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object from a
 #'     set of ChIP-seq samples; \code{\link{fitMeanVarCurve}} for fitting a
@@ -1020,7 +1023,7 @@ Cannot fit the mean-variance curve")
 #'
 #' ## Perform differential analysis on bioConds that have gone through a
 #' ## variance-stabilizing transformation.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct bioConds to represent cell lines
 #' # (i.e., individuals).
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -1083,6 +1086,7 @@ Cannot fit the mean-variance curve")
 #' abline(a = 0, b = 1, lwd = 2, lty = 5, col = "red")
 #' cor(z1, z2)
 #' cor(z1, z2, method = "sp")
+#' }
 setMeanVarCurve <- function(conds, predict, occupy.only = TRUE, method = "NA",
                             ratio.var = estimateVarRatio(conds), .call = NULL) {
     # Check conds
@@ -1230,7 +1234,7 @@ setMeanVarCurve <- function(conds, predict, occupy.only = TRUE, method = "NA",
 #'
 #' ## Fit a mean-variance curve based on the GM12891 cell line and associate
 #' ## the resulting curve with the other two cell lines.
-#'
+#' \donttest{
 #' # Perform the MA normalization and construct bioConds to represent cell
 #' # lines.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -1261,10 +1265,10 @@ setMeanVarCurve <- function(conds, predict, occupy.only = TRUE, method = "NA",
 #' # GM12890).
 #' conds2 <- estimatePriorDf(conds, occupy.only = TRUE)
 #' summary(conds2[[1]])
-#'
+#' }
 #' ## Make a comparison between GM12891 and GM12892 cell lines using only their
 #' ## first replicates.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct bioConds to represent the two cell
 #' # lines.
 #' autosome <- !(H3K27Ac$chrom %in% c("chrX", "chrY"))
@@ -1297,6 +1301,7 @@ setMeanVarCurve <- function(conds, predict, occupy.only = TRUE, method = "NA",
 #' head(res)
 #' MAplot(res, pval = 0.01)
 #' abline(h = 0, lwd = 2, lty = 5, col = "green3")
+#' }
 extendMeanVarCurve <- function(conds, base.cond, occupy.only = TRUE,
                                no.rep.rv = NULL, invariant = NULL) {
     if (!is(base.cond, "bioCond")) {

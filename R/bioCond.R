@@ -12,7 +12,7 @@
 # bioCond function plus the fit.info field added, for example, by the
 # fitMeanVarCurve function.
 #
-# Last update: 2021-03-28
+# Last update: 2021-09-09
 
 
 #' Deduce the Sample Mean Signal Intensity
@@ -118,7 +118,7 @@ intervalVars <- function(x, inv.strMatrix) {
 #' @section Warning: Do not directly modify the \code{strMatrix} field in a
 #'     \code{\link{bioCond}} object. Instead, use this function.
 #' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     groups of ChIP-seq samples.} Genome Res, 2021.
 #'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object based on
 #'     normalized signal intensities; \code{\link{fitMeanVarCurve}} for fitting
@@ -143,6 +143,7 @@ intervalVars <- function(x, inv.strMatrix) {
 #' # Equivalently, you can achieve the same effect by setting the strMatrix
 #' # parameter.
 #' GM12891_3 <- setWeight(GM12891, strMatrix = list(diag(c(1, 2))))
+#'
 setWeight <- function(x, weight = NULL, strMatrix = NULL) {
     if (!is(x, "bioCond")) stop("x must be a \"bioCond\" object")
     m <- ncol(x$norm.signal)
@@ -302,7 +303,7 @@ setWeight <- function(x, weight = NULL, strMatrix = NULL) {
 #'     The \code{strMatrix} field must be modified through
 #'     \code{\link{setWeight}}.
 #' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     groups of ChIP-seq samples.} Genome Res, 2021.
 #'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{normalize}} for performing an MA normalization on
 #'     ChIP-seq samples; \code{\link{normalizeBySizeFactors}} for normalizing
@@ -330,7 +331,7 @@ setWeight <- function(x, weight = NULL, strMatrix = NULL) {
 #' attr(H3K27Ac, "metaInfo")
 #'
 #' ## Construct a bioCond object for the GM12891 cell line.
-#'
+#' \donttest{
 #' # Apply MA normalization to the ChIP-seq samples of GM12891.
 #' norm <- normalize(H3K27Ac, 5:6, 10:11)
 #'
@@ -350,6 +351,7 @@ setWeight <- function(x, weight = NULL, strMatrix = NULL) {
 #' # parameter.
 #' GM12891_3 <- bioCond(norm[5:6], norm[10:11], name = "GM12891",
 #'                      strMatrix = list(diag(c(1, 2))))
+#' }
 bioCond <- function(norm.signal, occupancy = NULL, occupy.num = 1, name = "NA",
                     weight = NULL, strMatrix = NULL, meta.info = NULL) {
     norm.signal <- as.matrix(norm.signal)
@@ -466,7 +468,7 @@ bioCond <- function(norm.signal, occupancy = NULL, occupy.num = 1, name = "NA",
 #'         as the column \code{bioCond} minus the row one.}
 #'     }
 #' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     groups of ChIP-seq samples.} Genome Res, 2021.
 #'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{normalize}} for performing an MA normalization on
 #'     ChIP-seq samples; \code{\link{bioCond}} for creating a \code{bioCond}
@@ -484,7 +486,7 @@ bioCond <- function(norm.signal, occupancy = NULL, occupy.num = 1, name = "NA",
 #'
 #' ## Apply MA normalization first within each cell line, and then normalize
 #' ## across cell lines.
-#'
+#' \donttest{
 #' # Normalize samples separately for each cell line.
 #' norm <- normalize(H3K27Ac, 4, 9)
 #' norm <- normalize(norm, 5:6, 10:11)
@@ -505,6 +507,7 @@ bioCond <- function(norm.signal, occupancy = NULL, occupy.num = 1, name = "NA",
 #' plot(attr(conds, "MA.cor"), symbreaks = TRUE, margins = c(8, 8))
 #' MAplot(conds[[1]], conds[[2]], main = "GM12890 vs. GM12891")
 #' abline(h = 0, lwd = 2, lty = 5)
+#' }
 normBioCond <- function(conds, baseline = NULL, subset = NULL, common.peak.regions = NULL) {
     # Check conds
     if (length(conds) == 0) {
@@ -655,7 +658,7 @@ Please report it to the package maintainer")
 #'     Besides, an attribute named \code{"size.factor"} is added to the
 #'     returned list, recording the size factor of each \code{bioCond} object.
 #' @references Anders, S. and W. Huber, \emph{Differential expression analysis
-#'     for sequence count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
+#'     for sequence count data.} Genome Biol, 2010. \strong{11}(10): p. R106.
 #' @seealso \code{\link{normalizeBySizeFactors}} for normalizing
 #'     ChIP-seq/RNA-seq samples based on their size factors;
 #'     \code{\link{bioCond}} for creating a \code{bioCond} object;
@@ -672,7 +675,7 @@ Please report it to the package maintainer")
 #'
 #' ## First perform a normalization within each cell line, and then normalize
 #' ## across cell lines.
-#'
+#' \donttest{
 #' # Normalize samples separately for each cell line.
 #' norm <- normalizeBySizeFactors(H3K27Ac, 4)
 #' norm <- normalizeBySizeFactors(norm, 5:6,
@@ -691,6 +694,7 @@ Please report it to the package maintainer")
 #' attr(conds, "size.factor")
 #' MAplot(conds[[1]], conds[[2]], main = "GM12890 vs. GM12891")
 #' abline(h = 0, lwd = 2, lty = 5)
+#' }
 normBioCondBySizeFactors <- function(conds, subset = NULL) {
     # Check conds
     if (length(conds) == 0) {
@@ -820,7 +824,7 @@ Unable to perform the normalization")
 #'
 #' ## Construct two bioConds comprised of the male and female individuals,
 #' ## respectively.
-#'
+#' \donttest{
 #' # First, normalize ChIP-seq samples separately for each individual (i.e.,
 #' # cell line).
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -842,6 +846,7 @@ Unable to perform the normalization")
 #' male <- cmbBioCond(conds[2], name = "male")
 #' summary(female)
 #' summary(male)
+#' }
 cmbBioCond <- function(conds, occupy.num = 1, name = "NA", weight = NULL,
                        strMatrix = NULL, meta.info = NULL) {
     # Check conds

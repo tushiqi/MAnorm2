@@ -6,7 +6,7 @@
 # Tools related to variance-stabilizing transformed signals may be extended
 # in the future.
 #
-# Last update: 2021-03-23
+# Last update: 2021-09-09
 
 
 #' Quantify the Distance between Each Pair of Samples in a \code{bioCond}
@@ -116,7 +116,7 @@
 #'     \code{\link{vstBioCond}} for applying a variance-stabilizing
 #'     transformation to signal intensities of samples of a \code{bioCond}.
 #' @references Law, C.W., et al., \emph{voom: Precision weights unlock linear
-#'     model analysis tools for RNA-seq read counts}. Genome Biol, 2014.
+#'     model analysis tools for RNA-seq read counts.} Genome Biol, 2014.
 #'     \strong{15}(2): p. R29.
 #' @importFrom stats as.dist
 #' @export
@@ -126,7 +126,7 @@
 #'
 #' ## Cluster a set of ChIP-seq samples from different cell lines (i.e.,
 #' ## individuals).
-#'
+#' \donttest{
 #' # Perform MA normalization and construct a bioCond.
 #' norm <- normalize(H3K27Ac, 4:8, 9:13)
 #' cond <- bioCond(norm[4:8], norm[9:13], name = "all")
@@ -164,9 +164,9 @@
 #' f <- res$fold.change > 1 & res$pval < 0.05
 #' d4 <- distBioCond(vst_cond, subset = f, method = "none")
 #' plot(hclust(d4, method = "average"), hang = -1)
-#'
+#' }
 #' ## Cluster a set of individuals.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct bioConds to represent individuals.
 #' norm <- normalize(H3K27Ac, 4, 9)
 #' norm <- normalize(norm, 5:6, 10:11)
@@ -195,6 +195,7 @@
 #' f <- res$fold.change > 1 & res$pval < 0.05
 #' d2 <- distBioCond(cond, subset = f, method = "prior")
 #' plot(hclust(d2, method = "average"), hang = -1)
+#' }
 distBioCond <- function(x, subset = NULL,
                         method = c("prior", "posterior", "none"),
                         min.var = 0, p = 2,
@@ -369,7 +370,7 @@ distBioCond <- function(x, subset = NULL,
 #'
 #' ## Cluster a set of ChIP-seq samples from different cell lines (i.e.,
 #' ## individuals).
-#'
+#' \donttest{
 #' # Perform MA normalization and construct a bioCond.
 #' norm <- normalize(H3K27Ac, 4:8, 9:13)
 #' cond <- bioCond(norm[4:8], norm[9:13], name = "all")
@@ -399,9 +400,9 @@ distBioCond <- function(x, subset = NULL,
 #' f <- res$fold.change > 1 & res$pval < 0.05
 #' d2 <- distBioCond(vst_cond, subset = f, method = "none")
 #' plot(hclust(d2, method = "average"), hang = -1)
-#'
+#' }
 #' ## Cluster a set of individuals.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct bioConds to represent individuals.
 #' norm <- normalize(H3K27Ac, 4, 9)
 #' norm <- normalize(norm, 5:6, 10:11)
@@ -438,10 +439,10 @@ distBioCond <- function(x, subset = NULL,
 #' f <- res$fold.change > 1 & res$pval < 0.05
 #' d2 <- distBioCond(vst_cond, subset = f, method = "none")
 #' plot(hclust(d2, method = "average"), hang = -1)
-#'
+#' }
 #' ## Perform differential analysis on bioConds that have gone through a
 #' ## variance-stabilizing transformation.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct bioConds to represent cell lines
 #' # (i.e., individuals).
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -504,6 +505,7 @@ distBioCond <- function(x, subset = NULL,
 #' abline(a = 0, b = 1, lwd = 2, lty = 5, col = "red")
 #' cor(z1, z2)
 #' cor(z1, z2, method = "sp")
+#' }
 vstBioCond <- function(x, min.var = 0, integrate.func = integrate, ...) {
     # The check part
     if (!is(x, "bioCond")) {

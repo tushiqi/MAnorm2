@@ -1,7 +1,7 @@
 # For the documentation of MAnorm2 as a whole package, as well as the datasets
 # exported by MAnorm2 for demonstrating its use.
 #
-# Last update: 2021-04-06
+# Last update: 2021-09-09
 
 
 #' MAnorm2: a Package for Normalizing and Comparing ChIP-seq Samples
@@ -129,9 +129,13 @@
 #'
 #' @section Author and Maintainer: Shiqi Tu <\email{tushiqi@@picb.ac.cn}>
 #'
-#' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-#'     groups of ChIP-seq samples}. Genome Res, 2021.
-#'     \strong{31}(1): p. 131-145.
+#' @references
+#' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
+#' groups of ChIP-seq samples.} Genome Res, 2021.
+#' \strong{31}(1): p. 131-145.
+#'
+#' Chen, H., et al., \emph{HyperChIP for identifying hypervariable signals
+#' across ChIP/ATAC-seq samples.} bioRxiv, 2021: p. 2021.07.27.453915.
 #'
 #' @docType package
 #' @name MAnorm2
@@ -197,11 +201,11 @@ NULL
 #'     MAnorm2_utils} for more information about it. It has also been uploaded
 #'     to the \href{https://pypi.org/}{PyPI repository} as a Python package.
 #' @references
-#' Zhang, Y., et al., \emph{Model-based analysis of ChIP-Seq (MACS)}. Genome
+#' Zhang, Y., et al., \emph{Model-based analysis of ChIP-Seq (MACS).} Genome
 #' Biol, 2008. \strong{9}(9): p. R137.
 #'
 #' Kasowski, M., et al., \emph{Extensive variation in chromatin states across
-#' humans}. Science, 2013. \strong{342}(6159): p. 750-2.
+#' humans.} Science, 2013. \strong{342}(6159): p. 750-2.
 #'
 "H3K27Ac"
 

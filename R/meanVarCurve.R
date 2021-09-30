@@ -1,7 +1,7 @@
 # Functions in this file are for assessing the goodness of fit of
 # mean-variance curves and adjusting them accordingly.
 #
-# Last update: 2021-03-30
+# Last update: 2021-09-09
 
 
 #' Inversion of Trigamma Function
@@ -15,13 +15,14 @@
 #' @param eps The required precision of the solution.
 #' @return The solution, which is also a positive numeric scalar.
 #' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#'     assessing differential expression in microarray experiments}. Stat Appl
+#'     assessing differential expression in microarray experiments.} Stat Appl
 #'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #' @seealso \code{\link[base]{trigamma}} for the trigamma function.
 #' @export
 #' @examples
 #' x <- trigamma(1:6)
 #' vapply(x, inv.trigamma, numeric(1))
+#'
 inv.trigamma <- function(x, eps = 1e-8) {
     if (x > 1e7) return(1 / sqrt(x))
     if (x < 1e-7) return(0.5 + 1 / x)
@@ -81,11 +82,11 @@ inv.trigamma <- function(x, eps = 1e-8) {
 #'     for estimating it.
 #' @references
 #' Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#' assessing differential expression in microarray experiments}. Stat Appl
+#' assessing differential expression in microarray experiments.} Stat Appl
 #' Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #'
 #' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#' ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve;
@@ -172,11 +173,11 @@ estimateD0 <- function(z, m) {
 #'     sufficient genomic intervals for estimating it.
 #' @references
 #' Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#' assessing differential expression in microarray experiments}. Stat Appl
+#' assessing differential expression in microarray experiments.} Stat Appl
 #' Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #'
 #' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#' ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve;
@@ -294,11 +295,11 @@ scaleMeanVarCurve <- function(z, m, d0) {
 #'     returns the estimated number of prior degrees of freedom.
 #' @references
 #' Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#' assessing differential expression in microarray experiments}. Stat Appl
+#' assessing differential expression in microarray experiments.} Stat Appl
 #' Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #'
 #' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#' ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve and
@@ -317,7 +318,7 @@ scaleMeanVarCurve <- function(z, m, d0) {
 #'
 #' ## Fit a mean-variance curve treating each gender as a biological condition,
 #' ## and each individual (i.e., cell line) a replicate.
-#'
+#' \donttest{
 #' # First perform the MA normalization and construct bioConds to represent
 #' # individuals.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -366,6 +367,7 @@ scaleMeanVarCurve <- function(z, m, d0) {
 #' plotMeanVarCurve(genders3, subset = "all")
 #' plotMeanVarCurve(genders3, subset = "non-occupied")
 #' summary(genders3$female)
+#' }
 estimatePriorDf <- function(conds, occupy.only = TRUE, return.d0 = FALSE,
                             no.rep.rv = NULL, .call = TRUE) {
     # Check conds
@@ -534,6 +536,7 @@ You may specify it explicitly")
 #' # all the time.
 #' summary(GM12892)
 #' summary(GM12892_2)
+#'
 setPriorDf <- function(conds, d0, occupy.only = TRUE,
                        no.rep.rv = NULL, .call = TRUE) {
     # Set the number of prior degrees of freedom

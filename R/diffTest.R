@@ -2,7 +2,7 @@
 # or more biological conditions and (2) calling hypervariable and invariant
 # intervals across ChIP-seq samples or biological conditions.
 #
-# Last update: 2021-04-01
+# Last update: 2021-09-10
 
 
 #' Generic Differential Test
@@ -57,7 +57,6 @@
 #' re-adjusting
 #' \emph{p}-values of the remaining intervals (see "Examples" below).
 #'
-#' @param ... Arguments to be passed to specific methods.
 #' @export
 diffTest <- function(x, y, ...) {
     UseMethod("diffTest")
@@ -81,6 +80,8 @@ diffTest <- function(x, y, ...) {
 #'     By default, \code{diffTest} checks if \code{x} and \code{y} have the
 #'     same \code{"df.prior"} component, and uses it as the number of prior
 #'     degrees of freedom if yes (an error is raised otherwise).
+#' @param ... Arguments passed to specific methods or from other methods.
+#'
 #' @return This method returns an object of \code{\link[base]{class}}
 #'     \code{c("diffBioCond", "data.frame")}, recording the test results for
 #'     each genomic interval by each row. The data frame consists of the
@@ -107,11 +108,11 @@ diffTest <- function(x, y, ...) {
 #'     total number of degrees of freedom associated with the standard errors.
 #' @references
 #' Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#' assessing differential expression in microarray experiments}. Stat Appl
+#' assessing differential expression in microarray experiments.} Stat Appl
 #' Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #'
 #' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#' ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve for
@@ -132,7 +133,7 @@ diffTest <- function(x, y, ...) {
 #' @examples
 #' data(H3K27Ac, package = "MAnorm2")
 #' attr(H3K27Ac, "metaInfo")
-#'
+#' \donttest{
 #' ## Make a comparison between GM12891 and GM12892 cell lines.
 #'
 #' # Perform MA normalization and construct bioConds to represent the two cell
@@ -215,10 +216,10 @@ diffTest <- function(x, y, ...) {
 #' # analyses.
 #' cor(z1, z2)
 #' cor(z1, z2, method = "sp")
-#'
+#' }
 #' ## Make a comparison between the male and female genders by treating each
 #' ## individual (i.e., cell line) as a replicate.
-#'
+#' \donttest{
 #' # First perform the MA normalization and construct bioConds to represent
 #' # individuals.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -254,7 +255,8 @@ diffTest <- function(x, y, ...) {
 #' # Examine the distribution of p-values in Y chromosome.
 #' hist(res$pval[H3K27Ac$chrom == "chrY"], col = "red",
 #'      main = "P-values in Y chromosome")
-diffTest.bioCond <- function(x, y, min.var = 0, df.prior = NULL) {
+#' }
+diffTest.bioCond <- function(x, y, min.var = 0, df.prior = NULL, ...) {
     if (!(is(x, "bioCond") && is(y, "bioCond"))) {
         stop("x and y must be bioCond objects")
     }
@@ -365,7 +367,7 @@ Cannot estimate variances for individual intervals")
 #'
 #' ## Make a comparison between GM12891 and GM12892 cell lines and create an MA
 #' ## plot on the comparison results.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct bioConds to represent the two cell
 #' # lines.
 #' norm <- normalize(H3K27Ac, 5:6, 10:11)
@@ -390,6 +392,7 @@ Cannot estimate variances for individual intervals")
 #' # Visualize the overall test results.
 #' MAplot(res, padj = 0.001)
 #' abline(h = 0, lwd = 2, lty = 5, col = "green3")
+#' }
 MAplot.diffBioCond <- function(x, padj = NULL, pval = NULL,
                                col = alpha(c("black", "red"), 0.1), pch = 20,
                                ylim = c(-6, 6), xlab = "A value", ylab = "M value",
@@ -545,11 +548,11 @@ MAplot.diffBioCond <- function(x, padj = NULL, pval = NULL,
 #'     }
 #' @references
 #' Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#' assessing differential expression in microarray experiments}. Stat Appl
+#' assessing differential expression in microarray experiments.} Stat Appl
 #' Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #'
 #' Tu, S., et al., \emph{MAnorm2 for quantitatively comparing groups of
-#' ChIP-seq samples}. Genome Res, 2021. \strong{31}(1): p. 131-145.
+#' ChIP-seq samples.} Genome Res, 2021. \strong{31}(1): p. 131-145.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve for
@@ -572,7 +575,7 @@ MAplot.diffBioCond <- function(x, padj = NULL, pval = NULL,
 #'
 #' ## Call differential genomic intervals among GM12890, GM12891 and GM12892
 #' ## cell lines.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct bioConds to represent the cell
 #' # lines.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -596,6 +599,7 @@ MAplot.diffBioCond <- function(x, padj = NULL, pval = NULL,
 #' res <- aovBioCond(conds)
 #' head(res)
 #' plot(res, padj = 1e-6)
+#' }
 aovBioCond <- function(conds, min.var = 0, df.prior = NULL) {
     if (length(conds) < 2) {
         stop("There must be at least two bioCond objects in conds")
@@ -737,7 +741,7 @@ Try using estimatePriorDf() to unify their numbers of prior degrees of freedom")
 #'
 #' ## Call differential genomic intervals among GM12890, GM12891 and GM12892
 #' ## cell lines and visualize the overall analysis results.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct bioConds to represent the cell
 #' # lines.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -763,6 +767,7 @@ Try using estimatePriorDf() to unify their numbers of prior degrees of freedom")
 #'
 #' # Visualize the overall analysis results.
 #' plot(res, padj = 1e-6)
+#' }
 plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
                             col = alpha(c("black", "red"), 0.04), pch = 20,
                             xlab = "Mean", ylab = "log10(Var)",
@@ -912,7 +917,7 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #'         freedom of the observed and prior variances.}
 #'     }
 #' @references Smyth, G.K., \emph{Linear models and empirical bayes methods for
-#'     assessing differential expression in microarray experiments}. Stat Appl
+#'     assessing differential expression in microarray experiments.} Stat Appl
 #'     Genet Mol Biol, 2004. \strong{3}: p. Article3.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve for
@@ -940,18 +945,13 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #'
 #' ## Call hypervariable and invariant genomic intervals across biological
 #' ## replicates of the GM12891 cell line.
+#' \donttest{
+#' # Perform MA normalization and construct a bioCond to represent GM12891.
+#' norm <- normalize(H3K27Ac, 5:6, 10:11)
+#' GM12891 <- bioCond(norm[5:6], norm[10:11], name = "GM12891")
 #'
-#' # Perform MA normalization and construct bioConds to represent cell lines.
-#' norm <- normalize(H3K27Ac, 4, 9)
-#' norm <- normalize(norm, 5:6, 10:11)
-#' norm <- normalize(norm, 7:8, 12:13)
-#' conds <- list(GM12890 = bioCond(norm[4], norm[9], name = "GM12890"),
-#'               GM12891 = bioCond(norm[5:6], norm[10:11], name = "GM12891"),
-#'               GM12892 = bioCond(norm[7:8], norm[12:13], name = "GM12892"))
-#'
-#' # Fit a mean-variance curve for the GM12891 cell line using the parametric
-#' # method.
-#' GM12891 <- fitMeanVarCurve(conds[2], method = "parametric",
+#' # Fit a mean-variance curve for GM12891 using the parametric method.
+#' GM12891 <- fitMeanVarCurve(list(GM12891), method = "parametric",
 #'                            occupy.only = TRUE)[[1]]
 #' summary(GM12891)
 #' plotMeanVarCurve(list(GM12891), subset = "occupied")
@@ -964,8 +964,16 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #' res <- res[GM12891$occupancy, ]
 #' res$padj <- p.adjust(res$pval, method = "BH")
 #' plot(res, padj = 0.2, col = alpha(c("black", "red"), c(0.04, 0.5)))
-#'
+#' }
 #' ## Call hypervariable and invariant genomic intervals across cell lines.
+#' \donttest{
+#' # Perform MA normalization and construct bioConds to represent cell lines.
+#' norm <- normalize(H3K27Ac, 4, 9)
+#' norm <- normalize(norm, 5:6, 10:11)
+#' norm <- normalize(norm, 7:8, 12:13)
+#' conds <- list(GM12890 = bioCond(norm[4], norm[9], name = "GM12890"),
+#'               GM12891 = bioCond(norm[5:6], norm[10:11], name = "GM12891"),
+#'               GM12892 = bioCond(norm[7:8], norm[12:13], name = "GM12892"))
 #'
 #' # Normalize the cell lines.
 #' autosome <- !(H3K27Ac$chrom %in% c("chrX", "chrY"))
@@ -1013,6 +1021,7 @@ plot.aovBioCond <- function(x, padj = NULL, pval = NULL,
 #' res2 <- varTestBioCond(LCLs2)
 #' hist(res$pval, breaks = 100, col = "red")
 #' hist(res2$pval, breaks = 100, col = "red")
+#' }
 varTestBioCond <- function(cond, min.var = 0, df.prior = NULL) {
     if (!is(cond, "bioCond")) {
         stop("cond must be a bioCond object")
@@ -1114,7 +1123,7 @@ Cannot assess the observed variances of individual intervals")
 #'
 #' ## Call hypervariable and invariant genomic intervals across biological
 #' ## replicates of the GM12891 cell line.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct a bioCond to represent GM12891.
 #' norm <- normalize(H3K27Ac, 5:6, 10:11)
 #' GM12891 <- bioCond(norm[5:6], norm[10:11], name = "GM12891")
@@ -1133,6 +1142,7 @@ Cannot assess the observed variances of individual intervals")
 #' res <- res[GM12891$occupancy, ]
 #' res$padj <- p.adjust(res$pval, method = "BH")
 #' plot(res, col = scales::alpha(c("black", "red"), c(0.04, 0.5)))
+#' }
 plot.varTestBioCond <- function(x, padj = NULL, pval = NULL,
                                 col = alpha(c("black", "red"), 0.04), pch = 20,
                                 xlab = "Mean", ylab = "log10(Var)",

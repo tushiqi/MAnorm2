@@ -1,7 +1,7 @@
 # Functions in this file are for demonstrating bioCond objects and plotting
 # figures on them.
 #
-# Last update: 2021-03-30
+# Last update: 2021-09-09
 
 
 #' Generic MA Plotting
@@ -9,6 +9,7 @@
 #' \code{MAplot} is a generic function used to produce an MA plot. Described
 #' here is the default method for plotting on (normalized) signal intensities
 #' of two ChIP-seq samples (see also \code{\link{normalize}}).
+#'
 #' @export
 MAplot <- function(x, ...) {
     UseMethod("MAplot")
@@ -75,6 +76,7 @@ MAplot <- function(x, ...) {
 #'        args.legend = list(x = "topright", legend = legend),
 #'        main = "GM12890_rep1 vs. GM12891_rep1")
 #' abline(h = 0, lwd = 2, lty = 5)
+#'
 MAplot.default <- function(x, y, occupy.x, occupy.y, col = NULL, pch = NULL,
                            ylim = c(-6, 6), xlab = "A value", ylab = "M value",
                            args.legend = list(x = "topright",
@@ -165,7 +167,7 @@ MAplot.default <- function(x, y, occupy.x, occupy.y, col = NULL, pch = NULL,
 #' attr(H3K27Ac, "metaInfo")
 #'
 #' ## Create MA scatter plots for the comparisons between individuals.
-#'
+#' \donttest{
 #' # Perform the MA normalization and construct bioConds to represent
 #' # individuals.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -184,6 +186,7 @@ MAplot.default <- function(x, y, occupy.x, occupy.y, col = NULL, pch = NULL,
 #' abline(h = 0, lwd = 2, lty = 5)
 #' MAplot(conds[[2]], conds[[3]], main = "GM12891 vs. GM12892")
 #' abline(h = 0, lwd = 2, lty = 5)
+#' }
 MAplot.bioCond <- function(x, y, col = NULL, pch = NULL, ylim = c(-6, 6),
                            xlab = "A value", ylab = "M value", plot.legend = TRUE, ...) {
     if (!(is(x, "bioCond") && is(y, "bioCond"))) {
@@ -257,7 +260,7 @@ MAplot.bioCond <- function(x, y, col = NULL, pch = NULL, ylim = c(-6, 6),
 #' @param ... Further arguments to be passed to \code{\link[graphics]{plot}}.
 #' @return The function returns \code{NULL}.
 #' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     groups of ChIP-seq samples.} Genome Res, 2021.
 #'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve given a
@@ -275,7 +278,7 @@ MAplot.bioCond <- function(x, y, col = NULL, pch = NULL, ylim = c(-6, 6),
 #' attr(H3K27Ac, "metaInfo")
 #'
 #' ## Fit and plot a mean-variance curve for GM12891 and GM12892 cell lines.
-#'
+#' \donttest{
 #' # Perform the MA normalization and construct bioConds to represent
 #' # individuals.
 #' norm <- normalize(H3K27Ac, 5:6, 10:11)
@@ -296,6 +299,7 @@ MAplot.bioCond <- function(x, y, col = NULL, pch = NULL, ylim = c(-6, 6),
 #' # points from the two cell lines mix uniformly with each other.
 #' plotMeanVarCurve(conds, subset = "occupied",
 #'                  col = scales::alpha(c("blue", "green3"), 0.02))
+#' }
 plotMeanVarCurve <- function(conds, subset = c("all", "occupied", "non-occupied"),
                              col = alpha("blue", 0.02), pch = 20,
                              xlab = "Mean", ylab = "log10(Var)",
@@ -408,7 +412,7 @@ Cannot draw the scatter plot")
 #'     \code{add}.
 #' @return The function returns \code{NULL}.
 #' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     groups of ChIP-seq samples.} Genome Res, 2021.
 #'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve on a
@@ -423,7 +427,7 @@ Cannot draw the scatter plot")
 #'
 #' ## Fit and plot a mean-variance curve for the GM12892 cell line (i.e.,
 #' ## individual).
-#'
+#' \donttest{
 #' # Perform the MA normalization and construct a bioCond to represent GM12892.
 #' norm <- normalize(H3K27Ac, 7:8, 12:13)
 #' GM12892 <- bioCond(norm[7:8], norm[12:13], name = "GM12892")
@@ -437,6 +441,7 @@ Cannot draw the scatter plot")
 #'
 #' # Draw a mean-variance scatter plot with scaling the mean-variance curve.
 #' plotMVC(GM12892, subset = "occupied")
+#' }
 plotMVC <- function(cond, subset = c("all", "occupied", "non-occupied"),
                     col = alpha("blue", 0.02), pch = 20, add = FALSE,
                     xlab = "Mean", ylab = "log10(Var)",
@@ -507,7 +512,9 @@ Cannot draw the scatter plot")
 #' \code{"\link{bioCond}"} class.
 #'
 #' @param x A \code{\link{bioCond}} object.
-#' @return The function returns its argument invisibly.
+#' @param ... Arguments passed from other methods.
+#'
+#' @return The function returns \code{x} invisibly.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object.
 #' @export
 #' @export print.bioCond
@@ -516,7 +523,7 @@ Cannot draw the scatter plot")
 #' attr(H3K27Ac, "metaInfo")
 #'
 #' ## Print bioConds that correspond to individuals.
-#'
+#' \donttest{
 #' # Perform the MA normalization and construct bioConds to represent
 #' # individuals.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -532,7 +539,8 @@ Cannot draw the scatter plot")
 #' print(conds[[1]])
 #' print(conds[[2]])
 #' print(conds[[3]])
-print.bioCond <- function(x) {
+#' }
+print.bioCond <- function(x, ...) {
     cat(gettextf("Biological condition %s:", x$name), sep = "\n")
     n1 <- nrow(x$norm.signal)
     if (n1 == 1) {
@@ -561,7 +569,9 @@ print.bioCond <- function(x) {
 #' This function implements the \code{\link[base]{summary}} method for the
 #' \code{"\link{bioCond}"} class.
 #'
-#' @param x A \code{\link{bioCond}} object.
+#' @param object A \code{\link{bioCond}} object.
+#' @param ... Arguments passed from other methods.
+#'
 #' @return The method returns an object of class \code{"summaryBioCond"}, for
 #'     which a specialized \code{\link[base]{print}} method has been defined.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object.
@@ -574,7 +584,7 @@ print.bioCond <- function(x) {
 #' attr(H3K27Ac, "metaInfo")
 #'
 #' ## Summarize bioConds that correspond to individuals.
-#'
+#' \donttest{
 #' # Perform the MA normalization and construct bioConds to represent
 #' # individuals.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -598,7 +608,9 @@ print.bioCond <- function(x) {
 #' summary(conds[[2]])
 #' summary(conds[[3]])
 #' str(summary(conds[[3]]))
-summary.bioCond <- function(x) {
+#' }
+summary.bioCond <- function(object, ...) {
+    x <- object
     ret <- structure(list(), class = "summaryBioCond")
     ret$name <- x$name
     ret$dims <- dim(x$norm.signal)
@@ -633,7 +645,9 @@ summary.bioCond <- function(x) {
 #' @param x An object of class \code{"summaryBioCond"}, typically obtained by
 #'     passing a \code{\link{bioCond}} object to the
 #'     \code{\link[=summary.bioCond]{summary}} function.
-#' @return The function returns its argument invisibly.
+#' @param ... Arguments passed from other methods.
+#'
+#' @return The function returns \code{x} invisibly.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{summary.bioCond}} for summarizing a \code{bioCond} object.
 #' @export
@@ -643,7 +657,7 @@ summary.bioCond <- function(x) {
 #' attr(H3K27Ac, "metaInfo")
 #'
 #' ## Print summary results of bioConds that correspond to individuals.
-#'
+#' \donttest{
 #' # Perform the MA normalization and construct bioConds to represent
 #' # individuals.
 #' norm <- normalize(H3K27Ac, 4, 9)
@@ -666,7 +680,8 @@ summary.bioCond <- function(x) {
 #' print(summary(conds[[1]]))
 #' print(summary(conds[[2]]))
 #' print(summary(conds[[3]]))
-print.summaryBioCond <- function(x) {
+#' }
+print.summaryBioCond <- function(x, ...) {
     cat("", gettextf("Biological condition %s:", x$name), sep = "\n")
     s <- ifelse(x$dims == 1, "", "s")
     cat(gettextf("%d genomic interval%s with %d profile%s",

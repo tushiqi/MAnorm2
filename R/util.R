@@ -1,6 +1,6 @@
 # Utility tools for MAnorm2.
 #
-# Last update: 2021-03-20
+# Last update: 2021-09-09
 
 
 #' Check the Regularity of a Count Table
@@ -103,6 +103,7 @@ checkIndex <- function(index, ns, var.name) {
 #'
 #' # Use break points symmetric about 0.
 #' plot(x, symbreaks = TRUE)
+#'
 plot.matrix <- function(x, breaks = 101, symbreaks = FALSE, col = NULL,
                         low = "blue", mid = "white", high = "red",
                         na.color = "black", lmat = NULL, ...) {
@@ -172,6 +173,7 @@ Please install it")
 #' # Not positive definite.
 #' x <- matrix(c(1, 0.5, 0.5, 0.2), nrow = 2)
 #' isSymPosDef(x)
+#'
 isSymPosDef <- function(x, ...) {
     if (!isSymmetric(x, ...)) return(FALSE)
     val <- eigen(x, symmetric = TRUE, only.values = TRUE)$values
@@ -188,10 +190,15 @@ isSymPosDef <- function(x, ...) {
 #' @param n Length of the serial number.
 #' @return A character scalar representing the created ID.
 #' @examples
+#' \dontrun{
+#' ## Private functions involved.
+#'
 #' mvcID.new()
 #' mvcID.new()
 #' Sys.sleep(1.1)
 #' mvcID.new()
+#' }
+#'
 mvcID.new <- function(n = 10) {
     x <- as.character(Sys.time())
     y <- paste(sample(c(0:9, LETTERS), n, replace = TRUE), collapse = "")

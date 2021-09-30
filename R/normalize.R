@@ -5,7 +5,7 @@
 # This file also provides tools for normalizing count data based purely on size
 # factors, which is most suited to RNA-seq samples.
 #
-# Last update: 2021-03-28
+# Last update: 2021-09-09
 
 
 #' Estimate Size Factors of ChIP-seq Samples
@@ -28,7 +28,7 @@
 #' @return \code{estimateSizeFactors} returns a numeric vector specifying the
 #'     size factors.
 #' @references Anders, S. and W. Huber, \emph{Differential expression analysis
-#'     for sequence count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
+#'     for sequence count data.} Genome Biol, 2010. \strong{11}(10): p. R106.
 #' @seealso \code{\link{normalize}} for the MA normalization process.
 #' @export
 #' @examples
@@ -40,6 +40,7 @@
 #'
 #' # Use only the genomic intervals occupied by all the ChIP-seq samples.
 #' estimateSizeFactors(H3K27Ac[4:8], subset = apply(H3K27Ac[9:13], 1, all))
+#'
 estimateSizeFactors <- function(counts, subset = NULL) {
     counts <- as.matrix(counts)
     if (!is.null(subset)) counts <- counts[subset, , drop = FALSE]
@@ -81,11 +82,16 @@ Unable to perform the MA normalization", call. = FALSE)
 #' @importFrom stats sd
 #' @importFrom stats cor
 #' @examples
+#' \dontrun{
+#' ## Private functions involved.
+#'
 #' MA.pcc(1:4, 1:4 + c(1, 2, 4, 9))
 #'
 #' # The robustness.
 #' MA.pcc(1, 0)
 #' MA.pcc(1:4, 2:5)
+#' }
+#'
 MA.pcc <- function(x, y) {
     if (length(x) < 2) return(NA_real_)
     a <- x + y
@@ -226,7 +232,7 @@ MA.pcc <- function(x, y) {
 #'         as the column sample minus the row sample.}
 #'     }
 #' @references Tu, S., et al., \emph{MAnorm2 for quantitatively comparing
-#'     groups of ChIP-seq samples}. Genome Res, 2021.
+#'     groups of ChIP-seq samples.} Genome Res, 2021.
 #'     \strong{31}(1): p. 131-145.
 #' @seealso \code{\link{normalizeBySizeFactors}} for normalizing ChIP-seq
 #'     samples based on their size factors; \code{\link{estimateSizeFactors}}
@@ -261,7 +267,7 @@ MA.pcc <- function(x, y) {
 #' ## Alternatively, apply MA normalization first within each cell line, and
 #' ## then normalize across cell lines. In practice, this strategy is more
 #' ## recommended than the aforementioned one.
-#'
+#' \donttest{
 #' # Normalize samples separately for each cell line.
 #' norm <- normalize(H3K27Ac, 4, 9)
 #' norm <- normalize(norm, 5:6, 10:11)
@@ -282,6 +288,7 @@ MA.pcc <- function(x, y) {
 #' plot(attr(conds, "MA.cor"), symbreaks = TRUE, margins = c(8, 8))
 #' MAplot(conds[[1]], conds[[2]], main = "GM12890 vs. GM12891")
 #' abline(h = 0, lwd = 2, lty = 5)
+#' }
 normalize <- function(x, count, occupancy, baseline = NULL, subset = NULL,
                       interval.size = FALSE, offset = 0.5, convert = NULL,
                       common.peak.regions = NULL) {
@@ -506,7 +513,7 @@ You may specify the baseline sample explicitly")
 #'     intensities. Besides, an attribute named \code{"size.factor"} is added
 #'     to the data frame, recording the size factor of each specified sample.
 #' @references Anders, S. and W. Huber, \emph{Differential expression analysis
-#'     for sequence count data}. Genome Biol, 2010. \strong{11}(10): p. R106.
+#'     for sequence count data.} Genome Biol, 2010. \strong{11}(10): p. R106.
 #' @seealso \code{\link{normalize}} for performing an MA normalization on
 #'     ChIP-seq samples; \code{\link{estimateSizeFactors}} for estimating size
 #'     factors of ChIP-seq/RNA-seq samples;
@@ -538,7 +545,7 @@ You may specify the baseline sample explicitly")
 #' ## Alternatively, perform the normalization first within each cell line, and
 #' ## then normalize across cell lines. In practice, this strategy is more
 #' ## recommended than the aforementioned one.
-#'
+#' \donttest{
 #' # Normalize samples separately for each cell line.
 #' norm <- normalizeBySizeFactors(H3K27Ac, 4)
 #' norm <- normalizeBySizeFactors(norm, 5:6,
@@ -557,6 +564,7 @@ You may specify the baseline sample explicitly")
 #' attr(conds, "size.factor")
 #' MAplot(conds[[1]], conds[[2]], main = "GM12890 vs. GM12891")
 #' abline(h = 0, lwd = 2, lty = 5)
+#' }
 normalizeBySizeFactors <- function(x, count, subset = NULL, interval.size = FALSE,
                                    offset = 0.5, convert = NULL) {
     x <- as.data.frame(x)

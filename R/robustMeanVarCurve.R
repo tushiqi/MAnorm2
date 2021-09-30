@@ -1,7 +1,7 @@
 # Functions in this file are for robust estimation of number of prior degrees
 # of freedom and variance ratio factor.
 #
-# Last update: 2021-04-01
+# Last update: 2021-09-10
 
 
 #' Utility Trigamma Function
@@ -30,6 +30,7 @@
 #'
 #' trigamma(Inf)
 #' util.trigamma(Inf)
+#'
 util.trigamma <- function(y) {
     if (y < 10 ^ (-3.5)) return(y ^ (-2))
     if (y > 1e7 + 0.5) return(1 / (y - 0.5))
@@ -66,7 +67,7 @@ util.trigamma <- function(y) {
 #'     }
 #' @references Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 #'     Protects against Hypervariable Genes and Improves Power to Detect
-#'     Differential Expression}. Annals of Applied Statistics, 2016.
+#'     Differential Expression.} Annals of Applied Statistics, 2016.
 #'     \strong{10}(2): p. 946-963.
 #' @seealso \code{\link[statmod]{gauss.quad}} for calculating nodes and
 #'     weights for Gaussian quadrature.
@@ -89,6 +90,7 @@ util.trigamma <- function(y) {
 #'     c(mean(x), var(x))
 #' }
 #'
+#' # Set parameters.
 #' n <- 10000
 #' df1 <- 2
 #' df2 <- 2 ^ (0:10)
@@ -101,12 +103,14 @@ util.trigamma <- function(y) {
 #'                numeric(2))
 #' res2 <- mean_var_logwinf(df1, df2, p_low, p_up)
 #'
+#' # Compare mean.
 #' plot(0:10, res1[1, ], type = "l", lwd = 2, col = "red", xlab = "Log2(df2)",
 #'      ylab = "Mean")
 #' lines(0:10, res2$mu, lty = 5, lwd = 2, col = "red")
 #' legend("topright", c("Simulation", "Numerical integration"), lty = c(1, 5),
 #'        lwd = 2, col = "red")
 #'
+#' # Compare variance.
 #' plot(0:10, res1[2, ], type = "l", lwd = 2, col = "red", xlab = "Log2(df2)",
 #'      ylab = "Var")
 #' lines(0:10, res2$v, lty = 5, lwd = 2, col = "red")
@@ -116,6 +120,7 @@ util.trigamma <- function(y) {
 #' # When df2 is Inf.
 #' random_logwinf(n, df1, Inf, p_low, p_up)
 #' mean_var_logwinf(df1, Inf, p_low, p_up)
+#'
 mean_var_logwinf <- function(df1, df2, p_low = 0.01, p_up = 0.1,
                              nw = gauss.quad(128, kind = "legendre")) {
     # Check and preprocessing
@@ -221,7 +226,7 @@ mean_var_logwinf <- function(df1, df2, p_low = 0.01, p_up = 0.1,
 #'     for estimating it.
 #' @references Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 #'     Protects against Hypervariable Genes and Improves Power to Detect
-#'     Differential Expression}. Annals of Applied Statistics, 2016.
+#'     Differential Expression.} Annals of Applied Statistics, 2016.
 #'     \strong{10}(2): p. 946-963.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve;
@@ -242,6 +247,9 @@ mean_var_logwinf <- function(df1, df2, p_low = 0.01, p_up = 0.1,
 #' @importFrom stats qf
 #' @importFrom stats runif
 #' @examples
+#' \dontrun{
+#' ## Private functions involved.
+#'
 #' # For generating random FZ statistics with outliers. Note that the argument
 #' # scaling controls how extreme outliers are.
 #' rFZ <- function(n, var.ratio, m, d0, p_low, p_up, scaling) {
@@ -306,6 +314,8 @@ mean_var_logwinf <- function(df1, df2, p_low = 0.01, p_up = 0.1,
 #' res2
 #' scaleMeanVarCurveRobust(z[1], m[1], res2, p_low, p_up)
 #' scaleMeanVarCurveRobust(z[2], m[2], res2, p_low, p_up)
+#' }
+#'
 estimateD0Robust <- function(z, m, p_low = 0.01, p_up = 0.1,
                              d0_low = 0.001, d0_up = 1e6, eps = d0_low,
                              nw = gauss.quad(128, kind = "legendre")) {
@@ -448,7 +458,7 @@ estimateD0Robust <- function(z, m, p_low = 0.01, p_up = 0.1,
 #'     sufficient genomic intervals for estimating it.
 #' @references Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 #'     Protects against Hypervariable Genes and Improves Power to Detect
-#'     Differential Expression}. Annals of Applied Statistics, 2016.
+#'     Differential Expression.} Annals of Applied Statistics, 2016.
 #'     \strong{10}(2): p. 946-963.
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve;
@@ -469,6 +479,7 @@ estimateD0Robust <- function(z, m, p_low = 0.01, p_up = 0.1,
 #' @examples
 #' # Refer to "Examples" given in the help page for the function
 #' # estimateD0Robust.
+#'
 scaleMeanVarCurveRobust <- function(z, m, d0, p_low = 0.01, p_up = 0.1,
                                     nw = gauss.quad(128, kind = "legendre")) {
     mean_logwinf <- mean_var_logwinf(m - 1, d0, p_low, p_up, nw)$mu
@@ -564,12 +575,12 @@ scaleMeanVarCurveRobust <- function(z, m, d0, p_low = 0.01, p_up = 0.1,
 #'     If \code{return.d0} is set to \code{TRUE}, \code{estimatePriorDfRobust}
 #'     simply returns the estimated number of prior degrees of freedom.
 #' @references
-#' Tukey, J.W., \emph{The future of data analysis}. The annals of
+#' Tukey, J.W., \emph{The future of data analysis.} The annals of
 #' mathematical statistics, 1962. \strong{33}(1): p. 1-67.
 #'
 #' Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 #' Protects against Hypervariable Genes and Improves Power to Detect
-#' Differential Expression}. Annals of Applied Statistics, 2016.
+#' Differential Expression.} Annals of Applied Statistics, 2016.
 #' \strong{10}(2): p. 946-963.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
@@ -589,7 +600,7 @@ scaleMeanVarCurveRobust <- function(z, m, d0, p_low = 0.01, p_up = 0.1,
 #' ## Estimate parameters regarding the associated mean-variance curve in a
 #' ## robust manner. Here we treat each cell line (i.e., individual) as a
 #' ## biological condition.
-#'
+#' \donttest{
 #' # Perform MA normalization and construct bioConds to represent cell lines.
 #' norm <- normalize(H3K27Ac, 4, 9)
 #' norm <- normalize(norm, 5:6, 10:11)
@@ -611,6 +622,7 @@ scaleMeanVarCurveRobust <- function(z, m, d0, p_low = 0.01, p_up = 0.1,
 #' # ordinary routine and the robust one.
 #' sapply(conds, function(x) c(x$fit.info$df.prior, x$fit.info$ratio.var))
 #' sapply(conds2, function(x) c(x$fit.info$df.prior, x$fit.info$ratio.var))
+#' }
 estimatePriorDfRobust <- function(conds, occupy.only = TRUE,
                                   p_low = 0.01, p_up = 0.1,
                                   d0_low = 0.001, d0_up = 1e6, eps = d0_low,
@@ -754,12 +766,12 @@ You may specify it explicitly")
 #'     In this case, you may want to use \code{\link{setPriorDfVarRatio}} to
 #'     explicitly specify variance ratio factors.
 #' @references
-#' Tukey, J.W., \emph{The future of data analysis}. The annals of
+#' Tukey, J.W., \emph{The future of data analysis.} The annals of
 #' mathematical statistics, 1962. \strong{33}(1): p. 1-67.
 #'
 #' Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 #' Protects against Hypervariable Genes and Improves Power to Detect
-#' Differential Expression}. Annals of Applied Statistics, 2016.
+#' Differential Expression.} Annals of Applied Statistics, 2016.
 #' \strong{10}(2): p. 946-963.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
@@ -799,6 +811,7 @@ You may specify it explicitly")
 #' # factor between the ordinary routine and the robust one.
 #' summary(GM12892_2)
 #' summary(GM12892_3)
+#'
 setPriorDfRobust <- function(conds, d0, occupy.only = TRUE,
                              p_low = 0.01, p_up = 0.1,
                              nw = gauss.quad(128, kind = "legendre"),
@@ -1008,12 +1021,12 @@ You may want to use estimatePriorDf() or estimatePriorDfRobust() to estimate it"
 #'     have been updated. If \code{return.d0} is set to \code{TRUE},
 #'     it simply returns the estimated number of prior degrees of freedom.
 #' @references
-#' Tukey, J.W., \emph{The future of data analysis}. The annals of
+#' Tukey, J.W., \emph{The future of data analysis.} The annals of
 #' mathematical statistics, 1962. \strong{33}(1): p. 1-67.
 #'
 #' Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 #' Protects against Hypervariable Genes and Improves Power to Detect
-#' Differential Expression}. Annals of Applied Statistics, 2016.
+#' Differential Expression.} Annals of Applied Statistics, 2016.
 #' \strong{10}(2): p. 946-963.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
@@ -1032,7 +1045,7 @@ You may want to use estimatePriorDf() or estimatePriorDfRobust() to estimate it"
 #' attr(H3K27Ac, "metaInfo")
 #'
 #' ## Treat all the samples as independent and perform a HyperChIP analysis.
-#'
+#' \donttest{
 #' # Use a pseudo-reference profile as baseline in the MA normalization
 #' # process.
 #' autosome <- !(H3K27Ac$chrom %in% c("chrX", "chrY"))
@@ -1058,6 +1071,7 @@ You may want to use estimatePriorDf() or estimatePriorDfRobust() to estimate it"
 #' head(res)
 #' hist(res$pval, breaks = 100, col = "red")
 #' plot(res)
+#' }
 estParamHyperChIP <- function(cond, occupy.only = TRUE, prob = 0.1,
                               subset = NULL, p_low = 0.01, p_up = 0.1,
                               return.d0 = FALSE, .call = TRUE, ...) {
