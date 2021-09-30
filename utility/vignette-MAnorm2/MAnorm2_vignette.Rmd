@@ -1,7 +1,7 @@
 ---
 title: "MAnorm2 for Normalizing and Comparing ChIP-seq Samples"
 author: "Shiqi Tu"
-date: "2021-04-18"
+date: "2021-09-10"
 abstract: >
   Eukaryotic gene transcription is regulated by a large cohort of chromatin
   associated proteins, and inferring their differential binding sites between
@@ -19,7 +19,7 @@ abstract: >
   across samples, which, for example, is essential to dissecting the epigenetic 
   heterogeneity across cancer patients as well as revealing potential 
   sub-structures associated with them. This vignette explains the working
-  principle of MAnorm2 1.1.0 and demonstrates the use of it.
+  principle of MAnorm2 1.2.0 and demonstrates the use of it.
 output:
   rmarkdown::html_document:
     highlight: pygments
@@ -41,7 +41,7 @@ knitr::opts_chunk$set(
   fig.width = 5
 )
 
-options(width = 100)
+old.ops <- options(width = 100)
 ```
 
 
@@ -115,7 +115,7 @@ The only problem associated with such extensions is how to naturally define
 "peaks" for specific data types.
 
 Most of the peak callers originally devised for ChIP-seq data
-(e.g., [MACS 1.4](https://github.com/taoliu/MACS/downloads)) also
+(e.g., [MACS 1.4](https://github.com/macs3-project/MACS/downloads)) also
 works for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input
 table should stand for a gene, and we recommend setting a cutoff (e.g., 20) of
 *raw read count* to define "peak" genes.
@@ -852,11 +852,20 @@ between groups of samples.
 
 # Citation
 
-To cite MAnorm2 in publications, please use
+To cite the MAnorm2 package in publications, please use
 
 > Tu, S., et al.,
 > *MAnorm2 for quantitatively comparing groups of ChIP-seq samples*.
 > Genome Res, 2021. **31**(1): p. 131-145.
+
+If you have performed MA normalization with a pseudo-reference profile as
+baseline, or have employed a Winsorization-based robust parameter estimation
+framework, or have performed a hypervariable analysis,
+please cite additionally
+
+> Chen, H., et al.,
+> *HyperChIP for identifying hypervariable signals across ChIP/ATAC-seq samples*.
+> bioRxiv, 2021: p. 2021.07.27.453915.
 
 # Acknowledgments
 
@@ -875,6 +884,10 @@ Mushan Li, Haojie Chen, Fengxiang Tan.
 
 ```{r sessionInfo}
 sessionInfo()
+```
+
+```{r restore, include = FALSE}
+options(old.ops)
 ```
 
 # References

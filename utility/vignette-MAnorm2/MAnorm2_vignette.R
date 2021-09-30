@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
   fig.width = 5
 )
 
-options(width = 100)
+old.ops <- options(width = 100)
 
 ## ----dataset--------------------------------------------------------------------------------------
 library(MAnorm2)
@@ -306,4 +306,7 @@ plot(hclust(d2, method = "average"), hang = -1)
 
 ## ----sessionInfo----------------------------------------------------------------------------------
 sessionInfo()
+
+## ----restore, include = FALSE-------------------------------------------------
+options(old.ops)
 
