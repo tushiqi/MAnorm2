@@ -173,7 +173,7 @@ estimateVarRatio(conds, base.cond = "GM12891")
 conds <- fitMeanVarCurve(conds, method = "parametric", occupy.only = TRUE)
 summary(conds[[1]])
 plotMeanVarCurve(conds, subset = "occupied")
-# \dontrun
+# \dontrun: error raised.
 # Sometimes the parametric fitting algorithm cannot automatically deduce
 # proper starting values for estimating the coefficients.
 fitMeanVarCurve(conds[3], method = "parametric", occupy.only = TRUE)
