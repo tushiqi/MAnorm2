@@ -1,7 +1,7 @@
 ---
-title: MAnorm2 1.1.0
+title: MAnorm2 1.2.0
 author: Shiqi Tu
-date: 2021-04-18
+date: 2021-09-10
 contact: tushiqi@picb.ac.cn
 ---
 
@@ -10,22 +10,19 @@ contact: tushiqi@picb.ac.cn
 
 MAnorm2 is designed for normalizing and comparing
 [ChIP-seq](https://en.wikipedia.org/wiki/ChIP-sequencing) signals across
-individual samples or groups of samples. For a quick installation of MAnorm2,
-select a version from under the `dist` folder in the
-[home page of MAnorm2](https://github.com/tushiqi/MAnorm2)
-(we recommend selecting always the latest version), download the corresponding
-package, and type the following code in an R session:
+individual samples or groups of samples. The latest version of MAnorm2 is
+always available in the [CRAN](https://cran.r-project.org) repository and
+can thus be easily installed by typing `install.packages("MAnorm2")` in an
+R session.
 
-```r
-install.packages("/path/to/the/package", repos = NULL)
-```
-
-**Note:** you may need to pre-install some dependencies of MAnorm2. The current
-dependencies of the latest version of MAnorm2 include locfit (>= 1.5.9),
+For older versions of MAnorm2, select a package from under the `dist` folder,
+download it, and type `install.packages("/path/to/the/package", repos = NULL)`.
+In this way, you may need to pre-install some dependencies of MAnorm2. The
+current dependencies of the latest MAnorm2 version include locfit (>= 1.5.9),
 scales (>= 0.3.0), and statmod (>= 1.4.34). All these packages are available in
-the [CRAN](https://cran.r-project.org) repository and can be easily installed
-via `install.packages("pkgname")`. For the dependencies of other versions of
-MAnorm2, refer to the `Imports` tag in the corresponding `DESCRIPTION` file.
+the [CRAN](https://cran.r-project.org) repository. For dependencies of other
+MAnorm2 versions, refer to the `Imports` field in the corresponding
+`DESCRIPTION` file.
 
 Sections below give a brief description
 of the application scope of MAnorm2 as well as its capability. For a full
@@ -87,7 +84,7 @@ The only problem associated with such extensions is how to naturally define
 "peaks" for specific data types.
 
 Most of the peak callers originally devised for ChIP-seq data
-(e.g., [MACS 1.4](https://github.com/taoliu/MACS/downloads)) also
+(e.g., [MACS 1.4](https://github.com/macs3-project/MACS/downloads)) also
 work for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input
 table should stand for a gene, and we recommend setting a cutoff (e.g., 20) of
 *raw read count* to define "peak" genes.
@@ -208,10 +205,19 @@ library(MAnorm2)
 
 # Citation
 
-To cite MAnorm2 in publications, please use
+To cite the MAnorm2 package in publications, please use
 
 > Tu, S., et al.,
 > *MAnorm2 for quantitatively comparing groups of ChIP-seq samples*.
 > Genome Res, 2021. **31**(1): p. 131-145.
+
+If you have performed MA normalization with a pseudo-reference profile as
+baseline, or have employed a Winsorization-based robust parameter estimation
+framework, or have performed a hypervariable analysis,
+please cite additionally
+
+> Chen, H., et al.,
+> *HyperChIP for identifying hypervariable signals across ChIP/ATAC-seq samples*.
+> bioRxiv, 2021: p. 2021.07.27.453915.
 
 
