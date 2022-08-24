@@ -77,9 +77,10 @@ of bisection.
 
 Inspired by the ordinary (non-robust) routine for estimating \eqn{d0}, we
 derive the final estimate of \eqn{d0} by separately applying the function
-\eqn{\link[base]{trigamma}(x / 2)} to the estimated \eqn{d0} from each
+\eqn{trigamma(x / 2)} to the estimated \eqn{d0} from each
 \code{bioCond}, taking a weighted average across the results, and applying
-the inverse of the function (achieved by using Newton iteration). Here the
+the inverse of the function (achieved by using Newton iteration;
+see also \code{\link[base]{trigamma}}). Here the
 weights are the numbers of genomic intervals (in the \code{bioCond}s) minus
 1 that are used to calculate FZ statistics.
 }
