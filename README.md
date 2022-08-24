@@ -1,8 +1,8 @@
 ---
-title: MAnorm2 1.2.0
-author: Shiqi Tu
-date: 2021-09-10
-contact: tushiqi@picb.ac.cn
+Title: MAnorm2 1.2.1
+Author: Shiqi Tu
+Date: 2022-08-24
+Contact: tushiqi@picb.ac.cn
 ---
 
 
@@ -217,7 +217,7 @@ framework, or have performed a hypervariable analysis,
 please cite additionally
 
 > Chen, H., et al.,
-> *HyperChIP for identifying hypervariable signals across ChIP/ATAC-seq samples*.
-> bioRxiv, 2021: p. 2021.07.27.453915.
+> *HyperChIP: identification of hypervariable signals across ChIP-seq or ATAC-seq samples*.
+> Genome Biol, 2022. **23**(1): p. 62.
 
 
