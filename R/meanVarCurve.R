@@ -56,8 +56,9 @@ inv.trigamma <- function(x, eps = 1e-8) {
 #' plus a constant (since the mean-variance curve is not adjusted yet), and we
 #' can use the sample variance (plus a constant) of the FZ statistics
 #' of each single \code{bioCond} to get an estimate of
-#' \eqn{\link[base]{trigamma}(d0 / 2)},
-#' where \eqn{d0} is the number of prior degrees of freedom.
+#' \eqn{trigamma(d0 / 2)},
+#' where \eqn{d0} is the number of prior degrees of freedom
+#' (see also \code{\link[base]{trigamma}}).
 #'
 #' The final estimate of \eqn{trigamma(d0 / 2)} is a weighted mean of estimates
 #' across \code{bioCond} objects, with the weights being their respective
