@@ -12,3 +12,7 @@ Changes in version 1.1.0 (2021-04-18)
 Changes in version 1.2.0 (2021-09-10)
 + Add the citation of HyperChIP.
 + Uploaded to the CRAN repository.
+
+Changes in version 1.2.1 (2022-08-24)
++ Update the citation of HyperChIP.
++ Fix some math rendering problems in HTML manuals.

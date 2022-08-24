@@ -26,7 +26,7 @@ citEntry(header = paste("If you have performed MA normalization with a pseudo-re
                         "or have performed a hypervariable analysis,",
                         "please cite additionally"),
          entry = "Article",
-         title = "HyperChIP for identifying hypervariable signals across ChIP/ATAC-seq samples",
+         title = "HyperChIP: identification of hypervariable signals across ChIP-seq or ATAC-seq samples",
          author = personList(as.person("Haojie Chen"),
                              as.person("Shiqi Tu"),
                              as.person("Chongze Yuan"),
@@ -34,13 +34,15 @@ citEntry(header = paste("If you have performed MA normalization with a pseudo-re
                              as.person("Yijing Zhang"),
                              as.person("Yihua Sun"),
                              as.person("Zhen Shao")),
-         journal = "bioRxiv",
-         year = "2021",
-         publisher = "Cold Spring Harbor Laboratory",
-         doi = "10.1101/2021.07.27.453915",
+         journal = "Genome Biology",
+         volume = "23",
+         number = "1",
+         pages = "62",
+         year = "2022",
+         doi = "10.1186/s13059-022-02627-9",
          textVersion = paste("Chen, H., et al.,",
-                             "HyperChIP for identifying hypervariable signals across ChIP/ATAC-seq samples.",
-                             "bioRxiv, 2021: p. 2021.07.27.453915."))
+                             "HyperChIP: identification of hypervariable signals across ChIP-seq or ATAC-seq samples.",
+                             "Genome Biol, 2022. 23(1): p. 62."))
 
 
 citFooter("Thanks for using MAnorm2.")
