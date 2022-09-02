@@ -1,7 +1,7 @@
 ---
 title: "MAnorm2 for Normalizing and Comparing ChIP-seq Samples"
 author: "Shiqi Tu"
-date: "2021-09-10"
+date: "2022-08-24"
 abstract: >
   Eukaryotic gene transcription is regulated by a large cohort of chromatin
   associated proteins, and inferring their differential binding sites between
@@ -19,7 +19,7 @@ abstract: >
   across samples, which, for example, is essential to dissecting the epigenetic 
   heterogeneity across cancer patients as well as revealing potential 
   sub-structures associated with them. This vignette explains the working
-  principle of MAnorm2 1.2.0 and demonstrates the use of it.
+  principle of MAnorm2 1.2.1 and demonstrates the use of it.
 output:
   rmarkdown::html_document:
     highlight: pygments
@@ -115,8 +115,8 @@ The only problem associated with such extensions is how to naturally define
 "peaks" for specific data types.
 
 Most of the peak callers originally devised for ChIP-seq data
-(e.g., [MACS 1.4](https://github.com/macs3-project/MACS/downloads)) also
-works for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input
+(e.g., [MACS 1.4](https://pypi.org/project/MACS/)) also
+work for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input
 table should stand for a gene, and we recommend setting a cutoff (e.g., 20) of
 *raw read count* to define "peak" genes.
 

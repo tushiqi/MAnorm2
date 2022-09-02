@@ -11,7 +11,7 @@
 
 <meta name="author" content="Shiqi Tu" />
 
-<meta name="date" content="2021-09-10" />
+<meta name="date" content="2022-08-24" />
 
 <title>MAnorm2 for Normalizing and Comparing ChIP-seq Samples</title>
 
@@ -282,10 +282,10 @@ pre code {
 
 <h1 class="title toc-ignore">MAnorm2 for Normalizing and Comparing ChIP-seq Samples</h1>
 <h4 class="author">Shiqi Tu</h4>
-<h4 class="date">2021-09-10</h4>
+<h4 class="date">2022-08-24</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
-<p>Eukaryotic gene transcription is regulated by a large cohort of chromatin associated proteins, and inferring their differential binding sites between cellular contexts requires a rigorous comparison of the corresponding ChIP-seq samples. The package MAnorm2 is primarily developed for quantitatively comparing groups of ChIP-seq samples (e.g., groups of biological replicates corresponding to different cellular contexts). Technically, MAnorm2 uses a hierarchical strategy for normalization of ChIP-seq samples, and it assesses within-group variability of ChIP-seq signals under an empirical Bayes framework, in which MAnorm2 considers the abundance of differential ChIP-seq signals between groups of samples and the possibility of different within-group variability between groups. Another capability of MAnorm2 is to identify hypervariable ChIP-seq signals across samples, which, for example, is essential to dissecting the epigenetic heterogeneity across cancer patients as well as revealing potential sub-structures associated with them. This vignette explains the working principle of MAnorm2 1.2.0 and demonstrates the use of it.</p>
+<p>Eukaryotic gene transcription is regulated by a large cohort of chromatin associated proteins, and inferring their differential binding sites between cellular contexts requires a rigorous comparison of the corresponding ChIP-seq samples. The package MAnorm2 is primarily developed for quantitatively comparing groups of ChIP-seq samples (e.g., groups of biological replicates corresponding to different cellular contexts). Technically, MAnorm2 uses a hierarchical strategy for normalization of ChIP-seq samples, and it assesses within-group variability of ChIP-seq signals under an empirical Bayes framework, in which MAnorm2 considers the abundance of differential ChIP-seq signals between groups of samples and the possibility of different within-group variability between groups. Another capability of MAnorm2 is to identify hypervariable ChIP-seq signals across samples, which, for example, is essential to dissecting the epigenetic heterogeneity across cancer patients as well as revealing potential sub-structures associated with them. This vignette explains the working principle of MAnorm2 1.2.1 and demonstrates the use of it.</p>
 </div>
 
 </div>
@@ -337,7 +337,7 @@ pre code {
 <h2>Input Data</h2>
 <p>For employing the machinery implemented in MAnorm2, you need to prepare a table that profiles the ChIP-seq signal in each of a list of genomic intervals for each of a set of ChIP-seq samples. The <code>H3K27Ac</code> dataset bundled with MAnorm2 provides such an instance:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MAnorm2)</span></code></pre></div>
-<pre><code>#&gt; MAnorm2 1.2.0 2021-09-10</code></pre>
+<pre><code>#&gt; MAnorm2 1.2.1 2022-08-24</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(H3K27Ac)</span></code></pre></div>
 <pre><code>#&gt;   chrom  start    end GM12890_H3K27Ac_1.read_cnt GM12891_H3K27Ac_1.read_cnt
 #&gt; 1  chr1  29023  29346                          8                         16
@@ -374,7 +374,7 @@ pre code {
 <div id="application-scope" class="section level2">
 <h2>Application Scope</h2>
 <p>Although MAnorm2 has been designed to process ChIP-seq data, it could be applied in principle to the analysis of any type of data with a similar structure, including <a href="https://en.wikipedia.org/wiki/DNase-Seq">DNase-seq</a>, <a href="https://en.wikipedia.org/wiki/ATAC-seq">ATAC-seq</a> and <a href="https://en.wikipedia.org/wiki/RNA-Seq">RNA-seq</a> data. The only problem associated with such extensions is how to naturally define “peaks” for specific data types.</p>
-<p>Most of the peak callers originally devised for ChIP-seq data (e.g., <a href="https://github.com/macs3-project/MACS/downloads">MACS 1.4</a>) also works for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input table should stand for a gene, and we recommend setting a cutoff (e.g., 20) of <em>raw read count</em> to define “peak” genes.</p>
+<p>Most of the peak callers originally devised for ChIP-seq data (e.g., <a href="https://pypi.org/project/MACS/">MACS 1.4</a>) also work for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input table should stand for a gene, and we recommend setting a cutoff (e.g., 20) of <em>raw read count</em> to define “peak” genes.</p>
 <p><a name="ContinuousDistribution"></a></p>
 </div>
 <div id="continuous-distribution" class="section level2">
@@ -606,7 +606,7 @@ pre code {
 #&gt; 
 #&gt; Summary of the mean-variance curve:
 #&gt; Fit method = &quot;parametric fit&quot;
-#&gt; ID = &quot;2021-09-10 19:29:47 I3EU2SYEWW&quot;
+#&gt; ID = &quot;2022-08-30 16:22:27 VHIVMNKAR6&quot;
 #&gt; Number of prior dfs = Inf
 #&gt; Variance ratio factor = 1.19</code></pre>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(conds<span class="sc">$</span>GM12892)</span></code></pre></div>
@@ -635,7 +635,7 @@ pre code {
 #&gt; 
 #&gt; Summary of the mean-variance curve:
 #&gt; Fit method = &quot;parametric fit&quot;
-#&gt; ID = &quot;2021-09-10 19:29:47 I3EU2SYEWW&quot;
+#&gt; ID = &quot;2022-08-30 16:22:27 VHIVMNKAR6&quot;
 #&gt; Number of prior dfs = Inf
 #&gt; Variance ratio factor = 0.997</code></pre>
 <p><strong>Note:</strong> for each <code>bioCond</code> that has been associated with an MVC, MAnorm2 uses a variance ratio factor to quantify its global within-group variability (relative to the MVC). When samples in each <code>bioCond</code> are biological replicates, the <code>bioCond</code> objects associated with the same MVC should have similar variance ratio factors. Otherwise, there might be batch effects and/or samples with bad quality.</p>
@@ -723,7 +723,7 @@ pre code {
 #&gt; 
 #&gt; Summary of the mean-variance curve:
 #&gt; Fit method = &quot;parametric fit&quot;
-#&gt; ID = &quot;2021-09-10 19:30:11 1RJZB629CA&quot;
+#&gt; ID = &quot;2022-08-30 16:23:04 3273QA80VX&quot;
 #&gt; Number of prior dfs = 4.24
 #&gt; Variance ratio factor = 0.597</code></pre>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize mean-variance trend along with the fitted MVC.</span></span>
@@ -845,7 +845,7 @@ pre code {
 #&gt; 
 #&gt; Summary of the mean-variance curve:
 #&gt; Fit method = &quot;local regression&quot;
-#&gt; ID = &quot;2021-09-10 19:30:55 RR6MM1VRMO&quot;
+#&gt; ID = &quot;2022-08-30 16:24:14 ME9H25TSNX&quot;
 #&gt; Number of prior dfs = 13.7
 #&gt; Variance ratio factor = 0.849</code></pre>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotMeanVarCurve</span>(genders, <span class="at">subset =</span> <span class="st">&quot;occupied&quot;</span>)</span></code></pre></div>
@@ -962,7 +962,7 @@ pre code {
 #&gt; 
 #&gt; Summary of the mean-variance curve:
 #&gt; Fit method = &quot;local regression&quot;
-#&gt; ID = &quot;2021-09-10 19:31:23 M6W50K0R18&quot;
+#&gt; ID = &quot;2022-08-30 16:25:00 995Y7DTLD3&quot;
 #&gt; Number of prior dfs = 2.87
 #&gt; Variance ratio factor = 0.446</code></pre>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the parameter estimation framework of HyperChIP.</span></span>
@@ -1014,7 +1014,7 @@ pre code {
 #&gt; 
 #&gt; Summary of the mean-variance curve:
 #&gt; Fit method = &quot;local regression&quot;
-#&gt; ID = &quot;2021-09-10 19:31:23 M6W50K0R18&quot;
+#&gt; ID = &quot;2022-08-30 16:25:00 995Y7DTLD3&quot;
 #&gt; Number of prior dfs = Inf
 #&gt; Variance ratio factor = 1.02</code></pre>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform statistical tests.</span></span>
@@ -1152,7 +1152,7 @@ MVN(1\mu_{i,j}, (\gamma_{j}\sigma^{2}_{i,j})S_{i,j}) \\
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>#&gt; R version 4.1.0 (2021-05-18)
 #&gt; Platform: x86_64-w64-mingw32/x64 (64-bit)
-#&gt; Running under: Windows 10 x64 (build 19042)
+#&gt; Running under: Windows 10 x64 (build 19044)
 #&gt; 
 #&gt; Matrix products: default
 #&gt; 
@@ -1165,15 +1165,16 @@ MVN(1\mu_{i,j}, (\gamma_{j}\sigma^{2}_{i,j})S_{i,j}) \\
 #&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     
 #&gt; 
 #&gt; other attached packages:
-#&gt; [1] MAnorm2_1.2.0
+#&gt; [1] MAnorm2_1.2.1
 #&gt; 
 #&gt; loaded via a namespace (and not attached):
-#&gt;  [1] knitr_1.33         magrittr_2.0.1     munsell_0.5.0      statmod_1.4.36     colorspace_2.0-2  
-#&gt;  [6] lattice_0.20-44    R6_2.5.0           rlang_0.4.11       stringr_1.4.0      highr_0.9         
-#&gt; [11] caTools_1.18.2     tools_4.1.0        grid_4.1.0         xfun_0.25          KernSmooth_2.23-20
-#&gt; [16] htmltools_0.5.1.1  gtools_3.9.2       yaml_2.2.1         digest_0.6.27      lifecycle_1.0.0   
-#&gt; [21] farver_2.1.0       bitops_1.0-7       evaluate_0.14      rmarkdown_2.10     stringi_1.7.3     
-#&gt; [26] compiler_4.1.0     gplots_3.1.1       scales_1.1.1       locfit_1.5-9.4</code></pre>
+#&gt;  [1] knitr_1.33         magrittr_2.0.1     munsell_0.5.0      statmod_1.4.36     lattice_0.20-44   
+#&gt;  [6] colorspace_2.0-2   R6_2.5.0           rlang_0.4.11       fastmap_1.1.0      highr_0.9         
+#&gt; [11] stringr_1.4.0      caTools_1.18.2     tools_4.1.0        grid_4.1.0         xfun_0.25         
+#&gt; [16] KernSmooth_2.23-20 jquerylib_0.1.4    htmltools_0.5.2    gtools_3.9.2       yaml_2.2.1        
+#&gt; [21] digest_0.6.27      lifecycle_1.0.0    farver_2.1.0       sass_0.4.0         bitops_1.0-7      
+#&gt; [26] evaluate_0.14      rmarkdown_2.10     stringi_1.7.3      compiler_4.1.0     bslib_0.3.1       
+#&gt; [31] gplots_3.1.1       scales_1.1.1       locfit_1.5-9.4     jsonlite_1.7.2</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
