@@ -115,8 +115,8 @@ The only problem associated with such extensions is how to naturally define
 "peaks" for specific data types.
 
 Most of the peak callers originally devised for ChIP-seq data
-(e.g., [MACS 1.4](https://github.com/macs3-project/MACS/downloads)) also
-works for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input
+(e.g., [MACS 1.4](https://pypi.org/project/MACS/)) also
+work for DNase-seq and ATAC-seq data. For RNA-seq data, each row of the input
 table should stand for a gene, and we recommend setting a cutoff (e.g., 20) of
 *raw read count* to define "peak" genes.
 
