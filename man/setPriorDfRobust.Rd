@@ -28,10 +28,12 @@ occupied intervals are used to adjust the variance ratio factors.
 Otherwise, all intervals are used.}
 
 \item{p_low}{Lower- and upper-proportions of extreme values to be
-Winsorized (see "References"). Must be strictly between 0 and 0.5.}
+Winsorized (see "References"). Each of them must be strictly larger than
+0, and their sum must be strictly smaller than 1.}
 
 \item{p_up}{Lower- and upper-proportions of extreme values to be
-Winsorized (see "References"). Must be strictly between 0 and 0.5.}
+Winsorized (see "References"). Each of them must be strictly larger than
+0, and their sum must be strictly smaller than 1.}
 
 \item{nw}{A list containing \code{nodes} and \code{weights} variables for
 calculating the definite integral of a function \code{f} over the

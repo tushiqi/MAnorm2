@@ -33,7 +33,8 @@ to directly specify the intervals to be used in the Winsorization
 procedure. This option overrides \code{occupy.only} and \code{prob}.}
 
 \item{p_low, p_up}{Lower- and upper-proportions of extreme values to be
-Winsorized. Must be strictly between 0 and 0.5.}
+Winsorized (see "References"). Each of them must be strictly larger than
+0, and their sum must be strictly smaller than 1.}
 
 \item{return.d0}{A logical scalar. If set to \code{TRUE}, the function
 simply returns the estimated number of prior degrees of freedom.}
@@ -111,6 +112,10 @@ Phipson, B., et al., \emph{Robust Hyperparameter Estimation
 Protects against Hypervariable Genes and Improves Power to Detect
 Differential Expression.} Annals of Applied Statistics, 2016.
 \strong{10}(2): p. 946-963.
+
+Chen, H., et al., \emph{HyperChIP: identification of hypervariable signals
+across ChIP-seq or ATAC-seq samples.} Genome Biol, 2022.
+\strong{23}(1): p. 62.
 }
 \seealso{
 \code{\link{bioCond}} for creating a \code{bioCond} object;

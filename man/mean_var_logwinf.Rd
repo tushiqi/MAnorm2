@@ -17,9 +17,12 @@ mean_var_logwinf(
 freedom. \code{Inf} is allowed.}
 
 \item{p_low, p_up}{Vectors of lower- and upper-tail probabilities for
-Winsorizing. Must be strictly between 0 and 0.5. Note that \code{df1},
-\code{df2}, \code{p_low} and \code{p_up} are recycled to align with the
-longest of them.}
+    Winsorizing. Each element must be strictly larger than 0, and each pair
+    of \code{p_low} and \code{p_up} must have a sum strictly smaller than 1.
+
+    Note that \code{df1},
+    \code{df2}, \code{p_low}, and \code{p_up} are recycled to align with the
+    longest of them.}
 
 \item{nw}{A list containing \code{nodes} and \code{weights} variables for
 calculating the definite integral of a function \code{f} over the
@@ -42,7 +45,7 @@ variance of a log Winsorized \emph{F} distribution by
 appealing to methods for numerical integration.
 }
 \details{
-The function implements exactly the method described in
+The function implements exactly the same method described in
 Phipson et al., 2016 (see "References").
 }
 \examples{
@@ -74,16 +77,16 @@ res2 <- mean_var_logwinf(df1, df2, p_low, p_up)
 # Compare mean.
 plot(0:10, res1[1, ], type = "l", lwd = 2, col = "red", xlab = "Log2(df2)",
      ylab = "Mean")
-lines(0:10, res2$mu, lty = 5, lwd = 2, col = "red")
+lines(0:10, res2$mu, lty = 5, lwd = 2, col = "blue")
 legend("topright", c("Simulation", "Numerical integration"), lty = c(1, 5),
-       lwd = 2, col = "red")
+       lwd = 2, col = c("red", "blue"))
 
 # Compare variance.
 plot(0:10, res1[2, ], type = "l", lwd = 2, col = "red", xlab = "Log2(df2)",
      ylab = "Var")
-lines(0:10, res2$v, lty = 5, lwd = 2, col = "red")
+lines(0:10, res2$v, lty = 5, lwd = 2, col = "blue")
 legend("topright", c("Simulation", "Numerical integration"), lty = c(1, 5),
-       lwd = 2, col = "red")
+       lwd = 2, col = c("red", "blue"))
 
 # When df2 is Inf.
 random_logwinf(n, df1, Inf, p_low, p_up)

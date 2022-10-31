@@ -29,7 +29,8 @@ prior degrees of freedom and adjust the variance ratio factors.
 Otherwise, all intervals are used.}
 
 \item{p_low, p_up}{Lower- and upper-proportions of extreme values to be
-Winsorized (see "References"). Must be strictly between 0 and 0.5.}
+Winsorized (see "References"). Each of them must be strictly larger than
+0, and their sum must be strictly smaller than 1.}
 
 \item{d0_low, d0_up}{Positive reals specifying the lower and upper bounds
     of estimated \eqn{d0} (i.e., number of prior degrees of freedom).
