@@ -1,7 +1,7 @@
 # Functions in this file are for robust estimation of number of prior degrees
 # of freedom and variance ratio factor.
 #
-# Last update: 2021-09-10
+# Last update: 2022-10-28
 
 
 #' Utility Trigamma Function
@@ -44,14 +44,17 @@ util.trigamma <- function(y) {
 #' variance of a log Winsorized \emph{F} distribution by
 #' appealing to methods for numerical integration.
 #'
-#' The function implements exactly the method described in
+#' The function implements exactly the same method described in
 #' Phipson et al., 2016 (see "References").
 #'
 #' @param df1,df2 Vectors of numbers of numerator and denominator degrees of
 #'     freedom. \code{Inf} is allowed.
 #' @param p_low,p_up Vectors of lower- and upper-tail probabilities for
-#'     Winsorizing. Must be strictly between 0 and 0.5. Note that \code{df1},
-#'     \code{df2}, \code{p_low} and \code{p_up} are recycled to align with the
+#'     Winsorizing. Each element must be strictly larger than 0, and each pair
+#'     of \code{p_low} and \code{p_up} must have a sum strictly smaller than 1.
+#'
+#'     Note that \code{df1},
+#'     \code{df2}, \code{p_low}, and \code{p_up} are recycled to align with the
 #'     longest of them.
 #' @param nw A list containing \code{nodes} and \code{weights} variables for
 #'     calculating the definite integral of a function \code{f} over the
@@ -106,16 +109,16 @@ util.trigamma <- function(y) {
 #' # Compare mean.
 #' plot(0:10, res1[1, ], type = "l", lwd = 2, col = "red", xlab = "Log2(df2)",
 #'      ylab = "Mean")
-#' lines(0:10, res2$mu, lty = 5, lwd = 2, col = "red")
+#' lines(0:10, res2$mu, lty = 5, lwd = 2, col = "blue")
 #' legend("topright", c("Simulation", "Numerical integration"), lty = c(1, 5),
-#'        lwd = 2, col = "red")
+#'        lwd = 2, col = c("red", "blue"))
 #'
 #' # Compare variance.
 #' plot(0:10, res1[2, ], type = "l", lwd = 2, col = "red", xlab = "Log2(df2)",
 #'      ylab = "Var")
-#' lines(0:10, res2$v, lty = 5, lwd = 2, col = "red")
+#' lines(0:10, res2$v, lty = 5, lwd = 2, col = "blue")
 #' legend("topright", c("Simulation", "Numerical integration"), lty = c(1, 5),
-#'        lwd = 2, col = "red")
+#'        lwd = 2, col = c("red", "blue"))
 #'
 #' # When df2 is Inf.
 #' random_logwinf(n, df1, Inf, p_low, p_up)
@@ -127,15 +130,17 @@ mean_var_logwinf <- function(df1, df2, p_low = 0.01, p_up = 0.1,
     if (!(all(df1 > 0) && all(df2 > 0))) {
         stop("df1 and df2 must be positive numerics")
     }
-    if (!(all(p_low > 0) && all(p_low < 0.5) &&
-          all(p_up > 0) && all(p_up < 0.5))) {
-        stop("p_low and p_up must be strictly between 0 and 0.5")
+    if (!(all(p_low > 0) && all(p_up > 0))) {
+        stop("p_low and p_up must be strictly larger than 0")
     }
     n <- max(length(df1), length(df2), length(p_low), length(p_up))
     df1 <- rep_len(df1, n)
     df2 <- rep_len(df2, n)
     p_low <- rep_len(p_low, n)
     p_up <- rep_len(p_up, n)
+    if (any(p_low + p_up >= 1)) {
+        stop("Each pair of p_low and p_up must have a sum strictly smaller than 1")
+    }
 
     # Calculation
     q_low <- qf(p_low, df1, df2, lower.tail = TRUE)
@@ -537,7 +542,8 @@ scaleMeanVarCurveRobust <- function(z, m, d0, p_low = 0.01, p_up = 0.1,
 #'     prior degrees of freedom and adjust the variance ratio factors.
 #'     Otherwise, all intervals are used.
 #' @param p_low,p_up Lower- and upper-proportions of extreme values to be
-#'     Winsorized (see "References"). Must be strictly between 0 and 0.5.
+#'     Winsorized (see "References"). Each of them must be strictly larger than
+#'     0, and their sum must be strictly smaller than 1.
 #' @param d0_low,d0_up Positive reals specifying the lower and upper bounds
 #'     of estimated \eqn{d0} (i.e., number of prior degrees of freedom).
 #'     \code{Inf} is \emph{not} allowed.
@@ -647,8 +653,11 @@ estimatePriorDfRobust <- function(conds, occupy.only = TRUE,
     d0_low <- as.numeric(d0_low)[1]
     d0_up <- as.numeric(d0_up)[1]
     eps <- as.numeric(eps)[1]
-    if (!(p_low > 0 && p_low < 0.5 && p_up > 0 && p_up < 0.5)) {
-        stop("p_low and p_up must be strictly between 0 and 0.5")
+    if (!(p_low > 0 && p_up > 0)) {
+        stop("p_low and p_up must be strictly larger than 0")
+    }
+    if (p_low + p_up >= 1) {
+        stop("The sum of p_low and p_up must be strictly smaller than 1")
     }
     if (!(d0_low > 0 && d0_up > 0 && eps > 0)) {
         stop("d0_low, d0_up and eps must be positive reals")
@@ -832,8 +841,11 @@ setPriorDfRobust <- function(conds, d0, occupy.only = TRUE,
     occupy.only <- as.logical(occupy.only)[1]
     p_low <- as.numeric(p_low)[1]
     p_up <- as.numeric(p_up)[1]
-    if (!(p_low > 0 && p_low < 0.5 && p_up > 0 && p_up < 0.5)) {
-        stop("p_low and p_up must be strictly between 0 and 0.5")
+    if (!(p_low > 0 && p_up > 0)) {
+        stop("p_low and p_up must be strictly larger than 0")
+    }
+    if (p_low + p_up >= 1) {
+        stop("The sum of p_low and p_up must be strictly smaller than 1")
     }
 
     # Set the number of prior degrees of freedom
@@ -1010,7 +1022,8 @@ You may want to use estimatePriorDf() or estimatePriorDfRobust() to estimate it"
 #'     to directly specify the intervals to be used in the Winsorization
 #'     procedure. This option overrides \code{occupy.only} and \code{prob}.
 #' @param p_low,p_up Lower- and upper-proportions of extreme values to be
-#'     Winsorized. Must be strictly between 0 and 0.5.
+#'     Winsorized (see "References"). Each of them must be strictly larger than
+#'     0, and their sum must be strictly smaller than 1.
 #' @param return.d0 A logical scalar. If set to \code{TRUE}, the function
 #'     simply returns the estimated number of prior degrees of freedom.
 #' @param .call Never care about this argument.
@@ -1029,6 +1042,10 @@ You may want to use estimatePriorDf() or estimatePriorDfRobust() to estimate it"
 #' Protects against Hypervariable Genes and Improves Power to Detect
 #' Differential Expression.} Annals of Applied Statistics, 2016.
 #' \strong{10}(2): p. 946-963.
+#'
+#' Chen, H., et al., \emph{HyperChIP: identification of hypervariable signals
+#' across ChIP-seq or ATAC-seq samples.} Genome Biol, 2022.
+#' \strong{23}(1): p. 62.
 #'
 #' @seealso \code{\link{bioCond}} for creating a \code{bioCond} object;
 #'     \code{\link{fitMeanVarCurve}} for fitting a mean-variance curve and
