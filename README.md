@@ -1,7 +1,7 @@
 ---
-Title: MAnorm2 1.2.1
+Title: MAnorm2 1.2.2
 Author: Shiqi Tu
-Date: 2022-08-24
+Date: 2022-10-28
 Contact: tushiqi@picb.ac.cn
 ---
 
