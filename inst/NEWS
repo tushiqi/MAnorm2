@@ -16,3 +16,7 @@ Changes in version 1.2.0 (2021-09-10)
 Changes in version 1.2.1 (2022-08-24)
 + Update the citation of HyperChIP.
 + Fix some math rendering problems in HTML manuals.
+
+Changes in version 1.2.2 (2022-10-28)
++ Allow p_low and p_up to be larger than 0.5 in the Winsorization
+  framework, as long as their sum is strictly smaller than 1.
