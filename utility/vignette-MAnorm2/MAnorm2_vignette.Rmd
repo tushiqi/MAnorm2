@@ -1,7 +1,7 @@
 ---
 title: "MAnorm2 for Normalizing and Comparing ChIP-seq Samples"
 author: "Shiqi Tu"
-date: "2022-08-24"
+date: "2022-10-28"
 abstract: >
   Eukaryotic gene transcription is regulated by a large cohort of chromatin
   associated proteins, and inferring their differential binding sites between
@@ -19,7 +19,7 @@ abstract: >
   across samples, which, for example, is essential to dissecting the epigenetic 
   heterogeneity across cancer patients as well as revealing potential 
   sub-structures associated with them. This vignette explains the working
-  principle of MAnorm2 1.2.1 and demonstrates the use of it.
+  principle of MAnorm2 1.2.2 and demonstrates the use of it.
 output:
   rmarkdown::html_document:
     highlight: pygments
@@ -658,10 +658,10 @@ Type `?estimatePriorDfRobust` for details.
 
 ## Identifying Hypervariable ChIP-seq Signals
 
-One of the new changes made in MAnorm2 1.1.0 is the implementation of
+Since MAnorm2 1.1.0, one of the new changes is the implementation of
 HyperChIP, which is a method developed for identifying genomic intervals
 with hypervariable ChIP-seq signals across a set of samples. Compared with
-the original workflow shown in the vignette for the older MAnorm2 1.0.0,
+the old workflow shown in the vignette for MAnorm2 1.0.0,
 HyperChIP has made specific efforts to increase the statistical power for
 identifying hypervariable intervals (refer to `?estParamHyperChIP` for
 details). Here we use all the H3K27Ac ChIP-seq
